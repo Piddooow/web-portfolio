@@ -27,53 +27,73 @@ html.dark .site-header {
   justify-content: space-between;
   padding-top: 0.875rem;
   padding-bottom: 0.875rem;
+  width: 100%;
 }
 
 .brand-monogram {
   font-size: 0.9375rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
+  font-family: var(--font-sans);
+  text-decoration: none;
 }
 
-.brand-monogram span {
+.brand-monogram .brand-slash {
   font-weight: 300;
   color: var(--text-muted);
+  font-family: var(--font-mono);
 }
 
-.nav-links-wrap {
+.nav-right-wrap {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 @media (min-width: 640px) {
-  .nav-links-wrap {
-    gap: 1.5rem;
+  .nav-right-wrap {
+    gap: 1.25rem;
   }
 }
 
-.nav-links {
-  display: flex;
+.desktop-nav-links {
+  display: none;
   align-items: center;
   gap: 0.875rem;
 }
 
 @media (min-width: 640px) {
-  .nav-links {
+  .desktop-nav-links {
+    display: flex;
     gap: 1.25rem;
   }
 }
 
+.desktop-nav-divider {
+  display: none;
+  width: 1px;
+  height: 1.125rem;
+  background-color: var(--border-subtle);
+}
+
+@media (min-width: 640px) {
+  .desktop-nav-divider {
+    display: block;
+  }
+}
+
 .nav-link {
-  font-size: 0.8125rem;
+  font-size: 0.84rem;
   font-weight: 400;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   transition: color 0.2s ease;
   white-space: nowrap;
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
 }
 
 @media (min-width: 640px) {
@@ -91,10 +111,109 @@ html.dark .site-header {
   font-weight: 500;
 }
 
-.nav-divider {
-  width: 1px;
-  height: 1.125rem;
-  background-color: var(--border-subtle);
+.nav-link-text {
+  display: inline-block;
+  font-family: inherit;
+}
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.mobile-menu-btn:active {
+  transform: scale(0.95);
+}
+
+.mobile-menu-btn .hamburger-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+@media (min-width: 640px) {
+  .mobile-menu-btn {
+    display: none !important;
+  }
+}
+
+/* Mobile Nav Drawer */
+.mobile-nav-drawer {
+  display: flex;
+  flex-direction: column;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid transparent;
+  transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, border-color 0.25s ease;
+}
+
+.mobile-nav-drawer.open {
+  max-height: 420px;
+  opacity: 1;
+  border-bottom-color: var(--border-subtle);
+}
+
+@media (min-width: 640px) {
+  .mobile-nav-drawer {
+    display: none !important;
+  }
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.75rem 1rem 0.75rem;
+  gap: 0.2rem;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-elevated);
+}
+
+.mobile-nav-link.active {
+  color: var(--text-primary);
+  font-weight: 600;
+  background-color: var(--bg-surface-elevated);
+}
+
+.mobile-nav-link .link-arrow {
+  width: 0.8rem;
+  height: 0.8rem;
+  opacity: 0.4;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.mobile-nav-link:hover .link-arrow,
+.mobile-nav-link.active .link-arrow {
+  opacity: 1;
+  transform: translateX(2px);
 }
 
 /* Theme Toggle Button */
@@ -372,33 +491,47 @@ html.dark .site-header {
 
 .hero-headline {
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.025em;
   color: var(--text-primary);
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 @media (min-width: 640px) {
   .hero-headline {
     font-size: 1.875rem;
+    line-height: 1.3;
   }
 }
 
-.hero-headline-sub {
-  font-weight: 300;
-  color: var(--text-muted);
+.hero-highlight {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hero-highlight-accent {
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1.5px solid var(--border-subtle);
+  padding-bottom: 1px;
+}
+
+.text-primary-contrast {
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 .hero-bio {
   font-size: 0.95rem;
   line-height: 1.7;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text-secondary);
+  max-width: 48rem;
 }
 
 @media (min-width: 640px) {
   .hero-bio {
-    font-size: 1.0625rem;
+    font-size: 1.05rem;
     line-height: 1.75;
   }
 }

@@ -8,7 +8,7 @@ let activeGalleryIndex = 0;
 let autoplayTimer = null;
 
 export function renderOtherSide() {
-  const activeItem = personalGalleryData[activeGalleryIndex];
+  const activeItem = personalGalleryData[activeGalleryIndex] || personalGalleryData[0];
 
   return `
     <section class="other-side-section" id="other-side" style="margin-top: 1.5rem;">

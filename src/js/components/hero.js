@@ -67,12 +67,12 @@ export function renderHero() {
         <div>
           <span class="eyebrow-mono" style="font-size: 0.72rem; letter-spacing: 0.25em;">${profileData.heroEyebrow}</span>
           <h2 class="hero-headline" style="margin-top: 0.4rem;">
-            ${profileData.heroHeading}
+            ${profileData.heroHeadingHtml || profileData.heroHeading}
           </h2>
         </div>
 
         <p class="hero-bio">
-          ${profileData.heroSupporting}
+          ${profileData.heroSupportingHtml || profileData.heroSupporting}
         </p>
 
         <div class="hero-actions">

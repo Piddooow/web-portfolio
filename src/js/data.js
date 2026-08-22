@@ -37,8 +37,10 @@ export const profileData = {
   
   // Hero Typography & Positioning
   heroEyebrow: "AI & FULL-STACK SYSTEMS DEVELOPER",
-  heroHeading: "Building digital systems that make complex things feel simple.",
-  heroSupporting: "I build websites, ERP systems, business applications, and AI-powered products from idea to implementation.",
+  heroHeading: "From websites and ERP systems to business applications and AI-powered products.",
+  heroHeadingHtml: 'From <span class="hero-highlight">websites</span> and <span class="hero-highlight">ERP systems</span> to <span class="hero-highlight">business applications</span> and <span class="hero-highlight">AI-powered products</span>.',
+  heroSupporting: "I design and build digital products across the full spectrum, websites, ERP systems, business applications, and AI-powered tools. My focus is turning ideas into real, working solutions, from the first concept all the way through implementation.",
+  heroSupportingHtml: '<span class="text-primary-contrast">I design and build digital products</span> across the full spectrum, websites, ERP systems, business applications, and AI-powered tools. My focus is turning ideas into <span class="text-primary-contrast">real, working solutions</span>, from the first concept all the way through implementation.',
   
   aboutBio: [
     "Business-minded Information Systems and Management student at BINUS University with hands-on experience in operations management, vendor negotiation, and strategic business analysis (SWOT, Porter’s Five Forces, STP).",
