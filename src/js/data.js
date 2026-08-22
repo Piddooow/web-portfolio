@@ -29,9 +29,10 @@ export const profileData = {
   childhoodImage: "src/assets/images/personal/vidd-childhood.jpg",
   adultImage: "src/assets/images/personal/vidd-adult-suit.jpg",
   pfpImage: "src/assets/images/personal/vidd-childhood.jpg",
+  alias: "/ D4vd",
   
   // Main Philosophy Quote
-  mainQuote: "It’s going to happen because I’m going to make it happen.",
+  mainQuote: "It’s going to happen, because I’m going to make it happen.",
   quoteSupporting: "I believe good ideas become valuable when they are executed with consistency, curiosity, and attention to detail.",
   
   // Hero Typography & Positioning

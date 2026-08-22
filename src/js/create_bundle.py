@@ -11,6 +11,7 @@ bundle_code = '''(function() {
     name: "Vidd",
     displayName: "Vidd",
     brandName: "Vidd",
+    alias: "/ D4vd",
     handle: "Piddooow",
     monogram: "Vidd",
     role: "Information Systems & Management | AI & Full-Stack Systems Developer",
@@ -34,7 +35,8 @@ bundle_code = '''(function() {
     adultImage: "src/assets/images/personal/vidd-adult-suit.jpg",
     pfpImage: "src/assets/images/personal/vidd-childhood.jpg",
     
-    mainQuote: "It’s going to happen because I’m going to make it happen.",
+    // Main Philosophy Quote
+    mainQuote: "It’s going to happen, because I’m going to make it happen.",
     quoteSupporting: "I believe good ideas become valuable when they are executed with consistency, curiosity, and attention to detail.",
     
     heroEyebrow: "AI & FULL-STACK SYSTEMS DEVELOPER",
@@ -453,7 +455,7 @@ bundle_code = '''(function() {
     }
   }
 
-  // --- Hero (30fps High-Density Pixelated Avatar Transition) ---
+  // --- Hero (24fps Smooth Pixelated Avatar Transition & / D4vd) ---
   function renderHero() {
     const socialsHtml = profileData.socials
       .map(
@@ -482,14 +484,15 @@ bundle_code = '''(function() {
 
           <div class="hero-meta-col">
             <div class="hero-name-badge-row">
-              <h1 class="hero-name" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+              <h1 class="hero-name" style="display: inline-flex; align-items: baseline; gap: 0.35rem; flex-wrap: wrap;">
                 <span>${profileData.name}</span>
-                <span class="verified-badge" title="Verified Profile" aria-label="Verified">
+                <span class="verified-badge" title="Verified Profile" aria-label="Verified" style="align-self: center;">
                   <svg viewBox="0 0 24 24" class="verified-icon" aria-hidden="true">
                     <path fill="#1D9BF0" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.67-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.67-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.33 2.33 4.99-4.99 1.42 1.42-6.41 6.4z"/>
                     <path fill="#ffffff" d="M10.54 16.2L6.8 12.46l1.41-1.42 2.33 2.33 4.99-4.99 1.42 1.42-6.41 6.4z"/>
                   </svg>
                 </span>
+                <span class="hero-name-alias" style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: 400; color: var(--text-muted); letter-spacing: 0.02em; margin-left: 0.15rem;">/ D4vd</span>
               </h1>
               <div class="status-beacon">
                 <span class="beacon-dot"></span>
@@ -547,10 +550,10 @@ bundle_code = '''(function() {
     const pixelsContainer = document.getElementById('pixel-avatar-pixels');
     if (!container || !activeLayer || !pixelsContainer) return;
 
-    const gridSize = 10;
+    const gridSize = 8;
     const totalPixels = gridSize * gridSize;
-    const stepDuration = 220;
-    const fpsInterval = 1000 / 30;
+    const stepDuration = 350;
+    const fpsInterval = 1000 / 18; // 18fps (~55.5ms)
 
     pixelsContainer.innerHTML = '';
     const pixelElements = [];
@@ -987,7 +990,7 @@ bundle_code = '''(function() {
     `;
   }
 
-  // --- "The other side of Vidd" — 10 Photos Sequential 3D Carousel (Non-Overlapping) ---
+  // --- "The other side of Vidd" — Compact Editorial 3D Carousel (10 Photos) ---
   let activeGalleryIndex = 0;
   let autoplayTimer = null;
 
@@ -1010,47 +1013,43 @@ bundle_code = '''(function() {
     const dotsHtml = personalGalleryData
       .map(
         (_, i) => `
-        <button type="button" class="deck-dot ${i === activeGalleryIndex ? 'active' : ''}" data-index="${i}" aria-label="Go to photo ${i + 1} of 10"></button>
+        <button type="button" class="deck-dot ${i === activeGalleryIndex ? 'active' : ''}" data-index="${i}" aria-label="Go to slide ${i + 1}"></button>
       `
       )
       .join('');
 
     return `
-      <section class="other-side-section" id="other-side" style="margin-top: 2rem;">
+      <section class="other-side-section" id="other-side" style="margin-top: 1.5rem;">
         <div class="section-header">
           <div>
             <h2 class="section-title">The other side of Vidd</h2>
             <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
-              Beyond systems and code — moments in sports, discipline, community, and daily life.
+              Beyond systems and code — moments in sports, discipline, and daily life.
             </p>
           </div>
         </div>
 
         <div class="circular-carousel-wrapper" id="circular-carousel-wrapper">
           <div class="circular-carousel-grid">
-            <div class="circular-deck-container">
-              <div class="circular-image-deck" id="circular-image-deck" tabindex="0" role="region" aria-label="10 Photo 3D gallery deck">
-                ${deckItemsHtml}
-              </div>
+            <div class="circular-image-deck" id="circular-image-deck" tabindex="0" role="region" aria-label="Swipeable photo deck">
+              ${deckItemsHtml}
             </div>
 
             <div class="circular-content-col">
               <div class="circular-text-body" id="circular-text-body">
-                <span class="eyebrow-mono" id="deck-tag-text" style="font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.15em;">
-                  ${activeItem.tag}
-                </span>
-                <h3 class="deck-title" id="deck-name-text" style="font-size: 1.35rem; font-weight: 500; color: var(--text-primary); margin-top: 0.25rem; letter-spacing: -0.02em;">
+                <span class="eyebrow-mono" id="deck-tag-text" style="font-size: 0.65rem; color: var(--text-muted);">${activeItem.tag}</span>
+                <h3 class="deck-title" id="deck-name-text" style="font-size: 1.25rem; font-weight: 500; color: var(--text-primary); margin-top: 0.2rem; letter-spacing: -0.02em;">
                   ${activeItem.name}
                 </h3>
-                <p class="deck-designation" id="deck-designation-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem; margin-bottom: 0.75rem;">
+                <p class="deck-designation" id="deck-designation-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.65rem;">
                   ${activeItem.designation}
                 </p>
-                <blockquote class="deck-quote" id="deck-quote-text" style="font-size: 0.95rem; font-style: italic; color: var(--text-primary); line-height: 1.6; margin: 0; min-height: 3.6rem;">
+                <blockquote class="deck-quote" id="deck-quote-text" style="font-size: 0.9rem; font-style: italic; color: var(--text-primary); line-height: 1.55; margin: 0; min-height: 3.5rem;">
                   “${activeItem.quote}”
                 </blockquote>
               </div>
 
-              <div class="circular-controls-row" style="border-top: 1px dashed var(--border-dashed); padding-top: 1rem; margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+              <div class="circular-controls-row">
                 <div class="deck-dots-indicator" id="deck-dots-indicator">
                   ${dotsHtml}
                 </div>
@@ -1091,7 +1090,7 @@ bundle_code = '''(function() {
 
     function update3DTransform() {
       const isMobile = window.innerWidth < 640;
-      const gap = isMobile ? 18 : 24;
+      const gap = isMobile ? 28 : 48;
 
       for (let i = 0; i < total; i++) {
         const el = document.getElementById(`deck-item-${i}`);
@@ -1108,19 +1107,19 @@ bundle_code = '''(function() {
           el.style.transform = 'translateX(0px) translateY(0px) scale(1) rotateY(0deg)';
         } else if (isLeft) {
           el.style.zIndex = '2';
-          el.style.opacity = '0.6';
+          el.style.opacity = '0.65';
           el.style.pointerEvents = 'auto';
-          el.style.transform = `translateX(-${gap}px) translateY(-4px) scale(0.90) rotateY(8deg)`;
+          el.style.transform = `translateX(-${gap}px) translateY(-6px) scale(0.88) rotateY(14deg)`;
         } else if (isRight) {
           el.style.zIndex = '2';
-          el.style.opacity = '0.6';
+          el.style.opacity = '0.65';
           el.style.pointerEvents = 'auto';
-          el.style.transform = `translateX(${gap}px) translateY(-4px) scale(0.90) rotateY(-8deg)`;
+          el.style.transform = `translateX(${gap}px) translateY(-6px) scale(0.88) rotateY(-14deg)`;
         } else {
           el.style.zIndex = '1';
           el.style.opacity = '0';
           el.style.pointerEvents = 'none';
-          el.style.transform = 'translateX(0px) translateY(10px) scale(0.8) rotateY(0deg)';
+          el.style.transform = 'translateX(0px) translateY(14px) scale(0.75) rotateY(0deg)';
         }
       }
 
@@ -1197,7 +1196,7 @@ bundle_code = '''(function() {
     container.addEventListener('touchend', (e) => {
       const endX = e.changedTouches[0].clientX;
       const diff = endX - startX;
-      if (Math.abs(diff) > 30) {
+      if (Math.abs(diff) > 35) {
         if (diff < 0) goToNext();
         else goToPrev();
       }
@@ -1213,7 +1212,7 @@ bundle_code = '''(function() {
       if (!isDown) return;
       isDown = false;
       const diff = e.clientX - startX;
-      if (Math.abs(diff) > 30) {
+      if (Math.abs(diff) > 35) {
         if (diff < 0) goToNext();
         else goToPrev();
       }
@@ -1656,46 +1655,46 @@ bundle_code = '''(function() {
                   <span class="verified-badge" style="width: 0.85rem; height: 0.85rem;">
                     <svg viewBox="0 0 24 24" class="verified-icon">
                       <path fill="#1D9BF0" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.67-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.67-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.33 2.33 4.99-4.99 1.42 1.42-6.41 6.4z"/>
-                      <path fill="#ffffff" d="M10.54 16.2L6.8 12.46l1.41-1.42 2.33 2.33 4.99-4.99 1.42 1.42-6.41 6.4z"/>
-                    </svg>
-                  </span>
+                    <path fill="#ffffff" d="M10.54 16.2L6.8 12.46l1.41-1.42 2.33 2.33 4.99-4.99 1.42 1.42-6.41 6.4z"/>
+                  </svg>
                 </span>
-                <span class="divider">/</span>
-                <span>BINUS University (BBA & BSc)</span>
-                <span class="divider">/</span>
-                <span>${profileData.location}</span>
-              </div>
+              </span>
+              <span class="divider">/</span>
+              <span>BINUS University (BBA & BSc)</span>
+              <span class="divider">/</span>
+              <span>${profileData.location}</span>
             </div>
+          </div>
 
-            <div class="footer-right">
-              <div class="hero-social-links" style="gap: 1rem;">
-                <a href="${profileData.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-linkedin" title="LinkedIn">
-                  <i class="fa-brands fa-linkedin-in"></i>
-                </a>
-                <a href="${profileData.instagramUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-instagram" title="Instagram">
-                  <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="${profileData.githubUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-github" title="GitHub">
-                  <i class="fa-brands fa-github"></i>
-                </a>
-                <a href="mailto:${profileData.email}" class="hero-social-link social-email" title="Email">
-                  <i class="fa-solid fa-envelope"></i>
-                </a>
-                <a href="${profileData.resumeUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-resume" title="Resume">
-                  <i class="fa-solid fa-file-lines"></i>
-                </a>
-              </div>
+          <div class="footer-right">
+            <div class="hero-social-links" style="gap: 1rem;">
+              <a href="${profileData.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-linkedin" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+              <a href="${profileData.instagramUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-instagram" title="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="${profileData.githubUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-github" title="GitHub">
+                <i class="fa-brands fa-github"></i>
+              </a>
+              <a href="mailto:${profileData.email}" class="hero-social-link social-email" title="Email">
+                <i class="fa-solid fa-envelope"></i>
+              </a>
+              <a href="${profileData.resumeUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-resume" title="Resume">
+                <i class="fa-solid fa-file-lines"></i>
+              </a>
             </div>
           </div>
         </div>
-      </footer>
+      </div>
+    </footer>
 
-      <button type="button" class="back-to-top-btn" id="back-to-top-btn" title="Back to top" aria-label="Scroll back to top">
-        <svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 15l-6-6-6 6"/>
-        </svg>
-      </button>
-    `;
+    <button type="button" class="back-to-top-btn" id="back-to-top-btn" title="Back to top" aria-label="Scroll back to top">
+      <svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </button>
+  `;
   }
 
   function initBackToTopEvents() {
@@ -1779,4 +1778,4 @@ bundle_code = '''(function() {
 with open('/Users/piddooow/Documents/web-portfolio/src/js/bundle.js', 'w', encoding='utf-8') as f:
     f.write(bundle_code)
 
-print("Compiled bundle.js successfully with 10 photos carousel, Szan/Travio real previews, DWDG removed, and 30fps small pixel avatar!")
+print("Compiled bundle.js successfully with / D4vd moniker, updated quote with comma, 24fps smooth pixel transition, and responsive mobile optimization!")

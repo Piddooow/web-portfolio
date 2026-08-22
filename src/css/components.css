@@ -236,11 +236,32 @@ html.dark .site-header {
   font-weight: 600;
   letter-spacing: -0.03em;
   color: var(--text-primary);
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem;
 }
 
 @media (min-width: 640px) {
   .hero-name {
     font-size: 2rem;
+  }
+}
+
+.hero-name-alias {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  opacity: 0.8;
+  vertical-align: middle;
+  align-self: center;
+}
+
+@media (min-width: 640px) {
+  .hero-name-alias {
+    font-size: 1.05rem;
   }
 }
 

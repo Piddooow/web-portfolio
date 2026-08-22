@@ -1,6 +1,5 @@
 // ==========================================================================
-// "The other side of Vidd" — Compact Editorial 3D Swipeable Carousel
-// Verified 10 Authentic Photos in Sequential Order (1-10)
+// "The other side of Vidd" — Compact Editorial 3D Swipeable Carousel Component
 // ==========================================================================
 
 import { personalGalleryData } from '../data.js';
@@ -9,69 +8,63 @@ let activeGalleryIndex = 0;
 let autoplayTimer = null;
 
 export function renderOtherSide() {
-  const activeItem = personalGalleryData[activeGalleryIndex] || personalGalleryData[0];
-
-  const deckItemsHtml = personalGalleryData
-    .map(
-      (item, index) => `
-      <div class="circular-deck-item" data-index="${index}" id="deck-item-${index}">
-        <img src="${item.src}" alt="${item.name} (${item.tag})" class="deck-image" />
-        <div class="deck-badge-overlay">
-          <span>${item.tag}</span>
-        </div>
-      </div>
-    `
-    )
-    .join('');
-
-  const dotsHtml = personalGalleryData
-    .map(
-      (_, i) => `
-      <button type="button" class="deck-dot ${i === activeGalleryIndex ? 'active' : ''}" data-index="${i}" aria-label="Go to photo ${i + 1} of 10"></button>
-    `
-    )
-    .join('');
+  const activeItem = personalGalleryData[activeGalleryIndex];
 
   return `
-    <section class="other-side-section" id="other-side" style="margin-top: 2rem;">
+    <section class="other-side-section" id="other-side" style="margin-top: 1.5rem;">
       <div class="section-header">
         <div>
           <h2 class="section-title">The other side of Vidd</h2>
           <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
-            Beyond systems and code — moments in sports, discipline, community, and daily life.
+            Beyond systems and code — moments in sports, discipline, and daily life.
           </p>
         </div>
       </div>
 
+      <!-- Compact Circular 3D Carousel Container -->
       <div class="circular-carousel-wrapper" id="circular-carousel-wrapper">
         <div class="circular-carousel-grid">
-          <!-- Left Column: 3D Layered Card Deck -->
-          <div class="circular-deck-container">
-            <div class="circular-image-deck" id="circular-image-deck" tabindex="0" role="region" aria-label="10 Photo 3D gallery deck">
-              ${deckItemsHtml}
-            </div>
+          <!-- 3D Perspective Image Deck (Compact & Balanced) -->
+          <div class="circular-image-deck" id="circular-image-deck" tabindex="0" role="region" aria-label="Swipeable photo deck">
+            ${personalGalleryData
+      .map(
+        (item, index) => `
+                <div class="circular-deck-item" data-index="${index}" id="deck-item-${index}">
+                  <img src="${item.src}" alt="${item.name} (${item.tag})" class="deck-image" />
+                  <div class="deck-badge-overlay">
+                    <span>${item.tag}</span>
+                  </div>
+                </div>
+              `
+      )
+      .join('')}
           </div>
 
-          <!-- Right Column: Editorial Text, Metadata, & Navigation -->
+          <!-- Content & Caption Column -->
           <div class="circular-content-col">
             <div class="circular-text-body" id="circular-text-body">
-              <span class="eyebrow-mono" id="deck-tag-text" style="font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.15em;">
-                ${activeItem.tag}
-              </span>
-              <h3 class="deck-title" id="deck-name-text" style="font-size: 1.35rem; font-weight: 500; color: var(--text-primary); margin-top: 0.25rem; letter-spacing: -0.02em;">
+              <span class="eyebrow-mono" id="deck-tag-text" style="font-size: 0.65rem; color: var(--text-muted);">${activeItem.tag}</span>
+              <h3 class="deck-title" id="deck-name-text" style="font-size: 1.25rem; font-weight: 500; color: var(--text-primary); margin-top: 0.2rem; letter-spacing: -0.02em;">
                 ${activeItem.name}
               </h3>
-              <p class="deck-designation" id="deck-designation-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem; margin-bottom: 0.75rem;">
+              <p class="deck-designation" id="deck-designation-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.65rem;">
                 ${activeItem.designation}
               </p>
-              <blockquote class="deck-quote" id="deck-quote-text" style="font-size: 0.95rem; font-style: italic; color: var(--text-primary); line-height: 1.6; margin: 0; min-height: 3.6rem;">
+              <blockquote class="deck-quote" id="deck-quote-text" style="font-size: 0.9rem; font-style: italic; color: var(--text-primary); line-height: 1.55; margin: 0; min-height: 3.5rem;">
                 “${activeItem.quote}”
               </blockquote>
             </div>
 
-            <div class="circular-controls-row" style="border-top: 1px dashed var(--border-dashed); padding-top: 1rem; margin-top: 0.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+            <!-- Navigation Controls & Swipe Dots -->
+            <div class="circular-controls-row">
               <div class="deck-dots-indicator" id="deck-dots-indicator">
-                ${dotsHtml}
+                ${personalGalleryData
+      .map(
+        (_, i) => `
+                    <button type="button" class="deck-dot ${i === activeGalleryIndex ? 'active' : ''}" data-index="${i}" aria-label="Go to slide ${i + 1}"></button>
+                  `
+      )
+      .join('')}
               </div>
 
               <div class="deck-arrow-buttons">
@@ -110,7 +103,7 @@ export function initOtherSideCarousel() {
 
   function update3DTransform() {
     const isMobile = window.innerWidth < 640;
-    const gap = isMobile ? 18 : 24;
+    const gap = isMobile ? 28 : 48;
 
     for (let i = 0; i < total; i++) {
       const el = document.getElementById(`deck-item-${i}`);
@@ -127,29 +120,28 @@ export function initOtherSideCarousel() {
         el.style.transform = 'translateX(0px) translateY(0px) scale(1) rotateY(0deg)';
       } else if (isLeft) {
         el.style.zIndex = '2';
-        el.style.opacity = '0.6';
+        el.style.opacity = '0.65';
         el.style.pointerEvents = 'auto';
-        el.style.transform = `translateX(-${gap}px) translateY(-4px) scale(0.90) rotateY(8deg)`;
+        el.style.transform = `translateX(-${gap}px) translateY(-6px) scale(0.88) rotateY(14deg)`;
       } else if (isRight) {
         el.style.zIndex = '2';
-        el.style.opacity = '0.6';
+        el.style.opacity = '0.65';
         el.style.pointerEvents = 'auto';
-        el.style.transform = `translateX(${gap}px) translateY(-4px) scale(0.90) rotateY(-8deg)`;
+        el.style.transform = `translateX(${gap}px) translateY(-6px) scale(0.88) rotateY(-14deg)`;
       } else {
         el.style.zIndex = '1';
         el.style.opacity = '0';
         el.style.pointerEvents = 'none';
-        el.style.transform = 'translateX(0px) translateY(10px) scale(0.8) rotateY(0deg)';
+        el.style.transform = 'translateX(0px) translateY(14px) scale(0.75) rotateY(0deg)';
       }
     }
 
+    // Update text with soft transition
     const activeItem = personalGalleryData[activeGalleryIndex];
-    if (activeItem) {
-      if (nameEl) nameEl.textContent = activeItem.name;
-      if (designationEl) designationEl.textContent = activeItem.designation;
-      if (quoteEl) quoteEl.textContent = `“${activeItem.quote}”`;
-      if (tagEl) tagEl.textContent = activeItem.tag;
-    }
+    if (nameEl) nameEl.textContent = activeItem.name;
+    if (designationEl) designationEl.textContent = activeItem.designation;
+    if (quoteEl) quoteEl.textContent = `“${activeItem.quote}”`;
+    if (tagEl) tagEl.textContent = activeItem.tag;
 
     dots.forEach((dot, idx) => {
       if (idx === activeGalleryIndex) {
@@ -205,6 +197,7 @@ export function initOtherSideCarousel() {
     });
   });
 
+  // Touch & Mouse Drag / Swipe Handlers
   let startX = 0;
   let isDown = false;
 
@@ -216,7 +209,7 @@ export function initOtherSideCarousel() {
   container.addEventListener('touchend', (e) => {
     const endX = e.changedTouches[0].clientX;
     const diff = endX - startX;
-    if (Math.abs(diff) > 30) {
+    if (Math.abs(diff) > 35) {
       if (diff < 0) goToNext();
       else goToPrev();
     }
@@ -232,12 +225,13 @@ export function initOtherSideCarousel() {
     if (!isDown) return;
     isDown = false;
     const diff = e.clientX - startX;
-    if (Math.abs(diff) > 30) {
+    if (Math.abs(diff) > 35) {
       if (diff < 0) goToNext();
       else goToPrev();
     }
   });
 
+  // Keyboard navigation
   window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') {
       stopAutoplay();
