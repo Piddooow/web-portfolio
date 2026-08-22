@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#121212" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>Vidd — Information Systems & Management | Systems Developer</title>
+    <meta name="title" content="Vidd — Information Systems & Management | Systems Developer" />
+    <meta name="description" content="Official portfolio of Vidd, Information Systems and Management student at BINUS University (GPA 3.66 / 4.00). Operations management, system modeling (ERD/SSD), UI/UX design, and full-stack development." />
+    <meta name="keywords" content="Vidd, Piddooow, BINUS University, Information Systems, Management, System Analyst, UI/UX Designer, Operations Management, Indonesia" />
+    <meta name="author" content="Vidd" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.linkedin.com/in/david-antono" />
+    <meta property="og:site_name" content="Vidd Portfolio" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Vidd — Systems Developer & Business Analyst" />
+    <meta property="og:description" content="Double degree student in Information Systems & Management at BINUS University (GPA 3.66 / 4.00). Experience in operations, vendor negotiation, system architecture, and UI/UX." />
+    <meta property="og:image" content="src/assets/images/personal/david-suit.jpg" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Vidd — Systems Developer & Business Analyst" />
+    <meta name="twitter:description" content="Double degree student in Information Systems & Management at BINUS University (GPA 3.66 / 4.00). Experience in operations, vendor negotiation, system architecture, and UI/UX." />
+    <meta name="twitter:image" content="src/assets/images/personal/david-suit.jpg" />
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Vidd",
+        "alternateName": ["Piddooow"],
+        "jobTitle": "Information Systems & Management Student | Systems Developer",
+        "url": "https://www.linkedin.com/in/david-antono",
+        "description": "Double degree student in Information Systems & Management at BINUS University (GPA 3.66 / 4.00) with experience in operations management, vendor negotiation, system architecture, and UI/UX.",
+        "email": "david.enampatoo@gmail.com",
+        "telephone": "+6281240039652",
+        "alumniOf": {
+          "@type": "EducationalOrganization",
+          "name": "BINUS University"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "ID"
+        },
+        "sameAs": [
+          "https://www.linkedin.com/in/david-antono",
+          "https://github.com/Piddooow",
+          "https://www.instagram.com/david.antonoo/",
+          "https://drive.google.com/file/d/17l3k06p1dV9A2U1iuvGd5suaiD5Js79U/view?usp=sharing"
+        ],
+        "knowsAbout": ["Business Analysis", "Operations Management", "System Architecture", "SQL", "Figma", "UI/UX Design", "Visual Paradigm", "Full-Stack Development"]
+      }
+    </script>
+
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- FontAwesome 6.7.1 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Application Stylesheets -->
+    <link rel="stylesheet" href="src/css/main.css" />
+    <link rel="stylesheet" href="src/css/components.css" />
+    <link rel="stylesheet" href="src/css/marquee.css" />
+
+    <!-- Theme Initialization Script (Prevents Flash) -->
+    <script>
+      (function () {
+        const saved = localStorage.getItem('portfolio_theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const useDark = saved ? saved === 'dark' : prefersDark;
+        if (useDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Application Entry (Works on both HTTP and local file:// protocols) -->
+    <script src="src/js/bundle.js"></script>
+  </body>
+</html>

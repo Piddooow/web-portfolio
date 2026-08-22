@@ -1,0 +1,180 @@
+/* ==========================================================================
+   Marquee Tracks, Glint Slicing Blade & View Transitions
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tech Marquee Dual Track
+   -------------------------------------------------------------------------- */
+.marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tech-track {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  animation: scroll-left 45s linear infinite;
+}
+
+.tech-track.tech-track-right {
+  animation-name: scroll-right;
+  animation-duration: 48s;
+}
+
+.marquee-wrapper:hover .tech-track {
+  animation-play-state: paused;
+}
+
+.tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px dashed var(--border-dashed);
+  background-color: var(--bg-surface-card);
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.tech-pill:hover {
+  border-color: var(--border-active);
+  transform: translateY(-1px);
+}
+
+.tech-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Sword Glint Theme Transition Effect
+   -------------------------------------------------------------------------- */
+.sword-glint {
+  position: fixed;
+  top: -20%;
+  left: -10%;
+  width: 8px;
+  height: 140%;
+  background: linear-gradient(
+    transparent,
+    rgba(255, 255, 255, 0.95) 45%,
+    rgba(255, 255, 255, 0.95) 55%,
+    transparent
+  );
+  transform: rotate(12deg);
+  box-shadow: 0 0 20px 4px rgba(255, 255, 255, 0.65), 0 0 44px 12px rgba(255, 255, 255, 0.3);
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.sword-glint.slicing {
+  animation: sword-glint-move 0.85s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes sword-glint-move {
+  0% {
+    opacity: 0;
+    left: -10%;
+  }
+  8% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    left: 110%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. View Transition Theme Reveal
+   -------------------------------------------------------------------------- */
+@supports (view-transition-name: root) {
+  ::view-transition-old(root) {
+    animation: none;
+  }
+  ::view-transition-new(root) {
+    animation: 0.85s cubic-bezier(0.65, 0, 0.35, 1) theme-reveal;
+  }
+}
+
+@keyframes theme-reveal {
+  0% {
+    clip-path: polygon(-45% -20%, -15% -20%, -60% 120%, -90% 120%);
+  }
+  100% {
+    clip-path: polygon(-45% -20%, 145% -20%, 110% 120%, -90% 120%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Pulse Burst Animation
+   -------------------------------------------------------------------------- */
+@keyframes pulse-burst {
+  0% {
+    opacity: 0.6;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+}
+
+.pulse-burst-effect {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  animation: pulse-burst 600ms ease-out;
+}

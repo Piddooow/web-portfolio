@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pgrad_szan_preview_svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141416"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <pattern id="grid_szan_preview_svg" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M 28 0 L 0 0 0 28" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#pgrad_szan_preview_svg)"/>
+  <rect width="800" height="500" fill="url(#grid_szan_preview_svg)"/>
+  
+  <!-- Subtle Framing -->
+  <rect x="36" y="36" width="728" height="428" rx="10" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  
+  <!-- Inner UI Container -->
+  <g transform="translate(64, 64)">
+    <!-- Monospace Tag -->
+    <rect width="160" height="24" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="80" y="16" fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="500" text-anchor="middle" letter-spacing="1.5">SUSTAINABLE FASHION E-COMMERCE</text>
+    
+    <!-- Title & Subtitle -->
+    <text x="0" y="70" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="30" font-weight="300" letter-spacing="-0.5">Szān</text>
+    <text x="0" y="104" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="14" font-weight="300">Complex inventory logic, SSD models & 90+ UI screens</text>
+    
+    <!-- Graphic -->
+    <g transform="translate(0, 140)">
+      <rect x="0" y="0" width="310" height="180" rx="10" fill="#18181b" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="24" y="32" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="10">E-COMMERCE DATA MODEL</text>
+<rect x="24" y="52" width="260" height="32" rx="6" fill="#27272a"/>
+<text x="36" y="72" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="10">SKU Inventory & Variant Logic</text>
+<rect x="24" y="94" width="260" height="66" rx="6" fill="#202024" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<text x="36" y="118" fill="#d4d4d8" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="11">90+ UI Screens Designed</text>
+<text x="36" y="140" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="10">Use Case, ERD, SSD Models</text>
+
+<rect x="330" y="0" width="340" height="180" rx="10" fill="#18181b" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="354" y="32" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="10">PRODUCT SPECIFICATION</text>
+<circle cx="390" cy="90" r="30" fill="#27272a"/>
+<path d="M378 90 C378 78, 402 78, 402 90 C402 102, 378 102, 378 90 Z" stroke="#ffffff" stroke-width="2" fill="none"/>
+<text x="440" y="80" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="14" font-weight="500">Sustainable Catalog</text>
+<text x="440" y="102" fill="#a1a1aa" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="11">Circular fashion workflows</text>
+<rect x="354" y="136" width="160" height="24" rx="4" fill="#27272a"/>
+<text x="434" y="152" fill="#e4e4e7" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">Cross-Functional Team of 4</text>
+    </g>
+  </g>
+</svg>

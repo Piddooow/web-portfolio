@@ -1,0 +1,112 @@
+import os
+
+base_dir = "/Users/piddooow/Documents/web-portfolio/src/assets/images"
+os.makedirs(base_dir, exist_ok=True)
+
+def generate_clean_project_svg(title, tag, subtitle, filename, symbol):
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pgrad_{filename.replace('.', '_').replace('-', '_')}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141416"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <pattern id="grid_{filename.replace('.', '_').replace('-', '_')}" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M 28 0 L 0 0 0 28" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#pgrad_{filename.replace('.', '_').replace('-', '_')})"/>
+  <rect width="800" height="500" fill="url(#grid_{filename.replace('.', '_').replace('-', '_')})"/>
+  
+  <!-- Subtle Framing -->
+  <rect x="36" y="36" width="728" height="428" rx="10" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  
+  <!-- Inner UI Container -->
+  <g transform="translate(64, 64)">
+    <!-- Monospace Tag -->
+    <rect width="160" height="24" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="80" y="16" fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="500" text-anchor="middle" letter-spacing="1.5">{tag.upper()}</text>
+    
+    <!-- Title & Subtitle -->
+    <text x="0" y="70" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="30" font-weight="300" letter-spacing="-0.5">{title}</text>
+    <text x="0" y="104" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="14" font-weight="300">{subtitle}</text>
+    
+    <!-- Graphic -->
+    <g transform="translate(0, 140)">
+      {symbol}
+    </g>
+  </g>
+</svg>'''
+    with open(f"{base_dir}/{filename}", "w") as f:
+        f.write(svg)
+
+# 1. Travio - Travel Planning Mobile App
+travio_symbol = '''<rect x="0" y="0" width="200" height="180" rx="12" fill="#18181b" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+<rect x="20" y="20" width="160" height="24" rx="6" fill="#27272a"/>
+<text x="100" y="36" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="10" text-anchor="middle">Multi-Service Sync</text>
+<circle cx="100" cy="95" r="32" fill="#202024" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+<path d="M88 95 L96 103 L114 87" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<text x="100" y="152" fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">120+ UI Screens</text>
+
+<rect x="220" y="0" width="450" height="180" rx="12" fill="#18181b" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+<text x="244" y="34" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="10">SYSTEM ARCHITECTURE • ERD & USE CASE</text>
+<line x1="244" y1="50" x2="640" y2="50" stroke="rgba(255,255,255,0.08)"/>
+<rect x="244" y="68" width="120" height="40" rx="6" fill="#27272a"/>
+<text x="304" y="92" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle">User / Auth</text>
+
+<line x1="364" y1="88" x2="404" y2="88" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+
+<rect x="404" y="68" width="120" height="40" rx="6" fill="#27272a"/>
+<text x="464" y="92" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle">Itinerary Core</text>
+
+<line x1="524" y1="88" x2="564" y2="88" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+
+<rect x="564" y="68" width="80" height="40" rx="6" fill="#27272a"/>
+<text x="604" y="92" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle">Booking</text>
+
+<text x="244" y="145" fill="#a1a1aa" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="11">Usability validated with 30+ participants across travel workflows</text>'''
+generate_clean_project_svg("Travio", "Mobile App & System Architecture", "Multi-service travel platform & 120+ screen prototype", "travio-preview.svg", travio_symbol)
+
+# 2. Szān - Sustainable Fashion E-Commerce
+szan_symbol = '''<rect x="0" y="0" width="310" height="180" rx="10" fill="#18181b" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="24" y="32" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="10">E-COMMERCE DATA MODEL</text>
+<rect x="24" y="52" width="260" height="32" rx="6" fill="#27272a"/>
+<text x="36" y="72" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="10">SKU Inventory & Variant Logic</text>
+<rect x="24" y="94" width="260" height="66" rx="6" fill="#202024" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<text x="36" y="118" fill="#d4d4d8" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="11">90+ UI Screens Designed</text>
+<text x="36" y="140" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="10">Use Case, ERD, SSD Models</text>
+
+<rect x="330" y="0" width="340" height="180" rx="10" fill="#18181b" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="354" y="32" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="10">PRODUCT SPECIFICATION</text>
+<circle cx="390" cy="90" r="30" fill="#27272a"/>
+<path d="M378 90 C378 78, 402 78, 402 90 C402 102, 378 102, 378 90 Z" stroke="#ffffff" stroke-width="2" fill="none"/>
+<text x="440" y="80" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="14" font-weight="500">Sustainable Catalog</text>
+<text x="440" y="102" fill="#a1a1aa" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="11">Circular fashion workflows</text>
+<rect x="354" y="136" width="160" height="24" rx="4" fill="#27272a"/>
+<text x="434" y="152" fill="#e4e4e7" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">Cross-Functional Team of 4</text>'''
+generate_clean_project_svg("Szān", "Sustainable Fashion E-Commerce", "Complex inventory logic, SSD models & 90+ UI screens", "szan-preview.svg", szan_symbol)
+
+# 3. DwDG Business Mini Case Competition
+dwdg_symbol = '''<rect x="0" y="0" width="670" height="180" rx="10" fill="#18181b" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<g transform="translate(24, 24)">
+  <rect x="0" y="0" width="130" height="40" rx="6" fill="#27272a"/>
+  <text x="65" y="24" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600" text-anchor="middle">TOP 33 / 500+</text>
+  
+  <text x="150" y="24" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="14" font-weight="500">DwDG Business Mini Case Competition (Apr 2026)</text>
+</g>
+<line x1="24" y1="80" x2="646" y2="80" stroke="rgba(255,255,255,0.08)"/>
+<g transform="translate(24, 98)">
+  <rect x="0" y="0" width="140" height="48" rx="6" fill="#202024"/>
+  <text x="70" y="22" fill="#d4d4d8" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle">SWOT & STP</text>
+  <text x="70" y="38" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="9" text-anchor="middle">Market Strategy</text>
+
+  <rect x="160" y="0" width="160" height="48" rx="6" fill="#202024"/>
+  <text x="240" y="22" fill="#d4d4d8" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle">Porter’s 5 Forces</text>
+  <text x="240" y="38" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="9" text-anchor="middle">Industry Competitiveness</text>
+
+  <rect x="340" y="0" width="280" height="48" rx="6" fill="#202024"/>
+  <text x="480" y="22" fill="#d4d4d8" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle">GTM Roadmap & Financials</text>
+  <text x="480" y="38" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="9" text-anchor="middle">Implementation Execution</text>
+</g>'''
+generate_clean_project_svg("DwDG Business Strategy", "Business Case & GTM", "Top 33 out of 500+ participants nationwide", "dwdg-preview.svg", dwdg_symbol)
+
+print("Generated CV-accurate project SVGs successfully!")

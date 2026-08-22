@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pgrad_erp-system_svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141416"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <pattern id="grid_erp-system_svg" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M 28 0 L 0 0 0 28" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#pgrad_erp-system_svg)"/>
+  <rect width="800" height="500" fill="url(#grid_erp-system_svg)"/>
+  
+  <!-- Subtle Framing -->
+  <rect x="36" y="36" width="728" height="428" rx="10" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  
+  <!-- Inner UI Container -->
+  <g transform="translate(64, 64)">
+    <!-- Monospace Tag -->
+    <rect width="130" height="24" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="65" y="16" fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="500" text-anchor="middle" letter-spacing="1.5">ENTERPRISE SYSTEMS</text>
+    
+    <!-- Title & Subtitle -->
+    <text x="0" y="70" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="32" font-weight="300" letter-spacing="-0.5">ERP Management System</text>
+    <text x="0" y="104" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="14" font-weight="300">Integrated multi-module business operations platform</text>
+    
+    <!-- Abstract Architecture Graphic -->
+    <g transform="translate(0, 140)">
+      <rect x="0" y="0" width="210" height="180" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<text x="24" y="36" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="10">MODULE 01</text>
+<text x="24" y="60" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="16" font-weight="500">Procurement</text>
+<line x1="24" y1="80" x2="186" y2="80" stroke="rgba(255,255,255,0.08)"/>
+<rect x="24" y="98" width="130" height="6" rx="3" fill="#52525b"/>
+<rect x="24" y="112" width="90" height="6" rx="3" fill="#3f3f46"/>
+
+<rect x="230" y="0" width="210" height="180" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<text x="254" y="36" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="10">MODULE 02</text>
+<text x="254" y="60" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="16" font-weight="500">Inventory Sync</text>
+<line x1="254" y1="80" x2="416" y2="80" stroke="rgba(255,255,255,0.08)"/>
+<rect x="254" y="98" width="140" height="6" rx="3" fill="#52525b"/>
+<rect x="254" y="112" width="110" height="6" rx="3" fill="#3f3f46"/>
+
+<rect x="460" y="0" width="210" height="180" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<text x="484" y="36" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="10">MODULE 03</text>
+<text x="484" y="60" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="16" font-weight="500">Accounting</text>
+<line x1="484" y1="80" x2="646" y2="80" stroke="rgba(255,255,255,0.08)"/>
+<rect x="484" y="98" width="120" height="6" rx="3" fill="#52525b"/>
+<rect x="484" y="112" width="80" height="6" rx="3" fill="#3f3f46"/>
+    </g>
+  </g>
+</svg>

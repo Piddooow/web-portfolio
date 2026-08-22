@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e4e4e7"/>
+      <stop offset="100%" stop-color="#a1a1aa"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#3f3f46" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#18181b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bgGrad)"/>
+  <circle cx="200" cy="180" r="160" fill="url(#halo)"/>
+  <!-- Torso & Coat -->
+  <path d="M70 400 C80 320, 130 290, 200 290 C270 290, 320 320, 330 400 Z" fill="#27272a"/>
+  <path d="M120 400 L170 320 L230 320 L280 400 Z" fill="#3f3f46"/>
+  <path d="M170 320 L200 370 L230 320 Z" fill="#18181b"/>
+  <!-- Neck -->
+  <rect x="175" y="220" width="50" height="75" rx="10" fill="#a1a1aa"/>
+  <!-- Head -->
+  <ellipse cx="200" cy="175" rx="65" ry="80" fill="url(#skinGrad)"/>
+  <!-- Hair & Silhouette -->
+  <path d="M130 170 C130 100, 160 85, 200 85 C240 85, 270 100, 270 170 C270 150, 255 125, 200 125 C145 125, 130 150, 130 170 Z" fill="#18181b"/>
+  <path d="M132 170 Q125 210, 140 230 Q135 190, 140 160 Z" fill="#18181b"/>
+  <path d="M268 170 Q275 210, 260 230 Q265 190, 260 160 Z" fill="#18181b"/>
+  <!-- Glasses / Minimalist Specs -->
+  <rect x="145" y="155" width="42" height="30" rx="6" fill="none" stroke="#18181b" stroke-width="4"/>
+  <rect x="213" y="155" width="42" height="30" rx="6" fill="none" stroke="#18181b" stroke-width="4"/>
+  <line x1="187" y1="168" x2="213" y2="168" stroke="#18181b" stroke-width="4"/>
+  <!-- Subtle eyes -->
+  <circle cx="166" cy="170" r="3" fill="#18181b"/>
+  <circle cx="234" cy="170" r="3" fill="#18181b"/>
+  <!-- Nose & Mouth -->
+  <path d="M200 175 L196 195 L204 195" fill="none" stroke="#71717a" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="188" y1="218" x2="212" y2="218" stroke="#71717a" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

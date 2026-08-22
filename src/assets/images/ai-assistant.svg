@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pgrad_ai-assistant_svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141416"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <pattern id="grid_ai-assistant_svg" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M 28 0 L 0 0 0 28" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#pgrad_ai-assistant_svg)"/>
+  <rect width="800" height="500" fill="url(#grid_ai-assistant_svg)"/>
+  
+  <!-- Subtle Framing -->
+  <rect x="36" y="36" width="728" height="428" rx="10" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  
+  <!-- Inner UI Container -->
+  <g transform="translate(64, 64)">
+    <!-- Monospace Tag -->
+    <rect width="130" height="24" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="65" y="16" fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="500" text-anchor="middle" letter-spacing="1.5">AI & LLM INTEGRATION</text>
+    
+    <!-- Title & Subtitle -->
+    <text x="0" y="70" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="32" font-weight="300" letter-spacing="-0.5">AI Business Assistant</text>
+    <text x="0" y="104" fill="#71717a" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="14" font-weight="300">Automated intelligence layer for enterprise workflows</text>
+    
+    <!-- Abstract Architecture Graphic -->
+    <g transform="translate(0, 140)">
+      <rect x="0" y="0" width="670" height="180" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+<rect x="24" y="24" width="240" height="36" rx="8" fill="#27272a"/>
+<text x="40" y="46" fill="#d4d4d8" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="12">Summarize monthly inventory variance</text>
+
+<rect x="200" y="74" width="446" height="76" rx="8" fill="#202024" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+<text x="220" y="100" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="12">Processed 1,420 SKU records across 3 warehouse nodes.</text>
+<text x="220" y="124" fill="#a1a1aa" font-family="-apple-system, BlinkMacSystemFont, 'Inter', sans-serif" font-size="11">Total deviation is within 0.4% baseline tolerance.</text>
+    </g>
+  </g>
+</svg>

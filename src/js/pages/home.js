@@ -1,0 +1,38 @@
+// ==========================================================================
+// Home Page Composition — David Antono Enampato (D4vd)
+// ==========================================================================
+
+import { renderHero, initHeroAvatarPhysics } from '../components/hero.js';
+import { renderPhilosophy } from '../components/philosophy.js';
+import { renderFeatured } from '../components/featured.js';
+import { renderProjects, initSpotlightPhysics } from '../components/projects.js';
+import { renderCapabilities } from '../components/capabilities.js';
+import { renderAbout } from '../components/about.js';
+import { renderExperience } from '../components/experience.js';
+import { renderOtherSide, initOtherSideCarousel } from '../components/other-side.js';
+import { renderGitHubActivity, initGitHubActivityEvents } from '../components/github-activity.js';
+import { renderContact } from '../components/contact.js';
+
+export function renderHomePage() {
+  return `
+    <main class="site-container main-content">
+      ${renderHero()}
+      ${renderPhilosophy()}
+      ${renderFeatured()}
+      ${renderProjects()}
+      ${renderCapabilities()}
+      ${renderAbout()}
+      ${renderExperience()}
+      ${renderOtherSide()}
+      ${renderGitHubActivity()}
+      ${renderContact()}
+    </main>
+  `;
+}
+
+export function initHomePageEvents() {
+  initHeroAvatarPhysics();
+  initSpotlightPhysics();
+  initOtherSideCarousel();
+  initGitHubActivityEvents();
+}
