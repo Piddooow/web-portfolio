@@ -483,8 +483,10 @@ bundle_code = '''(function() {
 
         <!-- Mobile Dropdown Drawer -->
         <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true">
-          <div class="mobile-nav-links">
-            ${mobileLinksHtml}
+          <div class="site-container">
+            <div class="mobile-nav-links">
+              ${mobileLinksHtml}
+            </div>
           </div>
         </div>
       </header>
@@ -1733,7 +1735,6 @@ bundle_code = '''(function() {
                       </svg>
                     </span>
                   </h4>
-                  <span class="beacon-dot" style="width: 0.45rem; height: 0.45rem; background-color: #10b981; flex-shrink: 0;" title="Online"></span>
                 </div>
                 <span style="font-size: 0.68rem; color: var(--text-muted); font-family: var(--font-mono);">Direct WhatsApp & Email Gateway</span>
               </div>

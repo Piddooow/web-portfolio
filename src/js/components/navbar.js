@@ -110,8 +110,10 @@ export function renderNavbar(currentPath = '#/') {
 
       <!-- Mobile Dropdown Drawer -->
       <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true">
-        <div class="mobile-nav-links">
-          ${mobileLinksHtml}
+        <div class="site-container">
+          <div class="mobile-nav-links">
+            ${mobileLinksHtml}
+          </div>
         </div>
       </div>
     </header>
