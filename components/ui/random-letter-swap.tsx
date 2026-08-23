@@ -1,80 +1,104 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import { type AnimationOptions, motion, useAnimate } from "motion/react";
+import { useCallback, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
-interface RandomLetterSwapProps {
+export type RandomLetterSwapProps = {
   label: string;
-  className?: string;
+  reverse?: boolean;
+  transition?: AnimationOptions;
   staggerDuration?: number;
-  charset?: string;
-  fps?: number;
-}
-
-const DEFAULT_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  className?: string;
+  onClick?: () => void;
+};
 
 export function RandomLetterSwap({
   label,
-  className = "",
-  charset = DEFAULT_CHARS,
-  fps = 20, // Exact 20fps
+  reverse = true,
+  transition = { duration: 0.8, type: "spring" },
+  staggerDuration = 0.02,
+  className,
+  onClick,
+  ...props
 }: RandomLetterSwapProps) {
-  const [displayText, setDisplayText] = useState(label);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const fpsInterval = 1000 / fps; // 50ms at 20fps
+  const [scope, animate] = useAnimate();
+  const [blocked, setBlocked] = useState(false);
+  const shuffledRef = useRef<number[]>(
+    Array.from({ length: label.length }, (_, i) => i).sort(
+      () => Math.random() - 0.5,
+    ),
+  );
 
-  const startScramble = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    let iteration = 0;
-    const length = label.length;
-    const stepIncrement = Math.max(0.65, length / 6); // Controlled ~300ms duration at 20fps
+  const hoverStart = useCallback(() => {
+    if (blocked) return;
+    setBlocked(true);
 
-    intervalRef.current = setInterval(() => {
-      setDisplayText(
-        label
-          .split("")
-          .map((char, index) => {
-            if (char === " ") return " ";
-            if (index < iteration) {
-              return label[index]; // Resolved original letter
-            }
-            return charset[Math.floor(Math.random() * charset.length)];
-          })
-          .join("")
-      );
+    const shuffled = shuffledRef.current;
 
-      if (iteration >= length) {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        setDisplayText(label); // Guaranteed 100% original text
-        intervalRef.current = null;
-      }
+    for (let i = 0; i < label.length; i++) {
+      const idx = shuffled[i];
+      const mergedTransition: AnimationOptions = {
+        ...transition,
+        delay: i * staggerDuration,
+      };
 
-      iteration += stepIncrement;
-    }, fpsInterval);
-  };
+      animate(
+        `.letter-${idx}`,
+        { y: reverse ? "100%" : "-100%" },
+        mergedTransition,
+      ).then(() => {
+        animate(`.letter-${idx}`, { y: 0 }, { duration: 0 });
+      });
 
-  const stopScramble = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+      animate(`.letter-secondary-${idx}`, { top: "0%" }, mergedTransition)
+        .then(() =>
+          animate(
+            `.letter-secondary-${idx}`,
+            { top: reverse ? "-100%" : "100%" },
+            { duration: 0 },
+          ),
+        )
+        .then(() => {
+          if (i === label.length - 1) setBlocked(false);
+        });
     }
-    setDisplayText(label); // Instantly restore exact original text
-  };
-
-  useEffect(() => {
-    setDisplayText(label);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [label]);
+  }, [blocked, label, animate, transition, staggerDuration, reverse]);
 
   return (
-    <span
-      className={`inline-block select-none cursor-pointer transition-colors duration-200 ${className}`}
-      onMouseEnter={startScramble}
-      onMouseLeave={stopScramble}
+    <motion.span
+      aria-label={label}
+      className={cn(
+        "relative flex items-center justify-center overflow-hidden",
+        className,
+      )}
+      onClick={onClick}
+      onHoverStart={hoverStart}
+      ref={scope}
+      {...props}
     >
-      {displayText}
-    </span>
+      <span className="sr-only">{label}</span>
+      {label.split("").map((letter, i) => (
+        <span
+          aria-hidden="true"
+          className="relative flex whitespace-pre"
+          key={i}
+        >
+          <motion.span
+            className={`relative pb-2 letter-${i}`}
+            style={{ top: 0 }}
+          >
+            {letter}
+          </motion.span>
+          <motion.span
+            className={`absolute letter-secondary-${i}`}
+            style={{ top: reverse ? "-100%" : "100%" }}
+          >
+            {letter}
+          </motion.span>
+        </span>
+      ))}
+    </motion.span>
   );
 }
 

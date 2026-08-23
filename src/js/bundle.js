@@ -366,27 +366,9 @@
 
   function updateToggleIcons() {
     const dark = isDark();
-    const sunIcons = document.querySelectorAll('.theme-icon-sun');
-    const moonIcons = document.querySelectorAll('.theme-icon-moon');
-
-    sunIcons.forEach((icon) => {
-      if (dark) {
-        icon.style.opacity = '0';
-        icon.style.transform = 'rotate(90deg) scale(0.5)';
-      } else {
-        icon.style.opacity = '1';
-        icon.style.transform = 'rotate(0deg) scale(1)';
-      }
-    });
-
-    moonIcons.forEach((icon) => {
-      if (dark) {
-        icon.style.opacity = '1';
-        icon.style.transform = 'rotate(0deg) scale(1)';
-      } else {
-        icon.style.opacity = '0';
-        icon.style.transform = 'rotate(-90deg) scale(0.5)';
-      }
+    const toggleBtns = document.querySelectorAll('.theme-toggle-btn');
+    toggleBtns.forEach((btn) => {
+      btn.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode');
     });
   }
 
@@ -407,12 +389,34 @@
       { label: 'Contact', href: '#contact' }
     ];
 
+    function createLetterSwapHtml(label) {
+      const lettersHtml = label
+        .split('')
+        .map((char, i) => {
+          const displayChar = char === ' ' ? '&nbsp;' : char;
+          return `
+            <span aria-hidden="true" class="letter-slot">
+              <span class="letter-char letter-${i}">${displayChar}</span>
+              <span class="letter-secondary letter-secondary-${i}">${displayChar}</span>
+            </span>
+          `;
+        })
+        .join('');
+
+      return `
+        <span class="random-letter-swap" aria-label="${label}">
+          <span class="sr-only">${label}</span>
+          ${lettersHtml}
+        </span>
+      `;
+    }
+
     const desktopLinksHtml = navItems
       .map((item) => {
         const active = currentPath === item.href ? 'active' : '';
         return `
           <a href="${item.href}" class="nav-link ${active}" data-label="${item.label}">
-            <span class="nav-link-text">${item.label}</span>
+            ${createLetterSwapHtml(item.label)}
           </a>
         `;
       })
@@ -423,10 +427,7 @@
         const active = currentPath === item.href ? 'active' : '';
         return `
           <a href="${item.href}" class="mobile-nav-link ${active}" data-label="${item.label}">
-            <span class="nav-link-text">${item.label}</span>
-            <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 18l6-6-6-6"/>
-            </svg>
+            <span>${item.label}</span>
           </a>
         `;
       })
@@ -443,7 +444,7 @@
             </a>
 
             <!-- Navigation Links & Theme Controls (Right) -->
-            <div class="nav-right-wrap">
+            <div class="nav-right-wrap" id="nav-right-wrap">
               <!-- Desktop Links (Hidden on mobile < 640px) -->
               <div class="nav-links desktop-nav-links">
                 ${desktopLinksHtml}
@@ -453,11 +454,11 @@
 
               <!-- Theme Toggle Button -->
               <button type="button" class="theme-toggle-btn" id="theme-toggle" title="${dark ? 'Switch to light mode' : 'Switch to dark mode'}" aria-label="Toggle theme">
-                <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: ${dark ? 0 : 1}; transform: rotate(${dark ? '90deg' : '0deg'}) scale(${dark ? 0.5 : 1});">
+                <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="4.5" fill="currentColor" stroke="none"/>
                   <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77"/>
                 </svg>
-                <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="currentColor" style="opacity: ${dark ? 1 : 0}; transform: rotate(${dark ? '0deg' : '-90deg'}) scale(${dark ? 1 : 0.5});">
+                <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                 </svg>
               </button>
@@ -488,54 +489,67 @@
     `;
   }
 
-  function initNavbarLetterScramble() {
-    const links = document.querySelectorAll('.desktop-nav-links .nav-link, .mobile-nav-links .mobile-nav-link');
-    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const fpsInterval = 1000 / 20; // Exact 20fps (50ms per frame)
+  function initRandomLetterSwapHover() {
+    const links = document.querySelectorAll('#nav-right-wrap .nav-link');
 
     links.forEach((link) => {
-      const textSpan = link.querySelector('.nav-link-text');
-      if (!textSpan) return;
+      const swapContainer = link.querySelector('.random-letter-swap');
+      if (!swapContainer) return;
 
-      const originalText = link.getAttribute('data-label') || textSpan.textContent.trim();
-      let frameId = null;
+      const label = link.getAttribute('data-label') || '';
+      const length = label.length;
+      if (length === 0) return;
+
+      let isBlocked = false;
+      let resetTimeout = null;
 
       link.addEventListener('mouseenter', () => {
-        let iteration = 0;
-        const length = originalText.length;
-        // Controlled resolution across ~6 frames at 20fps (~300ms total, snappy & smooth)
-        const stepIncrement = Math.max(0.65, length / 6);
+        if (isBlocked) return;
+        isBlocked = true;
 
-        if (frameId) clearInterval(frameId);
+        // Generate randomized order of character indexes
+        const shuffled = Array.from({ length }, (_, i) => i).sort(() => Math.random() - 0.5);
+        const staggerDuration = 20; // 0.02s per letter
+        const animDuration = 700; // ms
 
-        frameId = setInterval(() => {
-          textSpan.textContent = originalText
-            .split('')
-            .map((char, index) => {
-              if (char === ' ') return ' ';
-              if (index < iteration) {
-                return originalText[index]; // Resolved original letter
-              }
-              return charset[Math.floor(Math.random() * charset.length)]; // 20fps random swap
-            })
-            .join('');
+        const primaryLetters = swapContainer.querySelectorAll('.letter-char');
+        const secondaryLetters = swapContainer.querySelectorAll('.letter-secondary');
 
-          if (iteration >= length) {
-            clearInterval(frameId);
-            textSpan.textContent = originalText; // 100% Guaranteed original text
-            frameId = null;
+        for (let i = 0; i < length; i++) {
+          const idx = shuffled[i];
+          const delay = i * staggerDuration;
+
+          const p = primaryLetters[idx];
+          const s = secondaryLetters[idx];
+
+          if (p && s) {
+            p.style.transition = `transform ${animDuration}ms cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms`;
+            s.style.transition = `top ${animDuration}ms cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms`;
+
+            p.style.transform = 'translateY(100%)';
+            s.style.top = '0%';
           }
-
-          iteration += stepIncrement;
-        }, fpsInterval);
-      });
-
-      link.addEventListener('mouseleave', () => {
-        if (frameId) {
-          clearInterval(frameId);
-          frameId = null;
         }
-        textSpan.textContent = originalText; // Instantly restore exact original text
+
+        if (resetTimeout) clearTimeout(resetTimeout);
+
+        const totalTime = length * staggerDuration + animDuration + 50;
+        resetTimeout = setTimeout(() => {
+          primaryLetters.forEach((p) => {
+            p.style.transition = 'none';
+            p.style.transform = 'translateY(0%)';
+          });
+
+          secondaryLetters.forEach((s) => {
+            s.style.transition = 'none';
+            s.style.top = '-100%';
+          });
+
+          // Force browser layout repaint
+          void swapContainer.offsetHeight;
+
+          isBlocked = false;
+        }, totalTime);
       });
     });
   }
@@ -585,10 +599,37 @@
         }
       });
 
-      const mobileLinks = drawer.querySelectorAll('.mobile-nav-link');
-      mobileLinks.forEach((link) => {
-        link.addEventListener('click', () => {
-          closeMenu();
+      const allLinks = document.querySelectorAll('.desktop-nav-links .nav-link, .mobile-nav-drawer .mobile-nav-link');
+      allLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href') || '';
+          if (href.startsWith('#') && !href.startsWith('#/')) {
+            const targetId = href.substring(1);
+            const targetEl = document.getElementById(targetId);
+            if (targetEl) {
+              e.preventDefault();
+              closeMenu();
+
+              allLinks.forEach((l) => l.classList.remove('active'));
+              link.classList.add('active');
+
+              try {
+                history.pushState(null, '', href);
+              } catch (err) {}
+
+              const header = document.getElementById('site-header');
+              const headerHeight = header ? header.offsetHeight : 64;
+              const targetRect = targetEl.getBoundingClientRect();
+              const targetPosition = targetRect.top + window.pageYOffset - headerHeight - 16;
+
+              window.scrollTo({
+                top: Math.max(0, targetPosition),
+                behavior: 'smooth'
+              });
+            }
+          } else {
+            closeMenu();
+          }
         });
       });
 
@@ -612,7 +653,7 @@
       });
     }
 
-    initNavbarLetterScramble();
+    initRandomLetterSwapHover();
   }
 
   // --- Hero (24fps Smooth Pixelated Avatar Transition & / D4vd) ---
@@ -1899,17 +1940,356 @@
     initGitHubActivityEvents();
   }
 
+  // --- 404 Error Page ---
+  function render404Page() {
+    return `
+      <div class="w-full min-h-screen bg-black overflow-hidden flex justify-center items-center relative m-0 p-0 text-black">
+        <!-- 1. Circle Expansion Canvas Layer -->
+        <canvas id="circle-canvas" class="w-full h-full absolute inset-0 z-10 block pointer-events-none"></canvas>
+
+        <!-- 2. Stick Figures Flying / Rotating Layer -->
+        <div id="characters-container" class="absolute w-[99%] h-[95%] z-20 pointer-events-none overflow-hidden"></div>
+
+        <!-- 3. Message Display Layer -->
+        <div id="message-display" class="absolute flex flex-col justify-center items-center w-[90%] h-[90%] z-30 pointer-events-none">
+          <div id="message-content" class="flex flex-col items-center text-center transition-all duration-700 opacity-0 transform translate-y-2 pointer-events-auto max-w-xl px-4">
+            
+            <!-- Brand Badge -->
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/5 border border-black/10 mb-2">
+              <img src="src/assets/images/spider-icon.png" alt="Vidd Icon" class="w-4 h-4 object-contain">
+              <span class="font-mono text-[11px] font-bold tracking-wider text-black/70 uppercase">VIDD • PORTFOLIO</span>
+            </div>
+
+            <!-- Main Title -->
+            <h1 class="text-[28px] sm:text-[35px] font-bold text-black m-[1%] tracking-tight leading-tight" style="font-family: 'Outfit', sans-serif;">
+              Page Not Found
+            </h1>
+
+            <!-- Giant 404 Number -->
+            <div class="text-[64px] sm:text-[80px] font-extrabold text-black m-[1%] leading-none tracking-tighter select-none" style="font-family: 'Outfit', sans-serif;">
+              404
+            </div>
+
+            <!-- Description Subtitle -->
+            <p class="text-[14px] sm:text-[15px] max-w-[440px] text-center text-black/80 m-[1%] leading-relaxed">
+              The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+            </p>
+
+            <!-- Action Navigation Buttons -->
+            <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 mt-6 sm:mt-8">
+              <!-- Go Back Button -->
+              <button
+                type="button"
+                id="error-go-back-btn"
+                class="text-black border-2 border-black hover:bg-black hover:text-white transition-all duration-300 ease-in-out px-5 sm:px-6 py-2.5 h-auto text-sm sm:text-base font-semibold rounded-md flex items-center gap-2 hover:scale-105 active:scale-95 shadow-sm cursor-pointer group"
+                aria-label="Go back to previous page">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="transition-transform group-hover:-translate-x-1">
+                  <path d="m12 19-7-7 7-7"/>
+                  <path d="M19 12H5"/>
+                </svg>
+                <span>Go Back</span>
+              </button>
+
+              <!-- Go Home Button -->
+              <a
+                href="#/"
+                class="bg-black text-white hover:bg-neutral-800 transition-all duration-300 ease-in-out px-5 sm:px-6 py-2.5 h-auto text-sm sm:text-base font-semibold rounded-md flex items-center gap-2 hover:scale-105 active:scale-95 shadow-md group"
+                aria-label="Return to Vidd Portfolio Home">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="transition-transform group-hover:scale-110">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <span>Go Home</span>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function init404PageEvents() {
+    const goBackBtn = document.getElementById('error-go-back-btn');
+    if (goBackBtn) {
+      goBackBtn.addEventListener('click', () => {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.hash = '#/';
+        }
+      });
+    }
+
+    setTimeout(() => {
+      const messageContent = document.getElementById('message-content');
+      if (messageContent) {
+        messageContent.classList.remove('opacity-0', 'translate-y-2');
+        messageContent.classList.add('opacity-100', 'translate-y-0');
+      }
+    }, 1200);
+
+    const container = document.getElementById('characters-container');
+    if (container) {
+      const stickFigures = [
+        {
+          top: '0%',
+          src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick0.svg',
+          transform: 'rotateZ(-90deg)',
+          speedX: 1500,
+        },
+        {
+          top: '10%',
+          src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick1.svg',
+          speedX: 3000,
+          speedRotation: 2000,
+        },
+        {
+          top: '20%',
+          src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick2.svg',
+          speedX: 5000,
+          speedRotation: 1000,
+        },
+        {
+          top: '25%',
+          src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick0.svg',
+          speedX: 2500,
+          speedRotation: 1500,
+        },
+        {
+          top: '35%',
+          src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick0.svg',
+          speedX: 2000,
+          speedRotation: 300,
+        },
+        {
+          bottom: '5%',
+          src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick3.svg',
+          speedX: 0,
+        },
+      ];
+
+      function renderSticks() {
+        if (!container) return;
+        container.innerHTML = '';
+
+        stickFigures.forEach((figure, index) => {
+          const stick = document.createElement('img');
+          stick.classList.add('characters');
+          stick.style.position = 'absolute';
+          stick.style.width = '18%';
+          stick.style.height = '18%';
+          stick.style.maxWidth = '180px';
+          stick.style.maxHeight = '180px';
+
+          if (figure.top) stick.style.top = figure.top;
+          if (figure.bottom) stick.style.bottom = figure.bottom;
+
+          stick.src = figure.src;
+          stick.alt = 'Animated Stick Figure';
+
+          if (figure.transform) stick.style.transform = figure.transform;
+
+          container.appendChild(stick);
+
+          if (index === 5) return;
+
+          if (stick.animate) {
+            stick.animate(
+              [{ left: '100%' }, { left: '-20%' }],
+              { duration: figure.speedX, easing: 'linear', fill: 'forwards' }
+            );
+
+            if (index !== 0 && figure.speedRotation) {
+              stick.animate(
+                [{ transform: 'rotate(0deg)' }, { transform: 'rotate(-360deg)' }],
+                { duration: figure.speedRotation, iterations: Infinity, easing: 'linear' }
+              );
+            }
+          }
+        });
+      }
+
+      renderSticks();
+    }
+
+    const canvas = document.getElementById('circle-canvas');
+    if (canvas) {
+      let requestId = null;
+      let timer = 0;
+      let circulos = [];
+
+      function initArr() {
+        circulos = [];
+        const width = canvas.width;
+        const height = canvas.height;
+
+        for (let i = 0; i < 300; i++) {
+          const randomX = Math.floor(
+            Math.random() * ((width * 3) - (width * 1.2) + 1)
+          ) + (width * 1.2);
+
+          const randomY = Math.floor(
+            Math.random() * ((height) - (height * -0.2) + 1)
+          ) + (height * -0.2);
+
+          const size = width / 1000;
+
+          circulos.push({ x: randomX, y: randomY, size: size });
+        }
+      }
+
+      function draw() {
+        const context = canvas.getContext('2d');
+        if (!context) return;
+
+        timer++;
+        context.setTransform(1, 0, 0, 1, 0, 0);
+
+        const distanceX = canvas.width / 80;
+        const growthRate = canvas.width / 1000;
+
+        context.fillStyle = 'white';
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < circulos.length; i++) {
+          const circulo = circulos[i];
+          context.beginPath();
+
+          if (timer < 65) {
+            circulo.x = circulo.x - distanceX;
+            circulo.size = circulo.size + growthRate;
+          }
+
+          if (timer >= 65 && timer < 500) {
+            circulo.x = circulo.x - (distanceX * 0.02);
+            circulo.size = circulo.size + (growthRate * 0.2);
+          }
+
+          context.arc(circulo.x, circulo.y, Math.max(0.1, circulo.size), 0, Math.PI * 2);
+          context.fill();
+        }
+
+        if (timer > 500) {
+          if (requestId) {
+            cancelAnimationFrame(requestId);
+            requestId = null;
+          }
+          return;
+        }
+
+        requestId = requestAnimationFrame(draw);
+      }
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        timer = 0;
+        if (requestId) {
+          cancelAnimationFrame(requestId);
+          requestId = null;
+        }
+
+        const context = canvas.getContext('2d');
+        if (context && context.reset) {
+          context.reset();
+        }
+
+        initArr();
+        draw();
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+    }
+  }
+
   // ==========================================================================
   // 4. ROUTER & BOOTSTRAP
   // ==========================================================================
   function handleRoute() {
+    const route = window.location.hash || '#/';
     const app = document.getElementById('root');
     if (!app) return;
 
+    // Handle in-page anchors when home page is already mounted
+    if (route.startsWith('#') && !route.startsWith('#/')) {
+      const targetId = route.substring(1);
+      const existingTarget = document.getElementById(targetId);
+      if (existingTarget) {
+        existingTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    let mainHtml = '';
+    let initPageEvents = () => {};
+    let is404 = false;
+
+    const validAnchors = [
+      '#/', '#', '', '#projects', '#capabilities', '#about',
+      '#experience', '#other-side', '#github-activity', '#contact'
+    ];
+
+    if (validAnchors.includes(route) || route === '' || route === '#' || route === '#/') {
+      mainHtml = renderHomePage();
+      initPageEvents = initHomePageEvents;
+    } else if (route.startsWith('#/projects')) {
+      mainHtml = renderProjectsPage();
+      initPageEvents = initProjectsPageEvents;
+    } else if (route.startsWith('#/experience')) {
+      mainHtml = renderExperiencePage();
+    } else if (route.startsWith('#/certifications')) {
+      mainHtml = renderCertificationsPage();
+      initPageEvents = initCertificationsPageEvents;
+    } else if (route.startsWith('#/tech-stack')) {
+      mainHtml = renderTechPage();
+    } else if (route.startsWith('#/events')) {
+      mainHtml = renderEventsPage();
+      initPageEvents = initEventsPageEvents;
+    } else if (route.startsWith('#/keepr')) {
+      mainHtml = renderCaseStudyPage('keepr');
+    } else if (route.startsWith('#/pawsitivecare')) {
+      mainHtml = renderCaseStudyPage('pawsitivecare');
+    } else {
+      is404 = true;
+      mainHtml = render404Page();
+      initPageEvents = init404PageEvents;
+    }
+
+    if (is404) {
+      app.innerHTML = mainHtml;
+      init404PageEvents();
+      return;
+    }
+
     app.innerHTML = `
-      ${renderNavbar()}
+      ${renderNavbar(route)}
       <div id="app-main" style="flex: 1; width: 100%;">
-        ${renderHomePage()}
+        ${mainHtml}
       </div>
       ${renderFooter()}
       ${renderChatWidget()}
@@ -1918,7 +2298,7 @@
     initNavbarEvents();
     initBackToTopEvents();
     initChatEvents();
-    initHomePageEvents();
+    initPageEvents();
   }
 
   function initApp() {

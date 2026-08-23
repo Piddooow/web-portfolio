@@ -1,6 +1,6 @@
 // ==========================================================================
 // Navbar Component — Vidd Clean Minimal Responsive Brand Navigation
-// 20fps Smooth & Elegant Scramble-and-Resolve Letter Animation
+// Randomized Stagger Spring Roll Animation (Matching Motion/React Spec)
 // ==========================================================================
 
 import { profileData } from '../data.js';
@@ -18,12 +18,34 @@ export function renderNavbar(currentPath = '#/') {
     { label: 'Contact', href: '#contact' }
   ];
 
+  function createLetterSwapHtml(label) {
+    const lettersHtml = label
+      .split('')
+      .map((char, i) => {
+        const displayChar = char === ' ' ? '&nbsp;' : char;
+        return `
+          <span aria-hidden="true" class="letter-slot">
+            <span class="letter-char letter-${i}">${displayChar}</span>
+            <span class="letter-secondary letter-secondary-${i}">${displayChar}</span>
+          </span>
+        `;
+      })
+      .join('');
+
+    return `
+      <span class="random-letter-swap" aria-label="${label}">
+        <span class="sr-only">${label}</span>
+        ${lettersHtml}
+      </span>
+    `;
+  }
+
   const desktopLinksHtml = navItems
     .map((item) => {
       const active = currentPath === item.href ? 'active' : '';
       return `
         <a href="${item.href}" class="nav-link ${active}" data-label="${item.label}">
-          <span class="nav-link-text">${item.label}</span>
+          ${createLetterSwapHtml(item.label)}
         </a>
       `;
     })
@@ -34,10 +56,7 @@ export function renderNavbar(currentPath = '#/') {
       const active = currentPath === item.href ? 'active' : '';
       return `
         <a href="${item.href}" class="mobile-nav-link ${active}" data-label="${item.label}">
-          <span class="nav-link-text">${item.label}</span>
-          <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
+          <span>${item.label}</span>
         </a>
       `;
     })
@@ -54,7 +73,7 @@ export function renderNavbar(currentPath = '#/') {
           </a>
 
           <!-- Navigation Links & Theme Controls (Right) -->
-          <div class="nav-right-wrap">
+          <div class="nav-right-wrap" id="nav-right-wrap">
             <!-- Desktop Links (Hidden on mobile < 640px) -->
             <div class="nav-links desktop-nav-links">
               ${desktopLinksHtml}
@@ -64,11 +83,11 @@ export function renderNavbar(currentPath = '#/') {
 
             <!-- Theme Toggle Button -->
             <button type="button" class="theme-toggle-btn" id="theme-toggle" title="${dark ? 'Switch to light mode' : 'Switch to dark mode'}" aria-label="Toggle theme">
-              <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: ${dark ? 0 : 1}; transform: rotate(${dark ? '90deg' : '0deg'}) scale(${dark ? 0.5 : 1});">
+              <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="4.5" fill="currentColor" stroke="none"/>
                 <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77"/>
               </svg>
-              <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="currentColor" style="opacity: ${dark ? 1 : 0}; transform: rotate(${dark ? '0deg' : '-90deg'}) scale(${dark ? 1 : 0.5});">
+              <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
               </svg>
             </button>
@@ -145,10 +164,37 @@ export function initNavbarEvents() {
       }
     });
 
-    const mobileLinks = drawer.querySelectorAll('.mobile-nav-link');
-    mobileLinks.forEach((link) => {
-      link.addEventListener('click', () => {
-        closeMenu();
+    const allLinks = document.querySelectorAll('.desktop-nav-links .nav-link, .mobile-nav-drawer .mobile-nav-link');
+    allLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href') || '';
+        if (href.startsWith('#') && !href.startsWith('#/')) {
+          const targetId = href.substring(1);
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            e.preventDefault();
+            closeMenu();
+
+            allLinks.forEach((l) => l.classList.remove('active'));
+            link.classList.add('active');
+
+            try {
+              history.pushState(null, '', href);
+            } catch (err) {}
+
+            const header = document.getElementById('site-header');
+            const headerHeight = header ? header.offsetHeight : 64;
+            const targetRect = targetEl.getBoundingClientRect();
+            const targetPosition = targetRect.top + window.pageYOffset - headerHeight - 16;
+
+            window.scrollTo({
+              top: Math.max(0, targetPosition),
+              behavior: 'smooth'
+            });
+          }
+        } else {
+          closeMenu();
+        }
       });
     });
 
@@ -172,58 +218,71 @@ export function initNavbarEvents() {
     });
   }
 
-  // Exact 20fps smooth & elegant letter scramble
-  initNavbarLetterScramble();
+  // Exact Random Letter Swap Hover Animation for nav-right-wrap
+  initRandomLetterSwapHover();
 }
 
-export function initNavbarLetterScramble() {
-  const links = document.querySelectorAll('.desktop-nav-links .nav-link, .mobile-nav-links .mobile-nav-link');
-  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const fpsInterval = 1000 / 20; // Exact 20fps (50ms per frame)
+export function initRandomLetterSwapHover() {
+  const links = document.querySelectorAll('#nav-right-wrap .nav-link');
 
   links.forEach((link) => {
-    const textSpan = link.querySelector('.nav-link-text');
-    if (!textSpan) return;
+    const swapContainer = link.querySelector('.random-letter-swap');
+    if (!swapContainer) return;
 
-    const originalText = link.getAttribute('data-label') || textSpan.textContent.trim();
-    let frameId = null;
+    const label = link.getAttribute('data-label') || '';
+    const length = label.length;
+    if (length === 0) return;
+
+    let isBlocked = false;
+    let resetTimeout = null;
 
     link.addEventListener('mouseenter', () => {
-      let iteration = 0;
-      const length = originalText.length;
-      // Controlled resolution across ~6 frames at 20fps (~300ms total, snappy & smooth)
-      const stepIncrement = Math.max(0.65, length / 6);
+      if (isBlocked) return;
+      isBlocked = true;
 
-      if (frameId) clearInterval(frameId);
+      // Generate randomized order of character indexes
+      const shuffled = Array.from({ length }, (_, i) => i).sort(() => Math.random() - 0.5);
+      const staggerDuration = 20; // 0.02s per letter
+      const animDuration = 700; // ms
 
-      frameId = setInterval(() => {
-        textSpan.textContent = originalText
-          .split('')
-          .map((char, index) => {
-            if (char === ' ') return ' ';
-            if (index < iteration) {
-              return originalText[index]; // Resolved letter
-            }
-            return charset[Math.floor(Math.random() * charset.length)]; // 20fps random swap
-          })
-          .join('');
+      const primaryLetters = swapContainer.querySelectorAll('.letter-char');
+      const secondaryLetters = swapContainer.querySelectorAll('.letter-secondary');
 
-        if (iteration >= length) {
-          clearInterval(frameId);
-          textSpan.textContent = originalText; // 100% Guaranteed original text
-          frameId = null;
+      for (let i = 0; i < length; i++) {
+        const idx = shuffled[i];
+        const delay = i * staggerDuration;
+
+        const p = primaryLetters[idx];
+        const s = secondaryLetters[idx];
+
+        if (p && s) {
+          p.style.transition = `transform ${animDuration}ms cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms`;
+          s.style.transition = `top ${animDuration}ms cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms`;
+
+          p.style.transform = 'translateY(100%)';
+          s.style.top = '0%';
         }
-
-        iteration += stepIncrement;
-      }, fpsInterval);
-    });
-
-    link.addEventListener('mouseleave', () => {
-      if (frameId) {
-        clearInterval(frameId);
-        frameId = null;
       }
-      textSpan.textContent = originalText; // Instantly restore exact original text
+
+      if (resetTimeout) clearTimeout(resetTimeout);
+
+      const totalTime = length * staggerDuration + animDuration + 50;
+      resetTimeout = setTimeout(() => {
+        primaryLetters.forEach((p) => {
+          p.style.transition = 'none';
+          p.style.transform = 'translateY(0%)';
+        });
+
+        secondaryLetters.forEach((s) => {
+          s.style.transition = 'none';
+          s.style.top = '-100%';
+        });
+
+        // Force browser layout repaint
+        void swapContainer.offsetHeight;
+
+        isBlocked = false;
+      }, totalTime);
     });
   });
 }

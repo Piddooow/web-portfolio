@@ -1,0 +1,290 @@
+// ==========================================================================
+// 404 Error Page Component — Circle Expansion Canvas + Animated Stick Figures
+// ==========================================================================
+
+export function render404Page() {
+  return `
+    <div class="w-full min-h-screen bg-black overflow-hidden flex justify-center items-center relative m-0 p-0 text-black">
+      <!-- 1. Circle Expansion Canvas Layer -->
+      <canvas id="circle-canvas" class="w-full h-full absolute inset-0 z-10 block pointer-events-none"></canvas>
+
+      <!-- 2. Stick Figures Flying / Rotating Layer -->
+      <div id="characters-container" class="absolute w-[99%] h-[95%] z-20 pointer-events-none overflow-hidden"></div>
+
+      <!-- 3. Message Display Layer -->
+      <div id="message-display" class="absolute flex flex-col justify-center items-center w-[90%] h-[90%] z-30 pointer-events-none">
+        <div id="message-content" class="flex flex-col items-center text-center transition-all duration-700 opacity-0 transform translate-y-2 pointer-events-auto max-w-xl px-4">
+          
+          <!-- Brand Badge -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/5 border border-black/10 mb-2">
+            <img src="src/assets/images/spider-icon.png" alt="Vidd Icon" class="w-4 h-4 object-contain">
+            <span class="font-mono text-[11px] font-bold tracking-wider text-black/70 uppercase">VIDD • PORTFOLIO</span>
+          </div>
+
+          <!-- Main Title -->
+          <h1 class="text-[28px] sm:text-[35px] font-bold text-black m-[1%] tracking-tight leading-tight" style="font-family: 'Outfit', sans-serif;">
+            Page Not Found
+          </h1>
+
+          <!-- Giant 404 Number -->
+          <div class="text-[64px] sm:text-[80px] font-extrabold text-black m-[1%] leading-none tracking-tighter select-none" style="font-family: 'Outfit', sans-serif;">
+            404
+          </div>
+
+          <!-- Description Subtitle -->
+          <p class="text-[14px] sm:text-[15px] max-w-[440px] text-center text-black/80 m-[1%] leading-relaxed">
+            The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+          </p>
+
+          <!-- Action Navigation Buttons -->
+          <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-6 mt-6 sm:mt-8">
+            <!-- Go Back Button -->
+            <button
+              type="button"
+              id="error-go-back-btn"
+              class="text-black border-2 border-black hover:bg-black hover:text-white transition-all duration-300 ease-in-out px-5 sm:px-6 py-2.5 h-auto text-sm sm:text-base font-semibold rounded-md flex items-center gap-2 hover:scale-105 active:scale-95 shadow-sm cursor-pointer group"
+              aria-label="Go back to previous page">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="transition-transform group-hover:-translate-x-1">
+                <path d="m12 19-7-7 7-7"/>
+                <path d="M19 12H5"/>
+              </svg>
+              <span>Go Back</span>
+            </button>
+
+            <!-- Go Home Button -->
+            <a
+              href="#/"
+              class="bg-black text-white hover:bg-neutral-800 transition-all duration-300 ease-in-out px-5 sm:px-6 py-2.5 h-auto text-sm sm:text-base font-semibold rounded-md flex items-center gap-2 hover:scale-105 active:scale-95 shadow-md group"
+              aria-label="Return to Vidd Portfolio Home">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="transition-transform group-hover:scale-110">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              <span>Go Home</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+export function init404PageEvents() {
+  const goBackBtn = document.getElementById('error-go-back-btn');
+  if (goBackBtn) {
+    goBackBtn.addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.hash = '#/';
+      }
+    });
+  }
+
+  // 1. Message Display Fade-In
+  setTimeout(() => {
+    const messageContent = document.getElementById('message-content');
+    if (messageContent) {
+      messageContent.classList.remove('opacity-0', 'translate-y-2');
+      messageContent.classList.add('opacity-100', 'translate-y-0');
+    }
+  }, 1200);
+
+  // 2. Characters Animation (Stick Figures)
+  const container = document.getElementById('characters-container');
+  if (container) {
+    const stickFigures = [
+      {
+        top: '0%',
+        src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick0.svg',
+        transform: 'rotateZ(-90deg)',
+        speedX: 1500,
+      },
+      {
+        top: '10%',
+        src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick1.svg',
+        speedX: 3000,
+        speedRotation: 2000,
+      },
+      {
+        top: '20%',
+        src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick2.svg',
+        speedX: 5000,
+        speedRotation: 1000,
+      },
+      {
+        top: '25%',
+        src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick0.svg',
+        speedX: 2500,
+        speedRotation: 1500,
+      },
+      {
+        top: '35%',
+        src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick0.svg',
+        speedX: 2000,
+        speedRotation: 300,
+      },
+      {
+        bottom: '5%',
+        src: 'https://raw.githubusercontent.com/RicardoYare/imagenes/9ef29f5bbe075b1d1230a996d87bca313b9b6a63/sticks/stick3.svg',
+        speedX: 0,
+      },
+    ];
+
+    function renderSticks() {
+      if (!container) return;
+      container.innerHTML = '';
+
+      stickFigures.forEach((figure, index) => {
+        const stick = document.createElement('img');
+        stick.classList.add('characters');
+        stick.style.position = 'absolute';
+        stick.style.width = '18%';
+        stick.style.height = '18%';
+        stick.style.maxWidth = '180px';
+        stick.style.maxHeight = '180px';
+
+        if (figure.top) stick.style.top = figure.top;
+        if (figure.bottom) stick.style.bottom = figure.bottom;
+
+        stick.src = figure.src;
+        stick.alt = 'Animated Stick Figure';
+
+        if (figure.transform) stick.style.transform = figure.transform;
+
+        container.appendChild(stick);
+
+        if (index === 5) return;
+
+        if (stick.animate) {
+          stick.animate(
+            [{ left: '100%' }, { left: '-20%' }],
+            { duration: figure.speedX, easing: 'linear', fill: 'forwards' }
+          );
+
+          if (index !== 0 && figure.speedRotation) {
+            stick.animate(
+              [{ transform: 'rotate(0deg)' }, { transform: 'rotate(-360deg)' }],
+              { duration: figure.speedRotation, iterations: Infinity, easing: 'linear' }
+            );
+          }
+        }
+      });
+    }
+
+    renderSticks();
+  }
+
+  // 3. Circle Canvas Animation
+  const canvas = document.getElementById('circle-canvas');
+  if (canvas) {
+    let requestId = null;
+    let timer = 0;
+    let circulos = [];
+
+    function initArr() {
+      circulos = [];
+      const width = canvas.width;
+      const height = canvas.height;
+
+      for (let i = 0; i < 300; i++) {
+        const randomX = Math.floor(
+          Math.random() * ((width * 3) - (width * 1.2) + 1)
+        ) + (width * 1.2);
+
+        const randomY = Math.floor(
+          Math.random() * ((height) - (height * -0.2) + 1)
+        ) + (height * -0.2);
+
+        const size = width / 1000;
+
+        circulos.push({ x: randomX, y: randomY, size: size });
+      }
+    }
+
+    function draw() {
+      const context = canvas.getContext('2d');
+      if (!context) return;
+
+      timer++;
+      context.setTransform(1, 0, 0, 1, 0, 0);
+
+      const distanceX = canvas.width / 80;
+      const growthRate = canvas.width / 1000;
+
+      context.fillStyle = 'white';
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < circulos.length; i++) {
+        const circulo = circulos[i];
+        context.beginPath();
+
+        if (timer < 65) {
+          circulo.x = circulo.x - distanceX;
+          circulo.size = circulo.size + growthRate;
+        }
+
+        if (timer >= 65 && timer < 500) {
+          circulo.x = circulo.x - (distanceX * 0.02);
+          circulo.size = circulo.size + (growthRate * 0.2);
+        }
+
+        context.arc(circulo.x, circulo.y, Math.max(0.1, circulo.size), 0, Math.PI * 2);
+        context.fill();
+      }
+
+      if (timer > 500) {
+        if (requestId) {
+          cancelAnimationFrame(requestId);
+          requestId = null;
+        }
+        return;
+      }
+
+      requestId = requestAnimationFrame(draw);
+    }
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      timer = 0;
+      if (requestId) {
+        cancelAnimationFrame(requestId);
+        requestId = null;
+      }
+
+      const context = canvas.getContext('2d');
+      if (context && context.reset) {
+        context.reset();
+      }
+
+      initArr();
+      draw();
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+  }
+}

@@ -72,26 +72,8 @@ export function toggleTheme(event) {
 
 export function updateToggleIcons() {
   const dark = isDark();
-  const sunIcons = document.querySelectorAll('.theme-icon-sun');
-  const moonIcons = document.querySelectorAll('.theme-icon-moon');
-
-  sunIcons.forEach((icon) => {
-    if (dark) {
-      icon.style.opacity = '0';
-      icon.style.transform = 'rotate(90deg) scale(0.5)';
-    } else {
-      icon.style.opacity = '1';
-      icon.style.transform = 'rotate(0deg) scale(1)';
-    }
-  });
-
-  moonIcons.forEach((icon) => {
-    if (dark) {
-      icon.style.opacity = '1';
-      icon.style.transform = 'rotate(0deg) scale(1)';
-    } else {
-      icon.style.opacity = '0';
-      icon.style.transform = 'rotate(-90deg) scale(0.5)';
-    }
+  const toggleBtns = document.querySelectorAll('.theme-toggle-btn');
+  toggleBtns.forEach((btn) => {
+    btn.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode');
   });
 }
