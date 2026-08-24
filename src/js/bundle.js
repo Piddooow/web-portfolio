@@ -2801,7 +2801,7 @@
 
   // --- UserCursor Physics Engine (100% Real-Time Instant Custom Cursor) ---
   function initUserCursor(options = {}) {
-    const { name = 'Memey Cintakuu' } = options;
+    const { name = 'Jhon Doe' } = options;
 
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
@@ -2860,7 +2860,7 @@
     initTheme();
     initWarpTwister();
     initClickSpark();
-    initUserCursor({ name: 'Memey Cintakuu' });
+    initUserCursor({ name: 'Jhon Doe' });
     window.addEventListener('hashchange', handleRoute);
     handleRoute();
   }

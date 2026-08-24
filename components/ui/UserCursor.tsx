@@ -11,7 +11,7 @@ export interface UserCursorProps extends React.HTMLAttributes<HTMLDivElement> {
  * Instantaneous, zero-delay cursor tracking replacing default OS cursor.
  */
 export const UserCursor: React.FC<UserCursorProps> = ({
-  name = 'Memey Cintakuu',
+  name = 'Jhon Doe',
   className = '',
   ...props
 }) => {

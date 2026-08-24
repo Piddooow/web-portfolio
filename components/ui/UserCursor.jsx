@@ -7,7 +7,7 @@ import './UserCursor.css';
  * Desktop-only with monochromatic theme adaptation.
  */
 export const UserCursor = ({
-  name = 'Memey Cintakuu',
+  name = 'Jhon Doe',
   className = '',
   ...props
 }) => {

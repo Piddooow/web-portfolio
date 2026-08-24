@@ -12,6 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initWarpTwister();
   initClickSpark({ sparkCount: 8, sparkRadius: 15, sparkSize: 10, duration: 400, fps: 60 });
-  initUserCursor({ name: 'Memey Cintakuu', lerp: 0.22 });
+  initUserCursor({ name: 'Jhon Doe', lerp: 0.22 });
   initRouter();
 });
