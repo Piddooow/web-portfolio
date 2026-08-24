@@ -961,29 +961,39 @@ bundle_code = '''(function() {
     `;
   }
 
-  // --- React Bits LogoLoop Tech Stack (Dual-Track Left/Right Stream with Dynamic Brand Hover) ---
+  // --- React Bits LogoLoop Tech Stack (3-Category Directional Stream with Dashed Border) ---
   function renderLogoLoop() {
-    const languagesAndFrameworks = [
-      { title: "React", icon: "fa-brands fa-react", href: "https://react.dev", color: "#61DAFB" },
-      { title: "Next.js", icon: "fa-solid fa-n", href: "https://nextjs.org", color: "#E2E8F0" },
-      { title: "TypeScript", icon: "fa-solid fa-code", href: "https://www.typescriptlang.org", color: "#3178C6" },
+    const category1Languages = [
       { title: "JavaScript", icon: "fa-brands fa-js", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", color: "#F7DF1E" },
+      { title: "TypeScript", icon: "fa-solid fa-code", href: "https://www.typescriptlang.org", color: "#3178C6" },
       { title: "Python", icon: "fa-brands fa-python", href: "https://www.python.org", color: "#3776AB" },
       { title: "PHP", icon: "fa-brands fa-php", href: "https://www.php.net", color: "#777BB4" },
-      { title: "Tailwind CSS", icon: "fa-solid fa-wind", href: "https://tailwindcss.com", color: "#38BDF8" },
-      { title: "HTML5", icon: "fa-brands fa-html5", href: "https://developer.mozilla.org/en-US/docs/Glossary/HTML5", color: "#E34F26" }
+      { title: "HTML5", icon: "fa-brands fa-html5", href: "https://developer.mozilla.org/en-US/docs/Glossary/HTML5", color: "#E34F26" },
+      { title: "CSS3", icon: "fa-brands fa-css3-alt", href: "https://developer.mozilla.org/en-US/docs/Web/CSS", color: "#1572B6" },
+      { title: "SQL", icon: "fa-solid fa-table-cells", href: "#capabilities", color: "#336791" },
+      { title: "Bash / Shell", icon: "fa-solid fa-terminal", href: "https://www.gnu.org/software/bash/", color: "#4EAA25" }
     ];
 
-    const toolsAndDatabases = [
+    const category2Frameworks = [
+      { title: "React", icon: "fa-brands fa-react", href: "https://react.dev", color: "#61DAFB" },
+      { title: "Next.js", icon: "fa-solid fa-n", href: "https://nextjs.org", color: "#E2E8F0" },
       { title: "Node.js", icon: "fa-brands fa-node-js", href: "https://nodejs.org", color: "#339933" },
+      { title: "Tailwind CSS", icon: "fa-solid fa-wind", href: "https://tailwindcss.com", color: "#38BDF8" },
+      { title: "Figma", icon: "fa-brands fa-figma", href: "https://www.figma.com", color: "#F24E1E" },
+      { title: "Express.js", icon: "fa-solid fa-server", href: "https://expressjs.com", color: "#A1A1AA" },
+      { title: "REST APIs", icon: "fa-solid fa-network-wired", href: "#capabilities", color: "#009688" },
+      { title: "Bootstrap", icon: "fa-brands fa-bootstrap", href: "https://getbootstrap.com", color: "#7952B3" }
+    ];
+
+    const category3DatabasesSystems = [
       { title: "PostgreSQL", icon: "fa-solid fa-database", href: "https://www.postgresql.org", color: "#4169E1" },
       { title: "MySQL", icon: "fa-solid fa-server", href: "https://www.mysql.com", color: "#4479A1" },
       { title: "Docker", icon: "fa-brands fa-docker", href: "https://www.docker.com", color: "#2496ED" },
       { title: "Git & GitHub", icon: "fa-brands fa-github", href: "https://github.com/Piddooow", color: "#F05032" },
-      { title: "Figma", icon: "fa-brands fa-figma", href: "https://www.figma.com", color: "#F24E1E" },
       { title: "Visual Paradigm", icon: "fa-solid fa-diagram-project", href: "#capabilities", color: "#0080FF" },
       { title: "Postman", icon: "fa-solid fa-paper-plane", href: "https://www.postman.com", color: "#FF6C37" },
-      { title: "SQL & ERD", icon: "fa-solid fa-table-cells", href: "#capabilities", color: "#A855F7" }
+      { title: "ERD & Use Cases", icon: "fa-solid fa-sitemap", href: "#capabilities", color: "#A855F7" },
+      { title: "Vercel", icon: "fa-solid fa-triangle", href: "https://vercel.com", color: "#E2E8F0" }
     ];
 
     const renderTrackGroup = (logos) =>
@@ -1000,39 +1010,68 @@ bundle_code = '''(function() {
         )
         .join('');
 
-    const row1Html = renderTrackGroup(languagesAndFrameworks);
-    const row2Html = renderTrackGroup(toolsAndDatabases);
+    const row1Html = renderTrackGroup(category1Languages);
+    const row2Html = renderTrackGroup(category2Frameworks);
+    const row3Html = renderTrackGroup(category3DatabasesSystems);
 
     return `
-      <section class="logo-loop-section" id="tech-loop" style="padding: 1.5rem 0; overflow: hidden;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem; padding: 0 0.25rem;">
-          <span class="eyebrow-mono" style="font-size: 0.65rem; letter-spacing: 0.18em;">Core Engineering & Tech Stack</span>
-          <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);">Languages • Tools • Systems</span>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          <!-- Track 1: Languages & Core Frameworks (Left to Right stream) -->
-          <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 32s;">
-            <div class="logo-loop-track left scale-on-hover">
-              <div class="logo-loop-group">
-                ${row1Html}
-              </div>
-              <div class="logo-loop-group" aria-hidden="true">
-                ${row1Html}
-              </div>
+      <section class="logo-loop-section" id="tech-loop" style="margin-top: 1.5rem;">
+        <div class="tech-stack-dashed-wrapper" style="padding: 1.5rem 1.25rem; border-radius: 0.85rem; border: 1px dashed var(--border-dashed); background-color: var(--bg-surface-card); position: relative; overflow: hidden;">
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding: 0 0.25rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.2rem;">
+              <span class="eyebrow-mono" style="font-size: 0.65rem; letter-spacing: 0.18em;">Core Engineering & Tech Stack</span>
+              <span style="font-size: 0.84rem; color: var(--text-secondary);">Languages • Frameworks • Systems & DevOps</span>
             </div>
+            <span class="pill-badge" style="font-family: var(--font-mono); font-size: 0.65rem; padding: 0.25rem 0.6rem; border: 1px dashed var(--border-dashed);">
+              3 Categories
+            </span>
           </div>
 
-          <!-- Track 2: Databases, Tools & Architecture (Right to Left stream) -->
-          <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 32s;">
-            <div class="logo-loop-track right scale-on-hover">
-              <div class="logo-loop-group">
-                ${row2Html}
-              </div>
-              <div class="logo-loop-group" aria-hidden="true">
-                ${row2Html}
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            
+            <!-- Category 1: Languages & Core (Right to Left stream / Kanan ke Kiri) -->
+            <div class="tech-stream-row">
+              <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 34s;">
+                <div class="logo-loop-track left scale-on-hover">
+                  <div class="logo-loop-group">
+                    ${row1Html}
+                  </div>
+                  <div class="logo-loop-group" aria-hidden="true">
+                    ${row1Html}
+                  </div>
+                </div>
               </div>
             </div>
+
+            <!-- Category 2: Frameworks & UI/UX (Left to Right stream / Kiri ke Kanan) -->
+            <div class="tech-stream-row">
+              <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 32s;">
+                <div class="logo-loop-track right scale-on-hover">
+                  <div class="logo-loop-group">
+                    ${row2Html}
+                  </div>
+                  <div class="logo-loop-group" aria-hidden="true">
+                    ${row2Html}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 3: Databases & Systems (Left to Right stream / Kiri ke Kanan) -->
+            <div class="tech-stream-row">
+              <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 36s;">
+                <div class="logo-loop-track right scale-on-hover">
+                  <div class="logo-loop-group">
+                    ${row3Html}
+                  </div>
+                  <div class="logo-loop-group" aria-hidden="true">
+                    ${row3Html}
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -2533,8 +2572,297 @@ bundle_code = '''(function() {
     initPageEvents();
   }
 
+  // --- Warp Twister React Bits Pro Distortion Background Engine ---
+  function initWarpTwister() {
+    let canvas = document.getElementById('warp-twister-canvas');
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.id = 'warp-twister-canvas';
+      canvas.className = 'warp-twister-canvas';
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100vw';
+      canvas.style.height = '100vh';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '-1';
+      canvas.style.transition = 'opacity 0.6s ease';
+      document.body.prepend(canvas);
+    }
+
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let time = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+      mouseX = width / 2;
+      mouseY = height / 2;
+      targetMouseX = mouseX;
+      targetMouseY = mouseY;
+    }
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    window.addEventListener(
+      'mousemove',
+      (e) => {
+        targetMouseX = e.clientX;
+        targetMouseY = e.clientY;
+      },
+      { passive: true }
+    );
+
+    function draw() {
+      time += 0.007;
+
+      mouseX += (targetMouseX - mouseX) * 0.04;
+      mouseY += (targetMouseY - mouseY) * 0.04;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const isDark = document.documentElement.classList.contains('dark');
+      
+      const strokeStyleA = isDark ? 'rgba(168, 85, 247, 0.45)' : 'rgba(124, 58, 237, 0.35)';
+      const strokeStyleB = isDark ? 'rgba(56, 189, 248, 0.35)' : 'rgba(59, 130, 246, 0.30)';
+      const strokeStyleC = isDark ? 'rgba(232, 121, 249, 0.25)' : 'rgba(168, 85, 247, 0.20)';
+
+      const centerX = width * 0.5 + (mouseX - width * 0.5) * 0.25;
+      const centerY = height * 0.45 + (mouseY - height * 0.45) * 0.25;
+
+      const rings = window.innerWidth < 768 ? 14 : 22;
+      const pointsPerRing = window.innerWidth < 768 ? 36 : 56;
+      const maxRadius = Math.hypot(width, height) * 0.65;
+
+      for (let r = 1; r <= rings; r++) {
+        const radiusProgress = r / rings;
+        const baseRadius = radiusProgress * maxRadius;
+        
+        if (r % 3 === 0) ctx.strokeStyle = strokeStyleA;
+        else if (r % 3 === 1) ctx.strokeStyle = strokeStyleB;
+        else ctx.strokeStyle = strokeStyleC;
+
+        ctx.lineWidth = 1 + (1 - radiusProgress) * 0.8;
+        ctx.beginPath();
+
+        for (let p = 0; p <= pointsPerRing; p++) {
+          const angle = (p / pointsPerRing) * Math.PI * 2;
+
+          const twist = Math.sin(time * 0.8 + radiusProgress * 3.5) * 0.65;
+          const waveA = Math.sin(angle * 4 + time * 1.5 + r * 0.3) * (18 * radiusProgress);
+          const waveB = Math.cos(angle * 3 - time * 1.2 + r * 0.2) * (14 * radiusProgress);
+
+          const currentAngle = angle + twist * (1 - radiusProgress * 0.5);
+          const currentRadius = baseRadius + waveA + waveB;
+
+          const x = centerX + Math.cos(currentAngle) * currentRadius;
+          const y = centerY + Math.sin(currentAngle) * (currentRadius * 0.62);
+
+          if (p === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  }
+
+  // --- ClickSpark Particle Burst Engine ---
+  function initClickSpark() {
+    let canvas = document.getElementById('click-spark-canvas');
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.id = 'click-spark-canvas';
+      canvas.className = 'click-spark-canvas';
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100vw';
+      canvas.style.height = '100vh';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '999999';
+      document.body.appendChild(canvas);
+    }
+
+    const ctx = canvas.getContext('2d');
+    let sparks = [];
+    let animId = null;
+    let lastFrameTime = 0;
+    const frameInterval = 1000 / 60;
+
+    function resize() {
+      canvas.width = window.innerWidth * window.devicePixelRatio;
+      canvas.height = window.innerHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    function getSparkColor() {
+      const isDark = document.documentElement.classList.contains('dark');
+      return isDark ? '#ffffff' : '#09090b';
+    }
+
+    function loop(timestamp) {
+      if (timestamp - lastFrameTime < frameInterval) {
+        animId = requestAnimationFrame(loop);
+        return;
+      }
+      lastFrameTime = timestamp;
+
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      sparks = sparks.filter((spark) => {
+        const elapsed = timestamp - spark.startTime;
+        if (elapsed >= 400) return false;
+
+        const progress = elapsed / 400;
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const distance = easeOut * 15;
+        const currentLength = Math.max(1, 10 * (1 - progress));
+
+        const x1 = spark.x + Math.cos(spark.angle) * distance;
+        const y1 = spark.y + Math.sin(spark.angle) * distance;
+        const x2 = spark.x + Math.cos(spark.angle) * (distance + currentLength);
+        const y2 = spark.y + Math.sin(spark.angle) * (distance + currentLength);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = spark.color;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.globalAlpha = Math.max(0, 1 - progress);
+        if (spark.color === '#ffffff') {
+          ctx.shadowColor = 'rgba(255, 255, 255, 0.85)';
+          ctx.shadowBlur = 4;
+        }
+        ctx.stroke();
+        ctx.restore();
+
+        return true;
+      });
+
+      if (sparks.length > 0) {
+        animId = requestAnimationFrame(loop);
+      } else {
+        animId = null;
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      }
+    }
+
+    function triggerSpark(x, y) {
+      const now = performance.now();
+      const color = getSparkColor();
+
+      for (let i = 0; i < 8; i++) {
+        sparks.push({
+          x,
+          y,
+          angle: (2 * Math.PI * i) / 8,
+          color,
+          startTime: now
+        });
+      }
+
+      if (!animId) {
+        lastFrameTime = performance.now();
+        animId = requestAnimationFrame(loop);
+      }
+    }
+
+    window.addEventListener(
+      'pointerdown',
+      (e) => {
+        if (e.clientX >= window.innerWidth - 8) return;
+        triggerSpark(e.clientX, e.clientY);
+      },
+      { passive: true }
+    );
+  }
+
+  // --- UserCursor Physics Engine (100% Real-Time Instant Custom Cursor) ---
+  function initUserCursor(options = {}) {
+    const { name = 'Jhon Doe' } = options;
+
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    let container = document.getElementById('user-cursor-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'user-cursor-container';
+      container.className = 'user-cursor-container';
+      container.setAttribute('aria-hidden', 'true');
+      container.innerHTML = `
+        <svg class="user-cursor-pointer" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0V16.8L4.6 12.3L11.8 12.3L0 0Z" class="user-cursor-svg-path" />
+        </svg>
+        <div class="user-cursor-badge">
+          <span class="user-cursor-name">${name}</span>
+        </div>
+      `;
+      document.body.appendChild(container);
+    }
+
+    let isVisible = false;
+
+    function onMouseMove(e) {
+      // Direct 1-to-1 zero-lag tracking
+      container.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+
+      if (!isVisible) {
+        isVisible = true;
+        container.classList.add('visible');
+      }
+
+      const target = e.target;
+      if (target && target.closest('a, button, input, textarea, select, [role="button"], .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .tag-chip, .logo-loop-link, .interactive')) {
+        container.classList.add('is-pointer');
+      } else {
+        container.classList.remove('is-pointer');
+      }
+    }
+
+    function onMouseEnter() {
+      isVisible = true;
+      container.classList.add('visible');
+    }
+
+    function onMouseLeave() {
+      isVisible = false;
+      container.classList.remove('visible');
+    }
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseenter', onMouseEnter);
+    document.addEventListener('mouseleave', onMouseLeave);
+  }
+
   function initApp() {
     initTheme();
+    initWarpTwister();
+    initClickSpark();
+    initUserCursor({ name: 'Jhon Doe', lerp: 0.22 });
     window.addEventListener('hashchange', handleRoute);
     handleRoute();
   }

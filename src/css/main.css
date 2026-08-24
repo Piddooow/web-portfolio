@@ -45,7 +45,7 @@
 
   /* Theme coordinates for view transitions */
   --theme-x: 50%;
-  --theme-y: 50%;
+  --warp-opacity: 0.08;
 }
 
 html.dark {
@@ -92,6 +92,32 @@ html.dark {
   --shimmer-mid: #e4e4e7;
   --shimmer-highlight: #ffffff;
   --shimmer-accent: #c084fc;
+  
+  --warp-opacity: 0.16;
+}
+
+/* ==========================================================================
+   Warp Twister & ClickSpark Interactive Layers
+   ========================================================================== */
+.warp-twister-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  opacity: var(--warp-opacity, 0.12);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+
+.click-spark-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999999;
 }
 
 /* ==========================================================================
@@ -446,6 +472,105 @@ html:not(.dark) .btn-primary:hover {
 :focus-visible {
   outline: 2px solid var(--text-primary);
   outline-offset: 2px;
+}
+
+/* ==========================================================================
+   User Cursor — 100% Real-Time Instant Custom Cursor (Replaces Default OS Cursor)
+   ========================================================================== */
+
+/* Hide OS default cursor on desktop devices with mouse/trackpad pointer */
+@media (pointer: fine) {
+  *, *::before, *::after,
+  html, body,
+  a, button, input, textarea, select, [role="button"],
+  .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .pill-badge, .logo-loop-link {
+    cursor: none !important;
+  }
+}
+
+.user-cursor-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translate3d(-100px, -100px, 0);
+  transition: opacity 0.15s ease;
+  will-change: transform;
+}
+
+.user-cursor-container.visible {
+  opacity: 1;
+}
+
+/* Cursor Arrow SVG Pointer — Origin point at (0, 0) top-left tip */
+.user-cursor-pointer {
+  width: 1.35rem;
+  height: 1.35rem;
+  transform: translate(0, 0);
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.user-cursor-container.is-pointer .user-cursor-pointer {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.user-cursor-svg-path {
+  fill: #09090b;
+  stroke: #ffffff;
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+html.dark .user-cursor-svg-path {
+  fill: #ffffff;
+  stroke: #09090b;
+}
+
+/* User Cursor Name Badge */
+.user-cursor-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 9999px;
+  background-color: #09090b;
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-left: 0.95rem;
+  margin-top: -0.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  white-space: nowrap;
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.15s ease;
+}
+
+.user-cursor-container.is-pointer .user-cursor-badge {
+  transform: scale(1.05);
+}
+
+html.dark .user-cursor-badge {
+  background-color: #ffffff;
+  color: #09090b;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
+}
+
+/* Hide completely on mobile & touch devices */
+@media (pointer: coarse), (hover: none) {
+  .user-cursor-container {
+    display: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

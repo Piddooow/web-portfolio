@@ -1,0 +1,17 @@
+/* ==========================================================================
+   React Bits ClickSpark Component Styles
+   ========================================================================== */
+
+.click-spark-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.click-spark-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+}
