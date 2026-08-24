@@ -4,7 +4,7 @@
 // ==========================================================================
 
 export function initUserCursor(options = {}) {
-  const { name = 'Jhon Doe' } = options;
+  const { name = 'Memey Cintakuu' } = options;
 
   // Only enable on desktop pointer-fine devices
   if (window.matchMedia('(pointer: coarse)').matches) return;

@@ -2803,7 +2803,7 @@ bundle_code = '''(function() {
 
   // --- UserCursor Physics Engine (100% Real-Time Instant Custom Cursor) ---
   function initUserCursor(options = {}) {
-    const { name = 'Jhon Doe' } = options;
+    const { name = 'Memey Cintakuu' } = options;
 
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
@@ -2862,7 +2862,7 @@ bundle_code = '''(function() {
     initTheme();
     initWarpTwister();
     initClickSpark();
-    initUserCursor({ name: 'Jhon Doe', lerp: 0.22 });
+    initUserCursor({ name: 'Memey Cintakuu' });
     window.addEventListener('hashchange', handleRoute);
     handleRoute();
   }
