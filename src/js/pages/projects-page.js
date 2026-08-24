@@ -33,6 +33,7 @@ export function renderProjectsPage() {
 
       return `
         <article class="card-spotlight project-card" data-slug="${p.slug}">
+          <span class="edge-light"></span>
           <a href="${p.detailsUrl}" class="project-card-img-wrap" title="View ${p.title}">
             <img src="${p.image}" alt="${p.title}" class="project-card-img" />
           </a>

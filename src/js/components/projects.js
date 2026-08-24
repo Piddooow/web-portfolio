@@ -28,6 +28,7 @@ export function renderProjects(limit = 6) {
 
       return `
         <article class="card-spotlight project-card ${isComingSoon ? 'coming-soon-card' : ''}" data-slug="${p.slug}" style="${isComingSoon ? 'border: 1px dashed var(--border-dashed);' : ''}">
+          <span class="edge-light"></span>
           <div class="project-card-img-wrap">
             <img src="${p.image}" alt="${p.title}" class="project-card-img" />
           </div>
@@ -79,14 +80,56 @@ export function renderProjects(limit = 6) {
 }
 
 export function initSpotlightPhysics() {
-  const cards = document.querySelectorAll('.card-spotlight');
-  cards.forEach((card) => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
-    });
+  const elements = document.querySelectorAll(
+    '.card-spotlight, .border-glow-card, .featured-card, .resume-item, .edu-item, .philosophy-card, .react-bits-stack-wrapper, .contact-item, .tech-grid-card, .github-calendar-box, .btn-primary, .btn-secondary, .pill-badge, .deck-nav-btn'
+  );
+
+  elements.forEach((el) => {
+    let ticking = false;
+    let lastEvent = null;
+
+    function updatePhysics() {
+      if (!lastEvent) return;
+      const rect = el.getBoundingClientRect();
+      const x = lastEvent.clientX - rect.left;
+      const y = lastEvent.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const dx = x - cx;
+      const dy = y - cy;
+
+      let kx = Infinity;
+      let ky = Infinity;
+      if (dx !== 0) kx = cx / Math.abs(dx);
+      if (dy !== 0) ky = cy / Math.abs(dy);
+      const edge = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
+
+      let degrees = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+      if (degrees < 0) degrees += 360;
+
+      el.style.setProperty('--mouse-x', `${x.toFixed(1)}px`);
+      el.style.setProperty('--mouse-y', `${y.toFixed(1)}px`);
+      el.style.setProperty('--edge-proximity', `${(edge * 100).toFixed(2)}`);
+      el.style.setProperty('--cursor-angle', `${degrees.toFixed(2)}deg`);
+      ticking = false;
+    }
+
+    el.addEventListener('pointermove', (e) => {
+      lastEvent = e;
+      if (!ticking) {
+        window.requestAnimationFrame(updatePhysics);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    el.addEventListener('pointerenter', (e) => {
+      lastEvent = e;
+      updatePhysics();
+    }, { passive: true });
+
+    el.addEventListener('pointerleave', () => {
+      lastEvent = null;
+      el.style.setProperty('--edge-proximity', '0');
+    }, { passive: true });
   });
 }

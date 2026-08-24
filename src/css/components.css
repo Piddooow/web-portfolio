@@ -767,44 +767,179 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
 /* --------------------------------------------------------------------------
    4. Card Spotlight Physics
    -------------------------------------------------------------------------- */
-.card-spotlight {
+/* --------------------------------------------------------------------------
+   4. React Bits <BorderGlow /> & Card Spotlight Physics
+   -------------------------------------------------------------------------- */
+.card-spotlight,
+.border-glow-card {
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --edge-sensitivity: 25;
+  --color-sensitivity: calc(var(--edge-sensitivity) + 15);
+  --border-radius: inherit;
+  --glow-padding: 32px;
+  --cone-spread: 28;
+  --glow-color: hsl(210deg 100% 70% / 100%);
+  --glow-color-60: hsl(210deg 100% 70% / 60%);
+  --glow-color-50: hsl(210deg 100% 70% / 50%);
+  --glow-color-40: hsl(210deg 100% 70% / 40%);
+  --glow-color-30: hsl(210deg 100% 70% / 30%);
+  --glow-color-20: hsl(210deg 100% 70% / 20%);
+  --glow-color-10: hsl(210deg 100% 70% / 10%);
+
+  --gradient-one: radial-gradient(at 80% 55%, hsla(268, 100%, 76%, 1) 0px, transparent 50%);
+  --gradient-two: radial-gradient(at 69% 34%, hsla(349, 100%, 74%, 1) 0px, transparent 50%);
+  --gradient-three: radial-gradient(at 8% 6%, hsla(136, 100%, 78%, 1) 0px, transparent 50%);
+  --gradient-four: radial-gradient(at 41% 38%, hsla(192, 100%, 64%, 1) 0px, transparent 50%);
+  --gradient-five: radial-gradient(at 86% 85%, hsla(186, 100%, 74%, 1) 0px, transparent 50%);
+  --gradient-six: radial-gradient(at 82% 18%, hsla(52, 100%, 65%, 1) 0px, transparent 50%);
+  --gradient-seven: radial-gradient(at 51% 4%, hsla(12, 100%, 72%, 1) 0px, transparent 50%);
+
   position: relative;
-  overflow: hidden;
   isolation: isolate;
   --mouse-x: 50%;
   --mouse-y: 50%;
   background-color: var(--bg-surface-card);
   border: 1px dashed var(--border-dashed);
   border-radius: 0.75rem;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.2s ease,
+              opacity 0.2s ease;
+  will-change: transform, border-color, box-shadow, filter;
 }
 
-.card-spotlight::before {
+/* Contrast Lighting Depth: Out of Reach Dimming */
+.projects-grid:hover .card-spotlight:not(:hover),
+.resume-timeline:hover .resume-item:not(:hover),
+.edu-grid:hover .edu-item:not(:hover),
+.tech-grid:hover .tech-grid-card:not(:hover) {
+  opacity: 0.82;
+  filter: brightness(0.94);
+}
+
+/* Conic Mesh Gradient Border Glow — Follows exact border dimensions */
+.card-spotlight::before,
+.border-glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--bg-surface-card) 0 100%) padding-box,
+    var(--gradient-one) border-box,
+    var(--gradient-two) border-box,
+    var(--gradient-three) border-box,
+    var(--gradient-four) border-box,
+    var(--gradient-five) border-box,
+    var(--gradient-six) border-box,
+    var(--gradient-seven) border-box;
+  opacity: calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      black calc(var(--cone-spread) * 1%),
+      transparent calc((var(--cone-spread) + 15) * 1%),
+      transparent calc((100 - var(--cone-spread) - 15) * 1%),
+      black calc((100 - var(--cone-spread)) * 1%)
+    );
+  -webkit-mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      black calc(var(--cone-spread) * 1%),
+      transparent calc((var(--cone-spread) + 15) * 1%),
+      transparent calc((100 - var(--cone-spread) - 15) * 1%),
+      black calc((100 - var(--cone-spread)) * 1%)
+    );
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.2s ease-out;
+}
+
+/* Outer Edge Radiance on Edge Proximity */
+.card-spotlight::after,
+.border-glow-card::after {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: radial-gradient(
-    circle 240px at var(--mouse-x) var(--mouse-y),
+    circle 280px at var(--mouse-x) var(--mouse-y),
     var(--spotlight-color),
     transparent 80%
   );
   opacity: 0;
   pointer-events: none;
   z-index: 1;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.25s ease;
 }
 
-.card-spotlight:hover::before,
-.card-spotlight:focus-within::before {
+.card-spotlight:hover::after,
+.border-glow-card:hover::after {
   opacity: 1;
 }
 
-.card-spotlight:hover {
-  border-color: var(--border-active);
-  box-shadow: var(--shadow-card);
+/* Edge Light Outer Box Shadow Flare */
+.card-spotlight > .edge-light,
+.border-glow-card > .edge-light {
+  inset: calc(var(--glow-padding) * -1);
+  pointer-events: none;
+  z-index: 1;
+  position: absolute;
+  border-radius: inherit;
+  mask-image: conic-gradient(
+    from var(--cursor-angle) at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%
+  );
+  -webkit-mask-image: conic-gradient(
+    from var(--cursor-angle) at center, black 2.5%, transparent 10%, transparent 90%, black 97.5%
+  );
+  opacity: calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+  mix-blend-mode: plus-lighter;
+  transition: opacity 0.2s ease-out;
 }
 
-.card-spotlight > * {
+.card-spotlight > .edge-light::before,
+.border-glow-card > .edge-light::before {
+  content: "";
+  position: absolute;
+  inset: var(--glow-padding);
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--glow-color, hsl(40deg 80% 80% / 100%)),
+    inset 0 0 1px 0 var(--glow-color-60, hsl(40deg 80% 80% / 60%)),
+    inset 0 0 3px 0 var(--glow-color-50, hsl(40deg 80% 80% / 50%)),
+    inset 0 0 6px 0 var(--glow-color-40, hsl(40deg 80% 80% / 40%)),
+    inset 0 0 15px 0 var(--glow-color-30, hsl(40deg 80% 80% / 30%)),
+    inset 0 0 25px 2px var(--glow-color-20, hsl(40deg 80% 80% / 20%)),
+    inset 0 0 50px 2px var(--glow-color-10, hsl(40deg 80% 80% / 10%)),
+    0 0 1px 0 var(--glow-color-60, hsl(40deg 80% 80% / 60%)),
+    0 0 3px 0 var(--glow-color-50, hsl(40deg 80% 80% / 50%)),
+    0 0 6px 0 var(--glow-color-40, hsl(40deg 80% 80% / 40%)),
+    0 0 15px 0 var(--glow-color-30, hsl(40deg 80% 80% / 30%)),
+    0 0 25px 2px var(--glow-color-20, hsl(40deg 80% 80% / 20%)),
+    0 0 50px 2px var(--glow-color-10, hsl(40deg 80% 80% / 10%));
+}
+
+/* In-Reach Highlight: Brighter & Elevated */
+.card-spotlight:hover,
+.border-glow-card:hover {
+  opacity: 1 !important;
+  filter: brightness(1.04) !important;
+  border-style: solid;
+  border-color: var(--border-active);
+  box-shadow: 0 0 0 1px var(--border-subtle), 0 14px 32px -6px rgba(0, 0, 0, 0.14);
+  transform: translateY(-2px);
+}
+
+html.dark .card-spotlight:hover,
+html.dark .border-glow-card:hover {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 18px 42px -8px rgba(0, 0, 0, 0.7);
+}
+
+.card-spotlight > *,
+.border-glow-card > * {
   position: relative;
   z-index: 2;
 }
@@ -1451,110 +1586,238 @@ html.dark .back-to-top-btn {
 }
 
 /* ==========================================================================
-   Circular 3D Swipeable Carousel Styles ("The other side of Vidd" — 10 Photos)
+   React Bits <Stack /> Component Styles ("The other side of Vidd")
+   Left: Story & Controls | Right: 3D Photo Stack (Overflow Visible)
    ========================================================================== */
-.circular-carousel-wrapper {
+.react-bits-stack-wrapper {
   width: 100%;
-  padding: 1.75rem 1.5rem;
+  padding: 1.5rem 1.25rem;
   border-radius: 0.75rem;
   border: 1px dashed var(--border-dashed);
   background-color: var(--bg-surface-card);
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
 }
 
-.circular-carousel-grid {
+@media (min-width: 640px) {
+  .react-bits-stack-wrapper {
+    padding: 2rem 1.75rem;
+  }
+}
+
+.react-bits-stack-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 2.25rem;
   align-items: center;
 }
 
 @media (min-width: 768px) {
-  .circular-carousel-grid {
-    grid-template-columns: 240px minmax(0, 1fr);
+  .react-bits-stack-grid {
+    grid-template-columns: minmax(0, 1fr) 240px;
     gap: 3rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .circular-carousel-grid {
-    grid-template-columns: 260px minmax(0, 1fr);
+  .react-bits-stack-grid {
+    grid-template-columns: minmax(0, 1fr) 260px;
     gap: 3.5rem;
   }
 }
 
-.circular-deck-container {
-  width: 100%;
+/* 3D Stack Stage (Right Column) */
+.stack-stage-col {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   position: relative;
+  overflow: visible;
 }
 
-.circular-image-deck {
-  position: relative;
+.stack-outer-box {
   width: 100%;
-  max-width: 15rem;
-  height: 14.5rem;
-  perspective: 800px;
-  cursor: grab;
-  user-select: none;
-  touch-action: pan-y;
+  max-width: 220px;
+  height: 270px;
+  position: relative;
   margin: 0 auto;
 }
 
 @media (min-width: 640px) {
-  .circular-image-deck {
-    max-width: 16rem;
-    height: 15.5rem;
+  .stack-outer-box {
+    max-width: 240px;
+    height: 290px;
   }
 }
 
-.circular-image-deck:active {
-  cursor: grabbing;
+@media (min-width: 1024px) {
+  .stack-outer-box {
+    max-width: 260px;
+    height: 310px;
+  }
 }
 
-.circular-deck-item {
-  position: absolute;
-  top: 0;
-  left: 0;
+.stack-container {
+  position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 0.75rem;
+  perspective: 600px;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.card-rotate {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  will-change: transform;
+}
+
+.card-rotate.grabbing {
+  cursor: grabbing !important;
+}
+
+.card-rotate-disabled {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.stack-card-inner {
+  border-radius: 0.85rem;
   overflow: hidden;
-  box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.35);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 14px 34px -8px rgba(0, 0, 0, 0.35);
   border: 1px solid var(--border-subtle);
   background-color: var(--bg-surface-elevated);
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+  position: relative;
   will-change: transform, opacity;
 }
 
-.deck-image {
+.stack-card-inner img,
+.card-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
   display: block;
 }
 
-.deck-badge-overlay {
+.stack-card-badge {
   position: absolute;
   top: 0.75rem;
   left: 0.75rem;
-  z-index: 4;
+  z-index: 5;
 }
 
-.deck-badge-overlay span {
+.stack-card-badge span {
   font-family: var(--font-mono);
   font-size: 0.62rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0.2rem 0.45rem;
-  background: rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  background: rgba(0, 0, 0, 0.75);
   color: #ffffff;
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.stack-drag-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* Stack Info Panel */
+.stack-info-col {
+  width: 100%;
+}
+
+.stack-info-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0.75rem;
+  background-color: var(--bg-surface-card);
+  border: 1px dashed var(--border-dashed);
+}
+
+.stack-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.stack-counter-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  background-color: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+}
+
+.stack-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border-dashed);
+}
+
+.stack-dots-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.stack-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--border-dashed);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.stack-dot:hover {
+  background-color: var(--text-muted);
+}
+
+.stack-dot.active {
+  width: 18px;
+  background-color: var(--text-primary);
+  border-radius: 9999px;
+}
+
+.stack-arrow-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Contact Card Hover Effects with Brand Colors */

@@ -956,6 +956,7 @@ bundle_code = '''(function() {
 
         return `
           <article class="card-spotlight project-card ${isComingSoon ? 'coming-soon-card' : ''}" data-slug="${p.slug}" style="${isComingSoon ? 'border: 1px dashed var(--border-dashed);' : ''}">
+            <span class="edge-light"></span>
             <div class="project-card-img-wrap">
               <img src="${p.image}" alt="${p.title}" class="project-card-img" />
             </div>
@@ -1007,15 +1008,57 @@ bundle_code = '''(function() {
   }
 
   function initSpotlightPhysics() {
-    const cards = document.querySelectorAll('.card-spotlight');
-    cards.forEach((card) => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-      });
+    const elements = document.querySelectorAll(
+      '.card-spotlight, .border-glow-card, .featured-card, .resume-item, .edu-item, .philosophy-card, .react-bits-stack-wrapper, .contact-item, .tech-grid-card, .github-calendar-box, .btn-primary, .btn-secondary, .pill-badge, .deck-nav-btn'
+    );
+
+    elements.forEach((el) => {
+      let ticking = false;
+      let lastEvent = null;
+
+      function updatePhysics() {
+        if (!lastEvent) return;
+        const rect = el.getBoundingClientRect();
+        const x = lastEvent.clientX - rect.left;
+        const y = lastEvent.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const dx = x - cx;
+        const dy = y - cy;
+
+        let kx = Infinity;
+        let ky = Infinity;
+        if (dx !== 0) kx = cx / Math.abs(dx);
+        if (dy !== 0) ky = cy / Math.abs(dy);
+        const edge = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
+
+        let degrees = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+        if (degrees < 0) degrees += 360;
+
+        el.style.setProperty('--mouse-x', `${x.toFixed(1)}px`);
+        el.style.setProperty('--mouse-y', `${y.toFixed(1)}px`);
+        el.style.setProperty('--edge-proximity', `${(edge * 100).toFixed(2)}`);
+        el.style.setProperty('--cursor-angle', `${degrees.toFixed(2)}deg`);
+        ticking = false;
+      }
+
+      el.addEventListener('pointermove', (e) => {
+        lastEvent = e;
+        if (!ticking) {
+          window.requestAnimationFrame(updatePhysics);
+          ticking = true;
+        }
+      }, { passive: true });
+
+      el.addEventListener('pointerenter', (e) => {
+        lastEvent = e;
+        updatePhysics();
+      }, { passive: true });
+
+      el.addEventListener('pointerleave', () => {
+        lastEvent = null;
+        el.style.setProperty('--edge-proximity', '0');
+      }, { passive: true });
     });
   }
 
@@ -1197,31 +1240,10 @@ bundle_code = '''(function() {
 
   // --- "The other side of Vidd" — Compact Editorial 3D Carousel (10 Photos) ---
   let activeGalleryIndex = 0;
-  let autoplayTimer = null;
-
   function renderOtherSide() {
-    const activeItem = personalGalleryData[activeGalleryIndex] || personalGalleryData[0];
-
-    const deckItemsHtml = personalGalleryData
-      .map(
-        (item, index) => `
-        <div class="circular-deck-item" data-index="${index}" id="deck-item-${index}">
-          <img src="${item.src}" alt="${item.name} (${item.tag})" class="deck-image" />
-          <div class="deck-badge-overlay">
-            <span>${item.tag}</span>
-          </div>
-        </div>
-      `
-      )
-      .join('');
-
-    const dotsHtml = personalGalleryData
-      .map(
-        (_, i) => `
-        <button type="button" class="deck-dot ${i === activeGalleryIndex ? 'active' : ''}" data-index="${i}" aria-label="Go to slide ${i + 1}"></button>
-      `
-      )
-      .join('');
+    const total = personalGalleryData.length;
+    const initialTopIndex = total - 1;
+    const activeItem = personalGalleryData[initialTopIndex] || personalGalleryData[0];
 
     return `
       <section class="other-side-section" id="other-side" style="margin-top: 1.5rem;">
@@ -1229,50 +1251,89 @@ bundle_code = '''(function() {
           <div>
             <h2 class="section-title">The other side of Vidd</h2>
             <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
-              Beyond systems and code — moments in sports, discipline, and daily life.
+              Beyond systems and code — moments in sports, discipline, recreation, and daily life.
             </p>
           </div>
         </div>
 
-        <div class="circular-carousel-wrapper" id="circular-carousel-wrapper">
-          <div class="circular-carousel-grid">
-            <div class="circular-image-deck" id="circular-image-deck" tabindex="0" role="region" aria-label="Swipeable photo deck">
-              ${deckItemsHtml}
-            </div>
+        <!-- React Bits Stack Interactive Container (Unbounded Drag / Overflow Visible) -->
+        <div class="react-bits-stack-wrapper card-spotlight" id="react-bits-stack-wrapper">
+          <div class="react-bits-stack-grid">
+            
+            <!-- Column 1 (Left): Active Card Details & Story -->
+            <div class="stack-info-col">
+              <div class="stack-info-card" id="stack-info-card">
+                <div class="stack-info-header">
+                  <span class="eyebrow-mono" id="stack-tag-text" style="font-size: 0.65rem; color: var(--text-muted);">${activeItem.tag}</span>
+                  <span class="stack-counter-badge" id="stack-counter-badge">1 / ${total}</span>
+                </div>
 
-            <div class="circular-content-col">
-              <div class="circular-text-body" id="circular-text-body">
-                <span class="eyebrow-mono" id="deck-tag-text" style="font-size: 0.65rem; color: var(--text-muted);">${activeItem.tag}</span>
-                <h3 class="deck-title" id="deck-name-text" style="font-size: 1.25rem; font-weight: 500; color: var(--text-primary); margin-top: 0.2rem; letter-spacing: -0.02em;">
+                <h3 class="stack-title" id="stack-name-text" style="font-size: 1.35rem; font-weight: 500; color: var(--text-primary); margin-top: 0.35rem; letter-spacing: -0.02em;">
                   ${activeItem.name}
                 </h3>
-                <p class="deck-designation" id="deck-designation-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.65rem;">
+                
+                <p class="stack-designation" id="stack-designation-text" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.85rem;">
                   ${activeItem.designation}
                 </p>
-                <blockquote class="deck-quote" id="deck-quote-text" style="font-size: 0.9rem; font-style: italic; color: var(--text-primary); line-height: 1.55; margin: 0; min-height: 3.5rem;">
+
+                <blockquote class="stack-quote" id="stack-quote-text" style="font-size: 0.925rem; font-style: italic; color: var(--text-primary); line-height: 1.6; margin: 0; min-height: 4rem;">
                   “${activeItem.quote}”
                 </blockquote>
-              </div>
 
-              <div class="circular-controls-row">
-                <div class="deck-dots-indicator" id="deck-dots-indicator">
-                  ${dotsHtml}
-                </div>
+                <!-- Stack Navigation Controls -->
+                <div class="stack-controls-row">
+                  <div class="stack-dots-indicator" id="stack-dots-indicator">
+                    ${personalGalleryData
+                      .map(
+                        (_, i) => `
+                        <button type="button" class="stack-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="View card ${i + 1}"></button>
+                      `
+                      )
+                      .join('')}
+                  </div>
 
-                <div class="deck-arrow-buttons">
-                  <button type="button" class="deck-nav-btn" id="deck-prev-btn" aria-label="Previous photo" title="Previous (Left Arrow)">
-                    <svg style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M15 18l-6-6 6-6"/>
-                    </svg>
-                  </button>
-                  <button type="button" class="deck-nav-btn" id="deck-next-btn" aria-label="Next photo" title="Next (Right Arrow)">
-                    <svg style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M9 18l6-6-6-6"/>
-                    </svg>
-                  </button>
+                  <div class="stack-arrow-buttons">
+                    <button type="button" class="deck-nav-btn" id="stack-prev-btn" aria-label="Previous card in stack" title="Previous Card">
+                      <svg style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"/>
+                      </svg>
+                    </button>
+                    <button type="button" class="deck-nav-btn" id="stack-next-btn" aria-label="Next card in stack" title="Next Card">
+                      <svg style="width: 0.9rem; height: 0.9rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!-- Column 2 (Right): Interactive 3D Stack Stage -->
+            <div class="stack-stage-col">
+              <div class="stack-outer-box" id="stack-outer-box">
+                <div class="stack-container" id="react-bits-stack-deck" role="region" aria-label="Interactive draggable photo stack">
+                  ${personalGalleryData
+                    .map((item, index) => {
+                      return `
+                        <div class="card-rotate" data-index="${index}" id="stack-card-${index}">
+                          <div class="card stack-card-inner">
+                            <img src="${item.src}" alt="${item.name}" class="card-image" loading="lazy" />
+                            <div class="stack-card-badge">
+                              <span>${item.tag}</span>
+                            </div>
+                          </div>
+                        </div>
+                      `;
+                    })
+                    .join('')}
+                </div>
+              </div>
+              <div class="stack-drag-hint">
+                <i class="fa-solid fa-hand-pointer" style="font-size: 0.75rem;"></i>
+                <span>Drag anywhere or tap to shuffle</span>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -1280,64 +1341,41 @@ bundle_code = '''(function() {
   }
 
   function initOtherSideCarousel() {
-    const container = document.getElementById('circular-image-deck');
-    const wrapper = document.getElementById('circular-carousel-wrapper');
-    if (!container || !wrapper) return;
+    const deck = document.getElementById('react-bits-stack-deck');
+    const wrapper = document.getElementById('react-bits-stack-wrapper');
+    if (!deck || !wrapper) return;
 
     const total = personalGalleryData.length;
-    const prevBtn = document.getElementById('deck-prev-btn');
-    const nextBtn = document.getElementById('deck-next-btn');
-    const nameEl = document.getElementById('deck-name-text');
-    const designationEl = document.getElementById('deck-designation-text');
-    const quoteEl = document.getElementById('deck-quote-text');
-    const tagEl = document.getElementById('deck-tag-text');
-    const dots = document.querySelectorAll('.deck-dot');
+    const sensitivity = 100;
+    const randomRotation = true;
+    const randomRotations = personalGalleryData.map(() => (Math.random() * 8 - 4));
 
-    function update3DTransform() {
-      const isMobile = window.innerWidth < 640;
-      const gap = isMobile ? 28 : 48;
+    let stack = personalGalleryData.map((_, i) => i);
+    let isPaused = false;
+    let autoplayTimer = null;
 
-      for (let i = 0; i < total; i++) {
-        const el = document.getElementById(`deck-item-${i}`);
-        if (!el) continue;
+    const tagEl = document.getElementById('stack-tag-text');
+    const nameEl = document.getElementById('stack-name-text');
+    const designationEl = document.getElementById('stack-designation-text');
+    const quoteEl = document.getElementById('stack-quote-text');
+    const counterEl = document.getElementById('stack-counter-badge');
+    const dots = document.querySelectorAll('#stack-dots-indicator .stack-dot');
+    const prevBtn = document.getElementById('stack-prev-btn');
+    const nextBtn = document.getElementById('stack-next-btn');
 
-        const isActive = i === activeGalleryIndex;
-        const isLeft = (activeGalleryIndex - 1 + total) % total === i;
-        const isRight = (activeGalleryIndex + 1) % total === i;
+    function updateInfo() {
+      const topIdx = stack[stack.length - 1];
+      const item = personalGalleryData[topIdx];
+      if (!item) return;
 
-        if (isActive) {
-          el.style.zIndex = '3';
-          el.style.opacity = '1';
-          el.style.pointerEvents = 'auto';
-          el.style.transform = 'translateX(0px) translateY(0px) scale(1) rotateY(0deg)';
-        } else if (isLeft) {
-          el.style.zIndex = '2';
-          el.style.opacity = '0.65';
-          el.style.pointerEvents = 'auto';
-          el.style.transform = `translateX(-${gap}px) translateY(-6px) scale(0.88) rotateY(14deg)`;
-        } else if (isRight) {
-          el.style.zIndex = '2';
-          el.style.opacity = '0.65';
-          el.style.pointerEvents = 'auto';
-          el.style.transform = `translateX(${gap}px) translateY(-6px) scale(0.88) rotateY(-14deg)`;
-        } else {
-          el.style.zIndex = '1';
-          el.style.opacity = '0';
-          el.style.pointerEvents = 'none';
-          el.style.transform = 'translateX(0px) translateY(14px) scale(0.75) rotateY(0deg)';
-        }
-      }
-
-      const activeItem = personalGalleryData[activeGalleryIndex];
-      if (activeItem) {
-        if (nameEl) nameEl.textContent = activeItem.name;
-        if (designationEl) designationEl.textContent = activeItem.designation;
-        if (quoteEl) quoteEl.textContent = `“${activeItem.quote}”`;
-        if (tagEl) tagEl.textContent = activeItem.tag;
-      }
+      if (tagEl) tagEl.textContent = item.tag;
+      if (nameEl) nameEl.textContent = item.name;
+      if (designationEl) designationEl.textContent = item.designation;
+      if (quoteEl) quoteEl.textContent = `“${item.quote}”`;
+      if (counterEl) counterEl.textContent = `${topIdx + 1} / ${total}`;
 
       dots.forEach((dot, idx) => {
-        if (idx === activeGalleryIndex) {
+        if (idx === topIdx) {
           dot.classList.add('active');
         } else {
           dot.classList.remove('active');
@@ -1345,98 +1383,186 @@ bundle_code = '''(function() {
       });
     }
 
-    function goToNext() {
-      activeGalleryIndex = (activeGalleryIndex + 1) % total;
-      update3DTransform();
+    function renderStackPositions(animate = true) {
+      stack.forEach((cardIdx, positionIndex) => {
+        const cardEl = document.getElementById(`stack-card-${cardIdx}`);
+        if (!cardEl) return;
+
+        const inner = cardEl.querySelector('.stack-card-inner');
+        const randomRotate = randomRotation ? randomRotations[cardIdx] : 0;
+        
+        const stackOffset = stack.length - positionIndex - 1;
+        const rotateZ = stackOffset * -3.5 + randomRotate;
+        const scale = 1 + positionIndex * 0.045 - stack.length * 0.045;
+        const translateY = stackOffset * -6;
+        const zIndex = positionIndex + 10;
+
+        cardEl.style.zIndex = zIndex;
+
+        if (inner) {
+          inner.style.transition = animate ? 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease' : 'none';
+          inner.style.transformOrigin = '90% 90%';
+          inner.style.transform = `translateY(${translateY}px) scale(${scale}) rotateZ(${rotateZ}deg)`;
+        }
+      });
+
+      updateInfo();
     }
 
-    function goToPrev() {
-      activeGalleryIndex = (activeGalleryIndex - 1 + total) % total;
-      update3DTransform();
-    }
+    function sendToBack(directionX = 140, directionY = -40) {
+      if (stack.length <= 1) return;
+      const topCardIdx = stack[stack.length - 1];
+      const topCardEl = document.getElementById(`stack-card-${topCardIdx}`);
 
-    function startAutoplay() {
-      stopAutoplay();
-      autoplayTimer = setInterval(goToNext, 5000);
-    }
-
-    function stopAutoplay() {
-      if (autoplayTimer) {
-        clearInterval(autoplayTimer);
-        autoplayTimer = null;
+      if (topCardEl) {
+        const inner = topCardEl.querySelector('.stack-card-inner');
+        if (inner) {
+          inner.style.transition = 'transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.28s ease';
+          inner.style.transform = `translate(${directionX}px, ${directionY}px) rotate(${directionX > 0 ? 18 : -18}deg) scale(0.9)`;
+          inner.style.opacity = '0.3';
+        }
       }
+
+      setTimeout(() => {
+        const top = stack.pop();
+        stack.unshift(top);
+
+        if (topCardEl) {
+          const inner = topCardEl.querySelector('.stack-card-inner');
+          if (inner) {
+            inner.style.opacity = '1';
+          }
+        }
+
+        renderStackPositions(true);
+      }, 200);
     }
+
+    function bringToFront() {
+      if (stack.length <= 1) return;
+      const bottom = stack.shift();
+      stack.push(bottom);
+      renderStackPositions(true);
+    }
+
+    personalGalleryData.forEach((_, cardIdx) => {
+      const cardEl = document.getElementById(`stack-card-${cardIdx}`);
+      if (!cardEl) return;
+
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let hasMoved = false;
+
+      function onPointerDown(e) {
+        if (stack[stack.length - 1] !== cardIdx) return;
+
+        isDragging = true;
+        hasMoved = false;
+        startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+        currentX = 0;
+        currentY = 0;
+
+        cardEl.classList.add('grabbing');
+
+        window.addEventListener('pointermove', onPointerMove, { passive: false });
+        window.addEventListener('pointerup', onPointerUp);
+        window.addEventListener('pointercancel', onPointerUp);
+      }
+
+      function onPointerMove(e) {
+        if (!isDragging) return;
+        if (e.cancelable) e.preventDefault();
+
+        const x = (e.clientX || (e.touches && e.touches[0].clientX) || 0) - startX;
+        const y = (e.clientY || (e.touches && e.touches[0].clientY) || 0) - startY;
+
+        if (Math.abs(x) > 4 || Math.abs(y) > 4) {
+          hasMoved = true;
+        }
+
+        currentX = x;
+        currentY = y;
+
+        const rotateX = Math.max(-35, Math.min(35, (y / 100) * -35));
+        const rotateY = Math.max(-35, Math.min(35, (x / 100) * 35));
+
+        const inner = cardEl.querySelector('.stack-card-inner');
+        if (inner) {
+          inner.style.transition = 'none';
+          inner.style.transform = `translate3d(${x}px, ${y}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        }
+      }
+
+      function onPointerUp() {
+        if (!isDragging) return;
+        isDragging = false;
+        cardEl.classList.remove('grabbing');
+
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+
+        const dragDistance = Math.hypot(currentX, currentY);
+
+        if (dragDistance > sensitivity) {
+          const flyX = currentX > 0 ? 180 : -180;
+          const flyY = currentY;
+          sendToBack(flyX, flyY);
+        } else if (!hasMoved) {
+          sendToBack(140, -40);
+        } else {
+          renderStackPositions(true);
+        }
+      }
+
+      cardEl.addEventListener('pointerdown', onPointerDown);
+    });
 
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
-        stopAutoplay();
-        goToNext();
+        sendToBack(140, -40);
       });
     }
 
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
-        stopAutoplay();
-        goToPrev();
+        bringToFront();
       });
     }
 
     dots.forEach((dot) => {
       dot.addEventListener('click', () => {
-        const idx = parseInt(dot.getAttribute('data-index') || '0', 10);
-        stopAutoplay();
-        activeGalleryIndex = idx;
-        update3DTransform();
+        const targetIdx = parseInt(dot.getAttribute('data-index') || '0', 10);
+        while (stack[stack.length - 1] !== targetIdx) {
+          const top = stack.pop();
+          stack.unshift(top);
+        }
+        renderStackPositions(true);
       });
     });
 
-    let startX = 0;
-    let isDown = false;
+    function startAutoplay() {
+      if (autoplayTimer) clearInterval(autoplayTimer);
+      autoplayTimer = setInterval(() => {
+        if (!isPaused && document.visibilityState === 'visible') {
+          sendToBack(140, -40);
+        }
+      }, 4000);
+    }
 
-    container.addEventListener('touchstart', (e) => {
-      stopAutoplay();
-      startX = e.touches[0].clientX;
-    }, { passive: true });
-
-    container.addEventListener('touchend', (e) => {
-      const endX = e.changedTouches[0].clientX;
-      const diff = endX - startX;
-      if (Math.abs(diff) > 35) {
-        if (diff < 0) goToNext();
-        else goToPrev();
-      }
-    }, { passive: true });
-
-    container.addEventListener('mousedown', (e) => {
-      stopAutoplay();
-      isDown = true;
-      startX = e.clientX;
+    wrapper.addEventListener('mouseenter', () => {
+      isPaused = true;
     });
 
-    window.addEventListener('mouseup', (e) => {
-      if (!isDown) return;
-      isDown = false;
-      const diff = e.clientX - startX;
-      if (Math.abs(diff) > 35) {
-        if (diff < 0) goToNext();
-        else goToPrev();
-      }
+    wrapper.addEventListener('mouseleave', () => {
+      isPaused = false;
     });
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        stopAutoplay();
-        goToPrev();
-      } else if (e.key === 'ArrowRight') {
-        stopAutoplay();
-        goToNext();
-      }
-    });
-
-    wrapper.addEventListener('mouseenter', stopAutoplay);
-    wrapper.addEventListener('mouseleave', startAutoplay);
-
-    update3DTransform();
+    renderStackPositions(false);
     startAutoplay();
   }
 
