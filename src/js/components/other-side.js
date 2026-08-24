@@ -118,10 +118,18 @@ export function initOtherSideCarousel() {
   // Pre-generate stable random angles for cards
   const randomRotations = personalGalleryData.map(() => (Math.random() * 8 - 4));
 
-  // Current stack order (array of indices: first item is bottom, last item is top)
-  let stack = personalGalleryData.map((_, i) => i);
-  let isPaused = false;
-  let autoplayTimer = null;
+  function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // Current stack order (randomized initial deck order)
+  let stack = shuffleArray(personalGalleryData.map((_, i) => i));
+  let currentPage = 1;
 
   const tagEl = document.getElementById('stack-tag-text');
   const nameEl = document.getElementById('stack-name-text');
@@ -141,10 +149,10 @@ export function initOtherSideCarousel() {
     if (nameEl) nameEl.textContent = item.name;
     if (designationEl) designationEl.textContent = item.designation;
     if (quoteEl) quoteEl.textContent = `“${item.quote}”`;
-    if (counterEl) counterEl.textContent = `${topIdx + 1} / ${total}`;
+    if (counterEl) counterEl.textContent = `${currentPage} / ${total}`;
 
     dots.forEach((dot, idx) => {
-      if (idx === topIdx) {
+      if (idx === currentPage - 1) {
         dot.classList.add('active');
       } else {
         dot.classList.remove('active');
@@ -161,35 +169,37 @@ export function initOtherSideCarousel() {
       const randomRotate = randomRotation ? randomRotations[cardIdx] : 0;
       
       const stackOffset = stack.length - positionIndex - 1;
-      const rotateZ = stackOffset * -3.5 + randomRotate;
-      const scale = 1 + positionIndex * 0.045 - stack.length * 0.045;
-      const translateY = stackOffset * -6;
+      const rotateZ = stackOffset * -2.8 + randomRotate * 0.65;
+      const scale = 1 + positionIndex * 0.035 - stack.length * 0.035;
+      const translateY = stackOffset * -5;
       const zIndex = positionIndex + 10;
 
       cardEl.style.zIndex = zIndex;
 
       if (inner) {
-        inner.style.transition = animate ? 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease' : 'none';
-        inner.style.transformOrigin = '90% 90%';
-        inner.style.transform = `translateY(${translateY}px) scale(${scale}) rotateZ(${rotateZ}deg)`;
+        inner.style.transition = animate ? 'transform 0.48s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.3s ease, opacity 0.3s ease' : 'none';
+        inner.style.transformOrigin = '85% 85%';
+        inner.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale}) rotateZ(${rotateZ}deg)`;
       }
     });
 
     updateInfo();
   }
 
-  function sendToBack(directionX = 140, directionY = -40) {
+  function sendToBack(directionX = 140, directionY = -30) {
     if (stack.length <= 1) return;
     const topCardIdx = stack[stack.length - 1];
     const topCardEl = document.getElementById(`stack-card-${topCardIdx}`);
+
+    currentPage = (currentPage % total) + 1;
 
     if (topCardEl) {
       const inner = topCardEl.querySelector('.stack-card-inner');
       if (inner) {
         // Fly out smoothly in the direction of swipe
-        inner.style.transition = 'transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.28s ease';
-        inner.style.transform = `translate(${directionX}px, ${directionY}px) rotate(${directionX > 0 ? 18 : -18}deg) scale(0.9)`;
-        inner.style.opacity = '0.3';
+        inner.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease';
+        inner.style.transform = `translate3d(${directionX * 1.2}px, ${directionY * 1.2}px, 0) rotate(${directionX > 0 ? 14 : -14}deg) scale(0.92)`;
+        inner.style.opacity = '0';
       }
     }
 
@@ -205,11 +215,12 @@ export function initOtherSideCarousel() {
       }
 
       renderStackPositions(true);
-    }, 200);
+    }, 220);
   }
 
   function bringToFront() {
     if (stack.length <= 1) return;
+    currentPage = currentPage === 1 ? total : currentPage - 1;
     const bottom = stack.shift();
     stack.push(bottom);
     renderStackPositions(true);
@@ -259,13 +270,14 @@ export function initOtherSideCarousel() {
       currentY = y;
 
       // 3D tilt transformation based on drag position
-      const rotateX = Math.max(-35, Math.min(35, (y / 100) * -35));
-      const rotateY = Math.max(-35, Math.min(35, (x / 100) * 35));
+      const rotateX = Math.max(-25, Math.min(25, (y / 80) * -25));
+      const rotateY = Math.max(-25, Math.min(25, (x / 80) * 25));
+      const rotateZ = Math.max(-18, Math.min(18, (x / 100) * 14));
 
       const inner = cardEl.querySelector('.stack-card-inner');
       if (inner) {
         inner.style.transition = 'none';
-        inner.style.transform = `translate3d(${x}px, ${y}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        inner.style.transform = `translate3d(${x}px, ${y}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(1.02)`;
       }
     }
 
@@ -282,14 +294,14 @@ export function initOtherSideCarousel() {
 
       if (dragDistance > sensitivity) {
         // Send to back towards swipe direction
-        const flyX = currentX > 0 ? 180 : -180;
+        const flyX = currentX > 0 ? 160 : -160;
         const flyY = currentY;
         sendToBack(flyX, flyY);
       } else if (!hasMoved) {
         // Send to back on click / tap
-        sendToBack(140, -40);
+        sendToBack(130, -30);
       } else {
-        // Snap back to resting position
+        // Snap back smoothly to resting position
         renderStackPositions(true);
       }
     }
@@ -313,10 +325,11 @@ export function initOtherSideCarousel() {
   // Dots click navigation
   dots.forEach((dot) => {
     dot.addEventListener('click', () => {
-      const targetIdx = parseInt(dot.getAttribute('data-index') || '0', 10);
-      while (stack[stack.length - 1] !== targetIdx) {
+      const targetPage = parseInt(dot.getAttribute('data-index') || '0', 10) + 1;
+      while (currentPage !== targetPage) {
         const top = stack.pop();
         stack.unshift(top);
+        currentPage = (currentPage % total) + 1;
       }
       renderStackPositions(true);
     });

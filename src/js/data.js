@@ -32,15 +32,15 @@ export const profileData = {
   alias: "/ D4vd",
   
   // Main Philosophy Quote
-  mainQuote: "It’s going to happen, because I’m going to make it happen.",
+  mainQuote: "It’s going to happen because, I’m going to make it happen.",
   quoteSupporting: "I believe good ideas become valuable when they are executed with consistency, curiosity, and attention to detail.",
   
   // Hero Typography & Positioning
-  heroEyebrow: "AI & FULL-STACK SYSTEMS DEVELOPER",
-  heroHeading: "From websites and ERP systems to business applications and AI-powered products.",
-  heroHeadingHtml: 'From <span class="hero-highlight">websites</span> and <span class="hero-highlight">ERP systems</span> to <span class="hero-highlight">business applications</span> and <span class="hero-highlight">AI-powered products</span>.',
-  heroSupporting: "I design and build digital products across the full spectrum, websites, ERP systems, business applications, and AI-powered tools. My focus is turning ideas into real, working solutions, from the first concept all the way through implementation.",
-  heroSupportingHtml: '<span class="text-primary-contrast">I design and build digital products</span> across the full spectrum, websites, ERP systems, business applications, and AI-powered tools. My focus is turning ideas into <span class="text-primary-contrast">real, working solutions</span>, from the first concept all the way through implementation.',
+  heroEyebrow: "Web Developer for Business | Modern Tools & Technology",
+  heroHeading: "Web developer for business, delivering functional websites quickly and cost-effectively.",
+  heroHeadingHtml: 'Web developer for business, delivering <span class="hero-highlight">functional websites</span> <span class="hero-highlight">quickly and cost-effectively</span>.',
+  heroSupporting: "I build websites for businesses that are both practical and effective, leveraging up-to-date tools and technologies to design, refine, and launch faster. My priority is creating solutions that genuinely support daily operations, such as online stores, booking systems, and light automation, without adding unnecessary complexity.",
+  heroSupportingHtml: '<span class="text-primary-contrast">I build websites for businesses</span> that are both <span class="hero-highlight">practical and effective</span>, leveraging up-to-date tools and technologies to design, refine, and <span class="text-primary-contrast">launch faster</span>. My priority is creating solutions that genuinely support daily operations, such as <span class="hero-highlight">online stores</span>, <span class="hero-highlight">booking systems</span>, and <span class="hero-highlight">light automation</span>, without adding unnecessary complexity.',
   
   aboutBio: [
     "Business-minded Information Systems and Management student at BINUS University with hands-on experience in operations management, vendor negotiation, and strategic business analysis (SWOT, Porter’s Five Forces, STP).",
@@ -49,7 +49,7 @@ export const profileData = {
   ],
 
   socials: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/david-antono", icon: "fa-brands fa-linkedin-in", type: "linkedin" },
+    { label: "David Antono", href: "https://www.linkedin.com/in/david-antono", icon: "fa-brands fa-linkedin-in", type: "linkedin" },
     { label: "Instagram", href: "https://www.instagram.com/david.antonoo/", icon: "fa-brands fa-instagram", type: "instagram" },
     { label: "GitHub", href: "https://github.com/Piddooow", icon: "fa-brands fa-github", type: "github" },
     { label: "Email", href: "mailto:david.enampatoo@gmail.com", icon: "fa-solid fa-envelope", type: "email" },

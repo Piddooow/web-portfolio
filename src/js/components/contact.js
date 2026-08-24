@@ -36,7 +36,7 @@ export function renderContact() {
               </div>
               <div>
                 <span class="eyebrow-mono" style="font-size: 0.65rem;">LinkedIn</span>
-                <p style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); margin: 0;">linkedin.com/in/david-antono</p>
+                <p style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); margin: 0;">David Antono</p>
               </div>
             </div>
             <svg style="width: 0.9rem; height: 0.9rem; color: var(--text-muted);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

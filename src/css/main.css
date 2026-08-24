@@ -19,9 +19,27 @@
   --border-dashed: #d4d4d8;
   --border-active: #71717a;
 
-  --spotlight-color: rgba(0, 0, 0, 0.04);
+  --spotlight-color: rgba(99, 102, 241, 0.09);
   --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
 
+  /* Hover & Border Glow Tokens (Light Mode - Vivid Indigo & Rose Highlights) */
+  --glow-color: hsl(235deg 85% 58% / 100%);
+  --glow-color-60: hsl(235deg 85% 58% / 60%);
+  --glow-color-50: hsl(235deg 85% 58% / 50%);
+  --glow-color-40: hsl(235deg 85% 58% / 40%);
+  --glow-color-30: hsl(235deg 85% 58% / 30%);
+  --glow-color-20: hsl(235deg 85% 58% / 20%);
+  --glow-color-10: hsl(235deg 85% 58% / 10%);
+
+  --gradient-one: radial-gradient(at 80% 55%, hsla(258, 90%, 65%, 1) 0px, transparent 50%);
+  --gradient-two: radial-gradient(at 69% 34%, hsla(330, 85%, 60%, 1) 0px, transparent 50%);
+  --gradient-three: radial-gradient(at 8% 6%, hsla(160, 80%, 45%, 1) 0px, transparent 50%);
+  --gradient-four: radial-gradient(at 41% 38%, hsla(210, 95%, 55%, 1) 0px, transparent 50%);
+  --gradient-five: radial-gradient(at 86% 85%, hsla(190, 90%, 48%, 1) 0px, transparent 50%);
+  --gradient-six: radial-gradient(at 82% 18%, hsla(45, 95%, 50%, 1) 0px, transparent 50%);
+  --gradient-seven: radial-gradient(at 51% 4%, hsla(15, 95%, 55%, 1) 0px, transparent 50%);
+
+  --accent-primary: #4f46e5;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
@@ -47,8 +65,116 @@ html.dark {
   --border-dashed: #3f3f46;
   --border-active: #a1a1aa;
 
-  --spotlight-color: rgba(255, 255, 255, 0.12);
+  --spotlight-color: rgba(255, 255, 255, 0.08);
   --shadow-card: 0 18px 40px -15px rgba(0, 0, 0, 0.5);
+
+  /* Hover & Border Glow Tokens (Dark Mode - Neon Cyan/Violet/Amber Highlights) */
+  --glow-color: hsl(210deg 100% 70% / 100%);
+  --glow-color-60: hsl(210deg 100% 70% / 60%);
+  --glow-color-50: hsl(210deg 100% 70% / 50%);
+  --glow-color-40: hsl(210deg 100% 70% / 40%);
+  --glow-color-30: hsl(210deg 100% 70% / 30%);
+  --glow-color-20: hsl(210deg 100% 70% / 20%);
+  --glow-color-10: hsl(210deg 100% 70% / 10%);
+
+  --gradient-one: radial-gradient(at 80% 55%, hsla(268, 100%, 76%, 1) 0px, transparent 50%);
+  --gradient-two: radial-gradient(at 69% 34%, hsla(349, 100%, 74%, 1) 0px, transparent 50%);
+  --gradient-three: radial-gradient(at 8% 6%, hsla(136, 100%, 78%, 1) 0px, transparent 50%);
+  --gradient-four: radial-gradient(at 41% 38%, hsla(192, 100%, 64%, 1) 0px, transparent 50%);
+  --gradient-five: radial-gradient(at 86% 85%, hsla(186, 100%, 74%, 1) 0px, transparent 50%);
+  --gradient-six: radial-gradient(at 82% 18%, hsla(52, 100%, 65%, 1) 0px, transparent 50%);
+  --gradient-seven: radial-gradient(at 51% 4%, hsla(12, 100%, 72%, 1) 0px, transparent 50%);
+
+  --accent-primary: #6366f1;
+
+  /* Luxury Shimmer Tokens (Dark Mode) */
+  --shimmer-base: #a1a1aa;
+  --shimmer-mid: #e4e4e7;
+  --shimmer-highlight: #ffffff;
+  --shimmer-accent: #c084fc;
+}
+
+/* ==========================================================================
+   Neon Purple Luxury Shimmer Wave — Seamless Light & Dark Dynamic Transitions
+   ========================================================================== */
+.shiny-text {
+  background: linear-gradient(
+    110deg,
+    var(--text-primary, #09090b) 0%,
+    var(--text-primary, #09090b) 28%,
+    #7c3aed 40%,
+    #c084fc 46%,
+    #ffffff 50%,
+    #e879f9 54%,
+    #9333ea 60%,
+    var(--text-primary, #09090b) 72%,
+    var(--text-primary, #09090b) 100%
+  );
+  background-size: 270% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: neon-purple-shine 3.8s cubic-bezier(0.2, 0.9, 0.3, 1) infinite;
+  will-change: background-position;
+  transition: color 0.35s ease;
+}
+
+html.dark .shiny-text {
+  background: linear-gradient(
+    110deg,
+    #a1a1aa 0%,
+    #a1a1aa 28%,
+    #a855f7 40%,
+    #c084fc 46%,
+    #ffffff 50%,
+    #f472b6 54%,
+    #c084fc 60%,
+    #a1a1aa 72%,
+    #a1a1aa 100%
+  );
+  background-size: 270% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes neon-purple-shine {
+  0% {
+    background-position: 135% 0;
+  }
+  100% {
+    background-position: -135% 0;
+  }
+}
+
+/* ==========================================================================
+   Universal Scroll Reveal System — Bidirectional (Scroll Down & Scroll Up)
+   ========================================================================== */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0) scale(0.985);
+  filter: blur(4px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--reveal-delay, 0) * 1s);
+  will-change: transform, opacity, filter;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
 }
 
 /* Base Reset & Typography */

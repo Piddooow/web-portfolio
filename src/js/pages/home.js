@@ -3,8 +3,9 @@
 // ==========================================================================
 
 import { renderHero, initHeroAvatarPhysics } from '../components/hero.js';
+import { initScrollRevealObserver } from '../components/scroll-reveal.js';
 import { renderPhilosophy } from '../components/philosophy.js';
-import { renderFeatured } from '../components/featured.js';
+import { renderLogoLoop } from '../components/logo-loop.js';
 import { renderProjects, initSpotlightPhysics } from '../components/projects.js';
 import { renderCapabilities } from '../components/capabilities.js';
 import { renderAbout } from '../components/about.js';
@@ -18,7 +19,7 @@ export function renderHomePage() {
     <main class="site-container main-content">
       ${renderHero()}
       ${renderPhilosophy()}
-      ${renderFeatured()}
+      ${renderLogoLoop()}
       ${renderProjects()}
       ${renderCapabilities()}
       ${renderAbout()}
@@ -35,4 +36,5 @@ export function initHomePageEvents() {
   initSpotlightPhysics();
   initOtherSideCarousel();
   initGitHubActivityEvents();
+  initScrollRevealObserver();
 }

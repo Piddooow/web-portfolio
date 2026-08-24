@@ -1,0 +1,232 @@
+/* ==========================================================================
+   React Bits StaggeredMenu Component Styles
+   ========================================================================== */
+
+.staggered-menu-wrapper {
+  position: relative;
+  z-index: 999;
+}
+
+.staggered-menu-toggle {
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15));
+  border-radius: 9999px;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease;
+}
+
+.staggered-menu-toggle:hover {
+  transform: scale(1.05);
+  border-color: var(--border-active, rgba(255, 255, 255, 0.3));
+}
+
+.staggered-menu-toggle:active {
+  transform: scale(0.95);
+}
+
+.toggle-line {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background-color: var(--btn-color, #fff);
+  border-radius: 2px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease,
+              background-color 0.3s ease;
+  transform-origin: center;
+}
+
+/* Open Morphing State */
+.staggered-menu-wrapper.menu-open .toggle-line.line-1 {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.staggered-menu-wrapper.menu-open .toggle-line.line-2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.staggered-menu-wrapper.menu-open .toggle-line.line-3 {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* Cascading Staggered Curtain Backgrounds */
+.staggered-curtain-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  transform: translateY(-100%);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.staggered-curtain-layer.curtain-1 {
+  background-color: var(--color-curtain-1, #B497CF);
+  transition-delay: 0.1s;
+}
+
+.staggered-curtain-layer.curtain-2 {
+  background-color: var(--color-curtain-2, #5227FF);
+  transition-delay: 0.05s;
+}
+
+.staggered-menu-wrapper.menu-open .staggered-curtain-layer.curtain-1 {
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.staggered-menu-wrapper.menu-open .staggered-curtain-layer.curtain-2 {
+  transform: translateY(0);
+  transition-delay: 0.06s;
+}
+
+/* Staggered Content Panel */
+.staggered-menu-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background-color: var(--bg-surface-elevated, #111015);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2rem;
+  transform: translateY(-100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+  pointer-events: none;
+  overflow-y: auto;
+}
+
+.staggered-menu-wrapper.menu-open .staggered-menu-panel {
+  transform: translateY(0);
+  pointer-events: auto;
+  transition-delay: 0.12s;
+}
+
+.staggered-menu-inner {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.staggered-menu-brand {
+  margin-bottom: 0.5rem;
+}
+
+.staggered-logo {
+  height: 2rem;
+  width: auto;
+}
+
+/* Nav Item List */
+.staggered-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.staggered-nav-item {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  font-family: var(--font-sans, inherit);
+  text-decoration: none;
+  color: var(--text-primary, #ffffff);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  opacity: 0;
+  transform: translateY(24px) rotateX(-10deg);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s ease,
+              color 0.2s ease,
+              border-color 0.2s ease;
+  will-change: transform, opacity;
+}
+
+.staggered-menu-wrapper.menu-open .staggered-nav-item {
+  opacity: 1;
+  transform: translateY(0) rotateX(0deg);
+  transition-delay: var(--item-delay, 0.15s);
+}
+
+.staggered-item-number {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  color: var(--accent-color, #ff6b6b);
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.staggered-item-label {
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.staggered-nav-item:hover {
+  color: var(--text-primary, #ffffff);
+  border-bottom-color: var(--accent-color, #ff6b6b);
+}
+
+.staggered-nav-item:hover .staggered-item-label {
+  transform: translateX(6px);
+}
+
+/* Social Connections */
+.staggered-social-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s ease;
+}
+
+.staggered-menu-wrapper.menu-open .staggered-social-wrap {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--social-delay, 0.4s);
+}
+
+.staggered-social-title {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted, #888);
+}
+
+.staggered-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.staggered-social-link {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  color: var(--text-muted, #aaa);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.staggered-social-link:hover {
+  color: var(--accent-color, #ff6b6b);
+}

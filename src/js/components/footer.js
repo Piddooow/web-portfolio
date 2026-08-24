@@ -10,7 +10,7 @@ export function renderFooter() {
       <div class="site-container">
         <div class="footer-content">
           <div>
-            <p class="footer-quote">“${profileData.mainQuote}”</p>
+            <p class="footer-quote shiny-text">“${profileData.mainQuote}”</p>
             <div class="footer-metadata">
               <span style="font-weight: 500; color: var(--text-primary); display: inline-flex; align-items: center; gap: 0.25rem;">
                 <span>${profileData.name}</span>
@@ -30,7 +30,7 @@ export function renderFooter() {
 
           <div class="footer-right">
             <div class="hero-social-links" style="gap: 1rem;">
-              <a href="${profileData.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-linkedin" title="LinkedIn">
+              <a href="${profileData.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-linkedin" title="David Antono (LinkedIn)">
                 <i class="fa-brands fa-linkedin-in"></i>
               </a>
               <a href="${profileData.instagramUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-instagram" title="Instagram">

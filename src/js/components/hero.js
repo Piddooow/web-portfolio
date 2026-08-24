@@ -38,7 +38,7 @@ export function renderHero() {
         <div class="hero-meta-col">
           <div class="hero-name-badge-row">
             <h1 class="hero-name" style="display: inline-flex; align-items: baseline; gap: 0.35rem; flex-wrap: wrap;">
-              <span>${profileData.name}</span>
+              <span class="shiny-text">${profileData.name}</span>
               <span class="verified-badge" title="Verified Profile" aria-label="Verified" style="align-self: center;">
                 <svg viewBox="0 0 24 24" class="verified-icon" aria-hidden="true">
                   <path fill="#1D9BF0" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.67-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.67-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.33 2.33 4.99-4.99 1.42 1.42-6.41 6.4z"/>
@@ -54,7 +54,7 @@ export function renderHero() {
           </div>
 
           <div style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-secondary); margin-top: -0.25rem;">
-            ${educationData.institution} — ${educationData.degree} (GPA ${educationData.gpa})
+            <span class="shiny-text">${educationData.institution} — ${educationData.degree} (GPA ${educationData.gpa})</span>
           </div>
 
           <div class="hero-social-links">
@@ -65,7 +65,7 @@ export function renderHero() {
 
       <div style="display: flex; flex-direction: column; gap: 1.15rem;">
         <div>
-          <span class="eyebrow-mono" style="font-size: 0.72rem; letter-spacing: 0.25em;">${profileData.heroEyebrow}</span>
+          <span class="eyebrow-mono shiny-text" style="font-size: 0.72rem; letter-spacing: 0.25em;">${profileData.heroEyebrow}</span>
           <h2 class="hero-headline" style="margin-top: 0.4rem;">
             ${profileData.heroHeadingHtml || profileData.heroHeading}
           </h2>

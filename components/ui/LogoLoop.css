@@ -1,0 +1,153 @@
+/* ==========================================================================
+   React Bits LogoLoop Component Styles
+   ========================================================================== */
+
+.logo-loop-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+}
+
+.logo-loop-container.vertical {
+  flex-direction: column;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+}
+
+.logo-loop-track {
+  display: flex;
+  width: max-content;
+  gap: var(--logo-gap, 40px);
+}
+
+.logo-loop-track.left {
+  animation: loop-left var(--loop-duration, 25s) linear infinite;
+}
+
+.logo-loop-track.right {
+  animation: loop-right var(--loop-duration, 25s) linear infinite;
+}
+
+.logo-loop-track.up {
+  flex-direction: column;
+  animation: loop-up var(--loop-duration, 25s) linear infinite;
+}
+
+.logo-loop-track.down {
+  flex-direction: column;
+  animation: loop-down var(--loop-duration, 25s) linear infinite;
+}
+
+.logo-loop-container:hover .logo-loop-track {
+  animation-play-state: paused;
+}
+
+.logo-loop-group {
+  display: flex;
+  align-items: center;
+  gap: var(--logo-gap, 40px);
+  flex-shrink: 0;
+}
+
+.logo-loop-container.vertical .logo-loop-group {
+  flex-direction: column;
+}
+
+.logo-loop-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--logo-height, 48px);
+  flex-shrink: 0;
+}
+
+.logo-loop-link,
+.logo-loop-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: var(--bg-surface-elevated, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+  color: var(--text-primary, #ffffff);
+  text-decoration: none;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease,
+              box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.logo-loop-track.scale-on-hover .logo-loop-link:hover,
+.logo-loop-track.scale-on-hover .logo-loop-content:hover {
+  transform: scale(1.08) translateY(-2px);
+  border-color: var(--border-active, rgba(255, 255, 255, 0.3));
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.25);
+  color: var(--text-primary, #ffffff);
+}
+
+.logo-loop-img {
+  height: calc(var(--logo-height, 48px) * 0.55);
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-loop-link svg,
+.logo-loop-content svg,
+.logo-loop-link i,
+.logo-loop-content i {
+  font-size: 1.15rem;
+  color: var(--text-primary, inherit);
+}
+
+@keyframes loop-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - var(--logo-gap, 40px) / 2)); }
+}
+
+@keyframes loop-right {
+  0% { transform: translateX(calc(-50% - var(--logo-gap, 40px) / 2)); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes loop-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(calc(-50% - var(--logo-gap, 40px) / 2)); }
+}
+
+@keyframes loop-down {
+  0% { transform: translateY(calc(-50% - var(--logo-gap, 40px) / 2)); }
+  100% { transform: translateY(0); }
+}

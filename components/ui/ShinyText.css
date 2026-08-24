@@ -1,0 +1,40 @@
+/* ==========================================================================
+   React Bits ShinyText Component Styles — Neon Purple Luxury Shimmer
+   ========================================================================== */
+
+.shiny-text {
+  color: var(--shiny-base-color, #a1a1aa);
+  background: linear-gradient(
+    110deg,
+    var(--shiny-base-color, #a1a1aa) 0%,
+    var(--shiny-base-color, #a1a1aa) 28%,
+    #a855f7 40%,
+    #c084fc 46%,
+    var(--shiny-shine-color, #ffffff) 50%,
+    #e879f9 54%,
+    #9333ea 60%,
+    var(--shiny-base-color, #a1a1aa) 72%,
+    var(--shiny-base-color, #a1a1aa) 100%
+  );
+  background-size: 270% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: neon-purple-shine var(--shiny-speed, 3.8s) cubic-bezier(0.2, 0.9, 0.3, 1) infinite var(--shiny-direction, normal) var(--shiny-yoyo, normal);
+  animation-delay: var(--shiny-delay, 0s);
+  will-change: background-position;
+}
+
+.shiny-text.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+@keyframes neon-purple-shine {
+  0% {
+    background-position: 135% 0;
+  }
+  100% {
+    background-position: -135% 0;
+  }
+}

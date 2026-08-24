@@ -36,14 +36,14 @@ bundle_code = '''(function() {
     pfpImage: "src/assets/images/personal/vidd-childhood.jpg",
     
     // Main Philosophy Quote
-    mainQuote: "It’s going to happen, because I’m going to make it happen.",
+    mainQuote: "It’s going to happen because, I’m going to make it happen.",
     quoteSupporting: "I believe good ideas become valuable when they are executed with consistency, curiosity, and attention to detail.",
     
-    heroEyebrow: "AI & FULL-STACK SYSTEMS DEVELOPER",
-    heroHeading: "From websites and ERP systems to business applications and AI-powered products.",
-    heroHeadingHtml: 'From <span class="hero-highlight">websites</span> and <span class="hero-highlight">ERP systems</span> to <span class="hero-highlight">business applications</span> and <span class="hero-highlight">AI-powered products</span>.',
-    heroSupporting: "I design and build digital products across the full spectrum, websites, ERP systems, business applications, and AI-powered tools. My focus is turning ideas into real, working solutions, from the first concept all the way through implementation.",
-    heroSupportingHtml: '<span class="text-primary-contrast">I design and build digital products</span> across the full spectrum, websites, ERP systems, business applications, and AI-powered tools. My focus is turning ideas into <span class="text-primary-contrast">real, working solutions</span>, from the first concept all the way through implementation.',
+    heroEyebrow: "Web Developer for Business | Modern Tools & Technology",
+    heroHeading: "Web developer for business, delivering functional websites quickly and cost-effectively.",
+    heroHeadingHtml: 'Web developer for business, delivering <span class="hero-highlight">functional websites</span> <span class="hero-highlight">quickly and cost-effectively</span>.',
+    heroSupporting: "I build websites for businesses that are both practical and effective, leveraging up-to-date tools and technologies to design, refine, and launch faster. My priority is creating solutions that genuinely support daily operations, such as online stores, booking systems, and light automation, without adding unnecessary complexity.",
+    heroSupportingHtml: '<span class="text-primary-contrast">I build websites for businesses</span> that are both <span class="hero-highlight">practical and effective</span>, leveraging up-to-date tools and technologies to design, refine, and <span class="text-primary-contrast">launch faster</span>. My priority is creating solutions that genuinely support daily operations, such as <span class="hero-highlight">online stores</span>, <span class="hero-highlight">booking systems</span>, and <span class="hero-highlight">light automation</span>, without adding unnecessary complexity.',
     
     aboutBio: [
       "Business-minded Information Systems and Management student at BINUS University with hands-on experience in operations management, vendor negotiation, and strategic business analysis (SWOT, Porter’s Five Forces, STP).",
@@ -52,7 +52,7 @@ bundle_code = '''(function() {
     ],
 
     socials: [
-      { label: "LinkedIn", href: "https://www.linkedin.com/in/david-antono", icon: "fa-brands fa-linkedin-in", type: "linkedin" },
+      { label: "David Antono", href: "https://www.linkedin.com/in/david-antono", icon: "fa-brands fa-linkedin-in", type: "linkedin" },
       { label: "Instagram", href: "https://www.instagram.com/david.antonoo/", icon: "fa-brands fa-instagram", type: "instagram" },
       { label: "GitHub", href: "https://github.com/Piddooow", icon: "fa-brands fa-github", type: "github" },
       { label: "Email", href: "mailto:david.enampatoo@gmail.com", icon: "fa-solid fa-envelope", type: "email" },
@@ -425,11 +425,13 @@ bundle_code = '''(function() {
       .join('');
 
     const mobileLinksHtml = navItems
-      .map((item) => {
+      .map((item, idx) => {
+        const num = String(idx + 1).padStart(2, '0');
         const active = currentPath === item.href ? 'active' : '';
         return `
-          <a href="${item.href}" class="mobile-nav-link ${active}" data-label="${item.label}">
-            <span>${item.label}</span>
+          <a href="${item.href}" class="mobile-nav-link ${active}" data-label="${item.label}" style="--item-index: ${idx};">
+            <span class="mobile-nav-link-num">${num}</span>
+            <span class="mobile-nav-link-text">${item.label}</span>
           </a>
         `;
       })
@@ -465,27 +467,31 @@ bundle_code = '''(function() {
                 </svg>
               </button>
 
-              <!-- Mobile Hamburger Menu Button (Visible on mobile < 640px) -->
+              <!-- React Bits StaggeredMenu Hamburger Button (Visible on mobile < 640px) -->
               <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
-                <svg class="hamburger-icon" id="hamburger-icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="3" y1="12" x2="21" y2="12"></line>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-                <svg class="hamburger-icon" id="hamburger-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+                <span class="toggle-line line-1"></span>
+                <span class="toggle-line line-2"></span>
+                <span class="toggle-line line-3"></span>
               </button>
             </div>
           </nav>
         </div>
 
-        <!-- Mobile Dropdown Drawer -->
+        <!-- React Bits StaggeredMenu Dropdown Drawer -->
         <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true">
           <div class="site-container">
-            <div class="mobile-nav-links">
+            <div class="mobile-nav-links" style="--total-items: ${navItems.length};">
               ${mobileLinksHtml}
+
+              <div class="mobile-nav-social-wrap">
+                <span class="mobile-nav-social-label">Connect</span>
+                <div class="mobile-nav-social-links">
+                  <a href="${profileData.githubUrl}" target="_blank" rel="noopener noreferrer" class="mobile-nav-social-link">GitHub</a>
+                  <a href="${profileData.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="mobile-nav-social-link">David Antono (LinkedIn)</a>
+                  <a href="${profileData.instagramUrl}" target="_blank" rel="noopener noreferrer" class="mobile-nav-social-link">Instagram</a>
+                  <a href="mailto:${profileData.email}" class="mobile-nav-social-link">Email</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -566,10 +572,9 @@ bundle_code = '''(function() {
       });
     }
 
+    // Mobile Drawer Toggle (React Bits StaggeredMenu effect)
     const mobileBtn = document.getElementById('mobile-menu-btn');
     const drawer = document.getElementById('mobile-nav-drawer');
-    const iconOpen = document.getElementById('hamburger-icon-open');
-    const iconClose = document.getElementById('hamburger-icon-close');
 
     if (mobileBtn && drawer) {
       let isOpen = false;
@@ -578,20 +583,18 @@ bundle_code = '''(function() {
         if (!isOpen) return;
         isOpen = false;
         drawer.classList.remove('open');
+        mobileBtn.classList.remove('open');
         drawer.setAttribute('aria-hidden', 'true');
         mobileBtn.setAttribute('aria-expanded', 'false');
-        if (iconOpen) iconOpen.style.display = 'block';
-        if (iconClose) iconClose.style.display = 'none';
       }
 
       function openMenu() {
         if (isOpen) return;
         isOpen = true;
         drawer.classList.add('open');
+        mobileBtn.classList.add('open');
         drawer.setAttribute('aria-hidden', 'false');
         mobileBtn.setAttribute('aria-expanded', 'true');
-        if (iconOpen) iconOpen.style.display = 'none';
-        if (iconClose) iconClose.style.display = 'block';
       }
 
       mobileBtn.addEventListener('click', (e) => {
@@ -690,7 +693,7 @@ bundle_code = '''(function() {
           <div class="hero-meta-col">
             <div class="hero-name-badge-row">
               <h1 class="hero-name" style="display: inline-flex; align-items: baseline; gap: 0.35rem; flex-wrap: wrap;">
-                <span>${profileData.name}</span>
+                <span class="shiny-text">${profileData.name}</span>
                 <span class="verified-badge" title="Verified Profile" aria-label="Verified" style="align-self: center;">
                   <svg viewBox="0 0 24 24" class="verified-icon" aria-hidden="true">
                     <path fill="#1D9BF0" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.67-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.67-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.33 2.33 4.99-4.99 1.42 1.42-6.41 6.4z"/>
@@ -706,7 +709,7 @@ bundle_code = '''(function() {
             </div>
 
             <div style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-secondary); margin-top: -0.25rem;">
-              ${educationData.institution} — ${educationData.degree} (GPA ${educationData.gpa})
+              <span class="shiny-text">${educationData.institution} — ${educationData.degree} (GPA ${educationData.gpa})</span>
             </div>
 
             <div class="hero-social-links">
@@ -717,7 +720,7 @@ bundle_code = '''(function() {
 
         <div style="display: flex; flex-direction: column; gap: 1.15rem;">
           <div>
-            <span class="eyebrow-mono" style="font-size: 0.72rem; letter-spacing: 0.25em;">${profileData.heroEyebrow}</span>
+            <span class="eyebrow-mono shiny-text" style="font-size: 0.72rem; letter-spacing: 0.25em;">${profileData.heroEyebrow}</span>
             <h2 class="hero-headline" style="margin-top: 0.4rem;">
               ${profileData.heroHeadingHtml || profileData.heroHeading}
             </h2>
@@ -867,16 +870,90 @@ bundle_code = '''(function() {
     }
   }
 
+  // --- Universal ScrollReveal System ---
+  function initScrollRevealObserver() {
+    const targetSelectors = [
+      '.hero-section',
+      '.philosophy-section',
+      '.logo-loop-section',
+      '.projects-section',
+      '.capabilities-section',
+      '.about-section',
+      '.experience-section',
+      '.outside-ide-section',
+      '.github-section',
+      '.contact-section',
+      '.project-card',
+      '.capability-card',
+      '.about-profile-card',
+      '.experience-card',
+      '.contact-item',
+      '.github-card'
+    ];
+
+    const elements = document.querySelectorAll(targetSelectors.join(', '));
+    if (!elements.length) return;
+
+    const parents = new Set();
+    elements.forEach((el) => {
+      el.classList.add('reveal-on-scroll');
+      if (el.parentElement) {
+        parents.add(el.parentElement);
+      }
+    });
+
+    parents.forEach((parent) => {
+      const children = parent.querySelectorAll('.reveal-on-scroll');
+      if (children.length > 1) {
+        children.forEach((child, idx) => {
+          child.style.setProperty('--reveal-delay', (idx * 0.06).toFixed(2));
+        });
+      }
+    });
+
+    function updateReveals() {
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+      elements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+
+        // Top elements past the viewport or elements within viewport stay/become revealed
+        if (rect.top < windowHeight - 24) {
+          el.classList.add('is-revealed');
+        } else {
+          // Elements below the viewport exit transition
+          el.classList.remove('is-revealed');
+        }
+      });
+    }
+
+    let ticking = false;
+    function onScrollOrResize() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateReveals();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+
+    updateReveals();
+  }
+
   // --- Philosophy ---
   function renderPhilosophy() {
     return `
       <section class="philosophy-section" id="philosophy" style="padding: 1.75rem 2rem; border-radius: 0.75rem; border: 1px dashed var(--border-dashed); background-color: var(--bg-surface-card);">
         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
           <span class="eyebrow-mono" style="font-size: 0.65rem; letter-spacing: 0.2em;">Guiding Principle</span>
-          <blockquote style="font-size: 1.25rem; font-style: italic; font-weight: 300; color: var(--text-primary); line-height: 1.45; letter-spacing: -0.02em; margin: 0;">
+          <blockquote style="font-size: 1.25rem; font-style: italic; font-weight: 700; opacity: 0.85; color: var(--text-primary); line-height: 1.45; letter-spacing: -0.02em; margin: 0;">
             “${profileData.mainQuote}”
           </blockquote>
-          <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+          <p style="font-size: 0.875rem; color: var(--text-secondary); opacity: 0.78; line-height: 1.6; margin: 0;">
             ${profileData.quoteSupporting}
           </p>
         </div>
@@ -884,49 +961,78 @@ bundle_code = '''(function() {
     `;
   }
 
-  // --- Featured Project ---
-  function renderFeatured() {
-    const tagsHtml = featuredProject.techTags
-      .map((t) => `<span class="pill-badge" style="font-size: 0.7rem;">${t}</span>`)
-      .join('');
+  // --- React Bits LogoLoop Tech Stack (Dual-Track Left/Right Stream with Dynamic Brand Hover) ---
+  function renderLogoLoop() {
+    const languagesAndFrameworks = [
+      { title: "React", icon: "fa-brands fa-react", href: "https://react.dev", color: "#61DAFB" },
+      { title: "Next.js", icon: "fa-solid fa-n", href: "https://nextjs.org", color: "#E2E8F0" },
+      { title: "TypeScript", icon: "fa-solid fa-code", href: "https://www.typescriptlang.org", color: "#3178C6" },
+      { title: "JavaScript", icon: "fa-brands fa-js", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", color: "#F7DF1E" },
+      { title: "Python", icon: "fa-brands fa-python", href: "https://www.python.org", color: "#3776AB" },
+      { title: "PHP", icon: "fa-brands fa-php", href: "https://www.php.net", color: "#777BB4" },
+      { title: "Tailwind CSS", icon: "fa-solid fa-wind", href: "https://tailwindcss.com", color: "#38BDF8" },
+      { title: "HTML5", icon: "fa-brands fa-html5", href: "https://developer.mozilla.org/en-US/docs/Glossary/HTML5", color: "#E34F26" }
+    ];
 
-    return `
-      <section class="featured-card" id="featured-work">
-        <div class="featured-img-wrap">
-          <a href="${featuredProject.liveUrl}" target="_blank" rel="noopener noreferrer" title="View live website" style="display: block; width: 100%; height: 100%;">
-            <img src="${featuredProject.image}" alt="${featuredProject.title} live screenshot" class="featured-img" />
+    const toolsAndDatabases = [
+      { title: "Node.js", icon: "fa-brands fa-node-js", href: "https://nodejs.org", color: "#339933" },
+      { title: "PostgreSQL", icon: "fa-solid fa-database", href: "https://www.postgresql.org", color: "#4169E1" },
+      { title: "MySQL", icon: "fa-solid fa-server", href: "https://www.mysql.com", color: "#4479A1" },
+      { title: "Docker", icon: "fa-brands fa-docker", href: "https://www.docker.com", color: "#2496ED" },
+      { title: "Git & GitHub", icon: "fa-brands fa-github", href: "https://github.com/Piddooow", color: "#F05032" },
+      { title: "Figma", icon: "fa-brands fa-figma", href: "https://www.figma.com", color: "#F24E1E" },
+      { title: "Visual Paradigm", icon: "fa-solid fa-diagram-project", href: "#capabilities", color: "#0080FF" },
+      { title: "Postman", icon: "fa-solid fa-paper-plane", href: "https://www.postman.com", color: "#FF6C37" },
+      { title: "SQL & ERD", icon: "fa-solid fa-table-cells", href: "#capabilities", color: "#A855F7" }
+    ];
+
+    const renderTrackGroup = (logos) =>
+      logos
+        .map(
+          (logo) => `
+        <div class="logo-loop-item">
+          <a href="${logo.href}" target="_blank" rel="noopener noreferrer" class="logo-loop-link" title="${logo.title}" style="--brand-color: ${logo.color}; --brand-glow: ${logo.color}33;">
+            <i class="${logo.icon}"></i>
+            <span class="logo-loop-title">${logo.title}</span>
           </a>
         </div>
+      `
+        )
+        .join('');
 
-        <div class="featured-content">
-          <div>
-            <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem;">
-              <span class="eyebrow-mono" style="font-size: 0.65rem;">Primary Showcase • ${featuredProject.category}</span>
-              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">${featuredProject.year}</span>
+    const row1Html = renderTrackGroup(languagesAndFrameworks);
+    const row2Html = renderTrackGroup(toolsAndDatabases);
+
+    return `
+      <section class="logo-loop-section" id="tech-loop" style="padding: 1.5rem 0; overflow: hidden;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem; padding: 0 0.25rem;">
+          <span class="eyebrow-mono" style="font-size: 0.65rem; letter-spacing: 0.18em;">Core Engineering & Tech Stack</span>
+          <span style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);">Languages • Tools • Systems</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <!-- Track 1: Languages & Core Frameworks (Left to Right stream) -->
+          <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 32s;">
+            <div class="logo-loop-track left scale-on-hover">
+              <div class="logo-loop-group">
+                ${row1Html}
+              </div>
+              <div class="logo-loop-group" aria-hidden="true">
+                ${row1Html}
+              </div>
             </div>
-            <h3 class="featured-title" style="margin-top: 0.35rem;">${featuredProject.title}</h3>
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);">${featuredProject.role}</span>
           </div>
 
-          <p style="font-size: 0.875rem; line-height: 1.6; color: var(--text-secondary);">
-            ${featuredProject.summary}
-          </p>
-
-          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
-            ${featuredProject.tech}
-          </div>
-
-          <div class="featured-tags" style="align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
-              ${tagsHtml}
+          <!-- Track 2: Databases, Tools & Architecture (Right to Left stream) -->
+          <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 32s;">
+            <div class="logo-loop-track right scale-on-hover">
+              <div class="logo-loop-group">
+                ${row2Html}
+              </div>
+              <div class="logo-loop-group" aria-hidden="true">
+                ${row2Html}
+              </div>
             </div>
-
-            <a href="${featuredProject.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size: 0.76rem; padding: 0.4rem 0.85rem; gap: 0.35rem;">
-              <span>Visit Live Website</span>
-              <svg style="width: 0.8rem; height: 0.8rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
-              </svg>
-            </a>
           </div>
         </div>
       </section>
@@ -1342,15 +1448,22 @@ bundle_code = '''(function() {
 
   function initOtherSideCarousel() {
     const deck = document.getElementById('react-bits-stack-deck');
-    const wrapper = document.getElementById('react-bits-stack-wrapper');
-    if (!deck || !wrapper) return;
-
     const total = personalGalleryData.length;
     const sensitivity = 100;
     const randomRotation = true;
     const randomRotations = personalGalleryData.map(() => (Math.random() * 8 - 4));
 
-    let stack = personalGalleryData.map((_, i) => i);
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    let stack = shuffleArray(personalGalleryData.map((_, i) => i));
+    let currentPage = 1;
     let isPaused = false;
     let autoplayTimer = null;
 
@@ -1372,10 +1485,10 @@ bundle_code = '''(function() {
       if (nameEl) nameEl.textContent = item.name;
       if (designationEl) designationEl.textContent = item.designation;
       if (quoteEl) quoteEl.textContent = `“${item.quote}”`;
-      if (counterEl) counterEl.textContent = `${topIdx + 1} / ${total}`;
+      if (counterEl) counterEl.textContent = `${currentPage} / ${total}`;
 
       dots.forEach((dot, idx) => {
-        if (idx === topIdx) {
+        if (idx === currentPage - 1) {
           dot.classList.add('active');
         } else {
           dot.classList.remove('active');
@@ -1392,34 +1505,36 @@ bundle_code = '''(function() {
         const randomRotate = randomRotation ? randomRotations[cardIdx] : 0;
         
         const stackOffset = stack.length - positionIndex - 1;
-        const rotateZ = stackOffset * -3.5 + randomRotate;
-        const scale = 1 + positionIndex * 0.045 - stack.length * 0.045;
-        const translateY = stackOffset * -6;
+        const rotateZ = stackOffset * -2.8 + randomRotate * 0.65;
+        const scale = 1 + positionIndex * 0.035 - stack.length * 0.035;
+        const translateY = stackOffset * -5;
         const zIndex = positionIndex + 10;
 
         cardEl.style.zIndex = zIndex;
 
         if (inner) {
-          inner.style.transition = animate ? 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease' : 'none';
-          inner.style.transformOrigin = '90% 90%';
-          inner.style.transform = `translateY(${translateY}px) scale(${scale}) rotateZ(${rotateZ}deg)`;
+          inner.style.transition = animate ? 'transform 0.48s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.3s ease, opacity 0.3s ease' : 'none';
+          inner.style.transformOrigin = '85% 85%';
+          inner.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale}) rotateZ(${rotateZ}deg)`;
         }
       });
 
       updateInfo();
     }
 
-    function sendToBack(directionX = 140, directionY = -40) {
+    function sendToBack(directionX = 140, directionY = -30) {
       if (stack.length <= 1) return;
       const topCardIdx = stack[stack.length - 1];
       const topCardEl = document.getElementById(`stack-card-${topCardIdx}`);
 
+      currentPage = (currentPage % total) + 1;
+
       if (topCardEl) {
         const inner = topCardEl.querySelector('.stack-card-inner');
         if (inner) {
-          inner.style.transition = 'transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.28s ease';
-          inner.style.transform = `translate(${directionX}px, ${directionY}px) rotate(${directionX > 0 ? 18 : -18}deg) scale(0.9)`;
-          inner.style.opacity = '0.3';
+          inner.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease';
+          inner.style.transform = `translate3d(${directionX * 1.2}px, ${directionY * 1.2}px, 0) rotate(${directionX > 0 ? 14 : -14}deg) scale(0.92)`;
+          inner.style.opacity = '0';
         }
       }
 
@@ -1435,11 +1550,12 @@ bundle_code = '''(function() {
         }
 
         renderStackPositions(true);
-      }, 200);
+      }, 220);
     }
 
     function bringToFront() {
       if (stack.length <= 1) return;
+      currentPage = currentPage === 1 ? total : currentPage - 1;
       const bottom = stack.shift();
       stack.push(bottom);
       renderStackPositions(true);
@@ -1463,63 +1579,66 @@ bundle_code = '''(function() {
         hasMoved = false;
         startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
         startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-        currentX = 0;
-        currentY = 0;
-
-        cardEl.classList.add('grabbing');
-
-        window.addEventListener('pointermove', onPointerMove, { passive: false });
-        window.addEventListener('pointerup', onPointerUp);
-        window.addEventListener('pointercancel', onPointerUp);
-      }
-
-      function onPointerMove(e) {
-        if (!isDragging) return;
-        if (e.cancelable) e.preventDefault();
-
-        const x = (e.clientX || (e.touches && e.touches[0].clientX) || 0) - startX;
-        const y = (e.clientY || (e.touches && e.touches[0].clientY) || 0) - startY;
-
-        if (Math.abs(x) > 4 || Math.abs(y) > 4) {
-          hasMoved = true;
-        }
-
-        currentX = x;
-        currentY = y;
-
-        const rotateX = Math.max(-35, Math.min(35, (y / 100) * -35));
-        const rotateY = Math.max(-35, Math.min(35, (x / 100) * 35));
 
         const inner = cardEl.querySelector('.stack-card-inner');
         if (inner) {
           inner.style.transition = 'none';
-          inner.style.transform = `translate3d(${x}px, ${y}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+          inner.style.cursor = 'grabbing';
+        }
+      }
+
+      function onPointerMove(e) {
+        if (!isDragging) return;
+
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+
+        currentX = clientX - startX;
+        currentY = clientY - startY;
+
+        if (Math.abs(currentX) > 4 || Math.abs(currentY) > 4) {
+          hasMoved = true;
+        }
+
+        const inner = cardEl.querySelector('.stack-card-inner');
+        if (inner) {
+          const rotateZ = currentX * 0.08;
+          inner.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotateZ(${rotateZ}deg) scale(1.03)`;
         }
       }
 
       function onPointerUp() {
         if (!isDragging) return;
         isDragging = false;
-        cardEl.classList.remove('grabbing');
 
-        window.removeEventListener('pointermove', onPointerMove);
-        window.removeEventListener('pointerup', onPointerUp);
-        window.removeEventListener('pointercancel', onPointerUp);
+        const inner = cardEl.querySelector('.stack-card-inner');
+        if (inner) {
+          inner.style.cursor = 'grab';
+        }
 
-        const dragDistance = Math.hypot(currentX, currentY);
-
-        if (dragDistance > sensitivity) {
-          const flyX = currentX > 0 ? 180 : -180;
-          const flyY = currentY;
-          sendToBack(flyX, flyY);
-        } else if (!hasMoved) {
-          sendToBack(140, -40);
+        if (Math.hypot(currentX, currentY) > sensitivity) {
+          sendToBack(currentX, currentY);
         } else {
           renderStackPositions(true);
         }
+
+        currentX = 0;
+        currentY = 0;
       }
 
-      cardEl.addEventListener('pointerdown', onPointerDown);
+      cardEl.addEventListener('mousedown', onPointerDown);
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerUp);
+
+      cardEl.addEventListener('touchstart', onPointerDown, { passive: true });
+      window.addEventListener('touchmove', onPointerMove, { passive: true });
+      window.addEventListener('touchend', onPointerUp);
+
+      cardEl.addEventListener('click', (e) => {
+        if (!hasMoved && stack[stack.length - 1] === cardIdx) {
+          sendToBack(120, -30);
+        }
+      });
     });
 
     if (nextBtn) {
@@ -1536,34 +1655,17 @@ bundle_code = '''(function() {
 
     dots.forEach((dot) => {
       dot.addEventListener('click', () => {
-        const targetIdx = parseInt(dot.getAttribute('data-index') || '0', 10);
-        while (stack[stack.length - 1] !== targetIdx) {
+        const targetPage = parseInt(dot.getAttribute('data-index') || '0', 10) + 1;
+        while (currentPage !== targetPage) {
           const top = stack.pop();
           stack.unshift(top);
+          currentPage = (currentPage % total) + 1;
         }
         renderStackPositions(true);
       });
     });
 
-    function startAutoplay() {
-      if (autoplayTimer) clearInterval(autoplayTimer);
-      autoplayTimer = setInterval(() => {
-        if (!isPaused && document.visibilityState === 'visible') {
-          sendToBack(140, -40);
-        }
-      }, 4000);
-    }
-
-    wrapper.addEventListener('mouseenter', () => {
-      isPaused = true;
-    });
-
-    wrapper.addEventListener('mouseleave', () => {
-      isPaused = false;
-    });
-
     renderStackPositions(false);
-    startAutoplay();
   }
 
   // --- Real-time GitHub Contribution Calendar Table ---
@@ -1752,7 +1854,7 @@ bundle_code = '''(function() {
                 </div>
                 <div>
                   <span class="eyebrow-mono" style="font-size: 0.65rem;">LinkedIn</span>
-                  <p style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); margin: 0;">linkedin.com/in/david-antono</p>
+                  <p style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); margin: 0;">David Antono</p>
                 </div>
               </div>
               <svg style="width: 0.9rem; height: 0.9rem; color: var(--text-muted);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1978,7 +2080,7 @@ bundle_code = '''(function() {
         <div class="site-container">
           <div class="footer-content">
             <div>
-              <p class="footer-quote">“${profileData.mainQuote}”</p>
+              <p class="footer-quote shiny-text">“${profileData.mainQuote}”</p>
               <div class="footer-metadata">
                 <span style="font-weight: 500; color: var(--text-primary); display: inline-flex; align-items: center; gap: 0.25rem;">
                   <span>${profileData.name}</span>
@@ -1998,7 +2100,7 @@ bundle_code = '''(function() {
 
           <div class="footer-right">
             <div class="hero-social-links" style="gap: 1rem;">
-              <a href="${profileData.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-linkedin" title="LinkedIn">
+              <a href="${profileData.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-linkedin" title="David Antono (LinkedIn)">
                 <i class="fa-brands fa-linkedin-in"></i>
               </a>
               <a href="${profileData.instagramUrl}" target="_blank" rel="noopener noreferrer" class="hero-social-link social-instagram" title="Instagram">
@@ -2050,7 +2152,7 @@ bundle_code = '''(function() {
       <main class="site-container main-content">
         ${renderHero()}
         ${renderPhilosophy()}
-        ${renderFeatured()}
+        ${renderLogoLoop()}
         ${renderProjects()}
         ${renderCapabilities()}
         ${renderAbout()}
@@ -2067,6 +2169,7 @@ bundle_code = '''(function() {
     initSpotlightPhysics();
     initOtherSideCarousel();
     initGitHubActivityEvents();
+    initScrollRevealObserver();
   }
 
   // --- 404 Error Page ---

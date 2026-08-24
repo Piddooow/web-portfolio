@@ -52,11 +52,13 @@ export function renderNavbar(currentPath = '#/') {
     .join('');
 
   const mobileLinksHtml = navItems
-    .map((item) => {
+    .map((item, idx) => {
+      const num = String(idx + 1).padStart(2, '0');
       const active = currentPath === item.href ? 'active' : '';
       return `
-        <a href="${item.href}" class="mobile-nav-link ${active}" data-label="${item.label}">
-          <span>${item.label}</span>
+        <a href="${item.href}" class="mobile-nav-link ${active}" data-label="${item.label}" style="--item-index: ${idx};">
+          <span class="mobile-nav-link-num">${num}</span>
+          <span class="mobile-nav-link-text">${item.label}</span>
         </a>
       `;
     })
@@ -92,27 +94,31 @@ export function renderNavbar(currentPath = '#/') {
               </svg>
             </button>
 
-            <!-- Mobile Hamburger Menu Button (Visible on mobile < 640px) -->
+            <!-- React Bits StaggeredMenu Hamburger Button (Visible on mobile < 640px) -->
             <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
-              <svg class="hamburger-icon" id="hamburger-icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-              <svg class="hamburger-icon" id="hamburger-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
+              <span class="toggle-line line-1"></span>
+              <span class="toggle-line line-2"></span>
+              <span class="toggle-line line-3"></span>
             </button>
           </div>
         </nav>
       </div>
 
-      <!-- Mobile Dropdown Drawer -->
+      <!-- React Bits StaggeredMenu Dropdown Drawer -->
       <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true">
         <div class="site-container">
-          <div class="mobile-nav-links">
+          <div class="mobile-nav-links" style="--total-items: ${navItems.length};">
             ${mobileLinksHtml}
+
+            <div class="mobile-nav-social-wrap">
+              <span class="mobile-nav-social-label">Connect</span>
+              <div class="mobile-nav-social-links">
+                <a href="${profileData.githubUrl}" target="_blank" rel="noopener noreferrer" class="mobile-nav-social-link">GitHub</a>
+                <a href="${profileData.linkedinUrl}" target="_blank" rel="noopener noreferrer" class="mobile-nav-social-link">David Antono (LinkedIn)</a>
+                <a href="${profileData.instagramUrl}" target="_blank" rel="noopener noreferrer" class="mobile-nav-social-link">Instagram</a>
+                <a href="mailto:${profileData.email}" class="mobile-nav-social-link">Email</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -128,11 +134,9 @@ export function initNavbarEvents() {
     });
   }
 
-  // Mobile Drawer Toggle
+  // Mobile Drawer Toggle (React Bits StaggeredMenu effect)
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const drawer = document.getElementById('mobile-nav-drawer');
-  const iconOpen = document.getElementById('hamburger-icon-open');
-  const iconClose = document.getElementById('hamburger-icon-close');
 
   if (mobileBtn && drawer) {
     let isOpen = false;
@@ -141,20 +145,18 @@ export function initNavbarEvents() {
       if (!isOpen) return;
       isOpen = false;
       drawer.classList.remove('open');
+      mobileBtn.classList.remove('open');
       drawer.setAttribute('aria-hidden', 'true');
       mobileBtn.setAttribute('aria-expanded', 'false');
-      if (iconOpen) iconOpen.style.display = 'block';
-      if (iconClose) iconClose.style.display = 'none';
     }
 
     function openMenu() {
       if (isOpen) return;
       isOpen = true;
       drawer.classList.add('open');
+      mobileBtn.classList.add('open');
       drawer.setAttribute('aria-hidden', 'false');
       mobileBtn.setAttribute('aria-expanded', 'true');
-      if (iconOpen) iconOpen.style.display = 'none';
-      if (iconClose) iconClose.style.display = 'block';
     }
 
     mobileBtn.addEventListener('click', (e) => {
