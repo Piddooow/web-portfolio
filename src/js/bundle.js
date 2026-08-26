@@ -44,8 +44,7 @@
     heroSupportingHtml: '<span class="text-primary-contrast">I build websites for businesses</span> that are both <span class="hero-highlight">practical and effective</span>, leveraging up-to-date tools and technologies to design, refine, and <span class="text-primary-contrast">launch faster</span>. My priority is creating solutions that genuinely support daily operations, such as <span class="hero-highlight">online stores</span>, <span class="hero-highlight">booking systems</span>, and <span class="hero-highlight">light automation</span>, without adding unnecessary complexity.',
     
     aboutBio: [
-      "Business-minded Information Systems and Management student at BINUS University with hands-on experience in operations management, vendor negotiation, and strategic business analysis (SWOT, Porter’s Five Forces, STP).",
-      "Skilled at turning market and stakeholder insights into actionable go-to-market strategies and robust system architectures (ERD, use cases, workflows), with a proven track record of driving a ~40% revenue increase and leading cross-functional teams.",
+      "Business-minded Information Systems and Management student at BINUS University with hands-on experience in operations management, vendor negotiation, and strategic business analysis (SWOT, Porter’s Five Forces, STP). Skilled at turning market and stakeholder insights into actionable go-to-market strategies and robust system architectures (ERD, use cases, workflows), with a proven track record of driving a ~40% revenue increase and leading cross-functional teams.",
       "Combines analytical rigor with technical craftsmanship in SQL, Figma, UI/UX design, system modeling, and modern web development to engineer software and business systems that actually deliver measurable impact."
     ],
 
@@ -658,7 +657,55 @@
       });
     }
 
+    initNavScrollSpy();
     initRandomLetterSwapHover();
+  }
+
+  function initNavScrollSpy() {
+    const sections = document.querySelectorAll('section[id]');
+    const desktopLinks = document.querySelectorAll('.desktop-nav-links .nav-link');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-drawer .mobile-nav-link');
+
+    if (!sections.length || (!desktopLinks.length && !mobileLinks.length)) return;
+
+    function updateActiveLink() {
+      const scrollPos = window.scrollY + 120;
+      let currentSectionId = '';
+
+      sections.forEach((section) => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          currentSectionId = section.id;
+        }
+      });
+
+      if (!currentSectionId && window.scrollY < 200) {
+        currentSectionId = 'hero';
+      }
+
+      if (currentSectionId) {
+        const targetHash = '#' + currentSectionId;
+        desktopLinks.forEach((link) => {
+          if (link.getAttribute('href') === targetHash) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+
+        mobileLinks.forEach((link) => {
+          if (link.getAttribute('href') === targetHash) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+    }
+
+    window.addEventListener('scroll', updateActiveLink, { passive: true });
+    updateActiveLink();
   }
 
   // --- Hero (24fps Smooth Pixelated Avatar Transition & / D4vd) ---
@@ -719,7 +766,7 @@
         <div style="display: flex; flex-direction: column; gap: 1.15rem;">
           <div>
             <span class="eyebrow-mono shiny-text" style="font-size: 0.72rem; letter-spacing: 0.25em;">${profileData.heroEyebrow}</span>
-            <h2 class="hero-headline" style="margin-top: 0.4rem;">
+            <h2 class="hero-headline" style="margin-top: 0.4rem;" data-staggered-text="${profileData.heroHeading}" data-stagger-by="words" data-stagger-delay="0.035" data-stagger-initial-delay="0.12">
               ${profileData.heroHeadingHtml || profileData.heroHeading}
             </h2>
           </div>
@@ -878,6 +925,8 @@
       '.capabilities-section',
       '.about-section',
       '.experience-section',
+      '.other-side-section',
+      '.github-activity-section',
       '.outside-ide-section',
       '.github-section',
       '.contact-section',
@@ -1028,10 +1077,10 @@
 
           <div style="display: flex; flex-direction: column; gap: 0.85rem;">
             
-            <!-- Category 1: Languages & Core (Right to Left stream / Kanan ke Kiri) -->
+            <!-- Category 1: Languages & Core (Left to Right stream / Kiri ke Kanan) -->
             <div class="tech-stream-row">
               <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 34s;">
-                <div class="logo-loop-track left scale-on-hover">
+                <div class="logo-loop-track right scale-on-hover">
                   <div class="logo-loop-group">
                     ${row1Html}
                   </div>
@@ -1042,10 +1091,10 @@
               </div>
             </div>
 
-            <!-- Category 2: Frameworks & UI/UX (Left to Right stream / Kiri ke Kanan) -->
+            <!-- Category 2: Frameworks & UI/UX (Right to Left stream / Kanan ke Kiri) -->
             <div class="tech-stream-row">
               <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 32s;">
-                <div class="logo-loop-track right scale-on-hover">
+                <div class="logo-loop-track left scale-on-hover">
                   <div class="logo-loop-group">
                     ${row2Html}
                   </div>
@@ -1097,50 +1146,80 @@
           `
           : '';
 
+        const githubBtnHtml = p.githubUrl
+          ? `
+            <a href="${p.githubUrl}" target="_blank" rel="noopener noreferrer" class="card-action-btn" title="View Source on GitHub">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          `
+          : '';
+
+        const caseStudyBtnHtml = p.caseStudyUrl
+          ? `
+            <a href="${p.caseStudyUrl}" class="btn-primary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+              <span>Read Case Study</span>
+              <i class="fa-solid fa-arrow-right" style="font-size: 0.7rem;"></i>
+            </a>
+          `
+          : '';
+
         return `
-          <article class="card-spotlight project-card ${isComingSoon ? 'coming-soon-card' : ''}" data-slug="${p.slug}" style="${isComingSoon ? 'border: 1px dashed var(--border-dashed);' : ''}">
-            <span class="edge-light"></span>
-            <div class="project-card-img-wrap">
-              <img src="${p.image}" alt="${p.title}" class="project-card-img" />
+          <div class="card-spotlight border-glow-card" style="display: flex; flex-direction: column; overflow: hidden;">
+            <div class="edge-light"></div>
+            
+            <div style="width: 100%; aspect-ratio: 16/10; overflow: hidden; background-color: var(--bg-surface-elevated); border-bottom: 1px dashed var(--border-dashed); position: relative;">
+              <img
+                src="${p.image}"
+                alt="${p.title}"
+                class="project-card-img"
+                loading="lazy"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';"
+              />
+              ${
+                isComingSoon
+                  ? `<div style="position: absolute; top: 0.75rem; right: 0.75rem; z-index: 10; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); padding: 0.2rem 0.55rem; border-radius: 9999px; font-family: var(--font-mono); font-size: 0.65rem; color: #fff; font-weight: 600;">Coming Soon</div>`
+                  : ''
+              }
             </div>
 
             <div class="project-card-body">
               <div>
-                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
-                  <span class="eyebrow-mono" style="font-size: 0.65rem;">${p.category}</span>
-                  <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">${p.year}</span>
-                </div>
+                <span class="eyebrow-mono" style="font-size: 0.65rem;">${p.category}</span>
                 <h3 class="project-card-title">${p.title}</h3>
-                <span style="display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.5rem;">${p.role}</span>
-                <p class="project-card-desc">${p.summary}</p>
-              </div>
-
-              <div>
-                <div style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); font-style: italic; margin-bottom: 0.65rem;">
-                  ${p.tech}
-                </div>
-
-                <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
-                  ${tagsHtml}
-                </div>
-
+                <p class="project-card-desc">${p.description}</p>
+                <div class="featured-tags">${tagsHtml}</div>
                 ${liveBtnHtml}
               </div>
+
+              <div class="project-card-footer">
+                <div class="project-card-actions">
+                  ${githubBtnHtml}
+                </div>
+                ${caseStudyBtnHtml}
+              </div>
             </div>
-          </article>
+          </div>
         `;
       })
       .join('');
 
     return `
-      <section class="projects-section" id="projects">
+      <section class="featured-section" id="projects">
         <div class="section-header">
           <div>
-            <h2 class="section-title">Verified Projects & Systems</h2>
-            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
-              Real-world web engineering, system architecture, UX prototypes, and upcoming projects.
+            <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="width: 8px; height: 8px; border-radius: 9999px; background-color: var(--text-primary); display: inline-block;"></span>
+              <span class="eyebrow-mono">Featured Engineering</span>
+            </div>
+            <h2 class="section-title">Verified Works & Systems</h2>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.35rem; max-width: 38rem;">
+              Production ERP ecosystems, full-stack applications, and specialized management tools.
             </p>
           </div>
+          <a href="#/projects" class="section-link">
+            <span>View All Projects</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
         </div>
 
         <div class="projects-grid">
@@ -1152,7 +1231,7 @@
 
   function initSpotlightPhysics() {
     const elements = document.querySelectorAll(
-      '.card-spotlight, .border-glow-card, .featured-card, .resume-item, .edu-item, .philosophy-card, .react-bits-stack-wrapper, .contact-item, .tech-grid-card, .github-calendar-box, .btn-primary, .btn-secondary, .pill-badge, .deck-nav-btn'
+      '.card-spotlight, .border-glow-card, .featured-card, .resume-item, .edu-item, .cert-card, .certification-card, .event-card, .events-card, .philosophy-card, .react-bits-stack-wrapper, .contact-item, .contact-card, .tech-grid-card, .tech-stack-dashed-wrapper, .github-calendar-box, .personal-photo-card, .case-study-hero-card, .metric-card, .solution-card, .feature-block, .btn-primary, .btn-secondary, .pill-badge, .deck-nav-btn'
     );
 
     elements.forEach((el) => {
@@ -1207,26 +1286,55 @@
 
   // --- Core Competencies ---
   function renderCapabilities() {
+    const getIconForItem = (itemText) => {
+      const lower = itemText.toLowerCase();
+      if (lower.includes('sql') || lower.includes('database')) return 'fa-solid fa-database';
+      if (lower.includes('figma') || lower.includes('ui/ux')) return 'fa-brands fa-figma';
+      if (lower.includes('visual paradigm') || lower.includes('erd') || lower.includes('use cases')) return 'fa-solid fa-diagram-project';
+      if (lower.includes('excel') || lower.includes('financial')) return 'fa-solid fa-file-excel';
+      if (lower.includes('web development') || lower.includes('react') || lower.includes('html')) return 'fa-brands fa-react';
+      if (lower.includes('ms office') || lower.includes('reporting')) return 'fa-solid fa-file-lines';
+      if (lower.includes('business analysis') || lower.includes('swot')) return 'fa-solid fa-magnifying-glass-chart';
+      if (lower.includes('go-to-market') || lower.includes('gtm')) return 'fa-solid fa-rocket';
+      if (lower.includes('negotiation') || lower.includes('procurement')) return 'fa-solid fa-handshake';
+      if (lower.includes('operations') || lower.includes('inventory')) return 'fa-solid fa-boxes-stacked';
+      if (lower.includes('stakeholder')) return 'fa-solid fa-users';
+      if (lower.includes('marketing') || lower.includes('growth')) return 'fa-solid fa-bullhorn';
+      return 'fa-solid fa-check';
+    };
+
     const cardsHtml = competenciesData
       .map((cat) => {
         const itemsListHtml = cat.items
-          .map(
-            (item) => `
-            <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.86rem; color: var(--text-primary); padding: 0.25rem 0;">
-              <span style="width: 5px; height: 5px; border-radius: 9999px; background-color: var(--text-muted); flex-shrink: 0;"></span>
-              <span>${item}</span>
-            </div>
-          `
-          )
+          .map((item) => {
+            const icon = getIconForItem(item);
+            return `
+              <div class="competency-item-row" style="display: flex; align-items: center; gap: 0.85rem; padding: 0.65rem 0.85rem; border-radius: 0.5rem; background-color: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;">
+                <div style="display: flex; align-items: center; gap: 0.75rem; min-width: 0;">
+                  <span class="competency-icon-box" style="width: 28px; height: 28px; border-radius: 0.35rem; display: inline-flex; align-items: center; justify-content: center; background-color: var(--bg-surface-card); border: 1px dashed var(--border-dashed); font-size: 0.82rem; color: var(--text-primary); flex-shrink: 0;">
+                    <i class="${icon}"></i>
+                  </span>
+                  <span style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); white-space: normal; line-height: 1.4;">
+                    ${item}
+                  </span>
+                </div>
+              </div>
+            `;
+          })
           .join('');
 
         return `
-          <div class="card-spotlight" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
-            <div>
-              <span class="eyebrow-mono" style="font-size: 0.65rem;">${cat.subtitle}</span>
-              <h3 style="font-size: 1.25rem; font-weight: 500; color: var(--text-primary); margin-top: 0.25rem;">${cat.category}</h3>
+          <div class="card-spotlight border-glow-card" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; border-bottom: 1px dashed var(--border-dashed); padding-bottom: 1rem;">
+              <div>
+                <span class="eyebrow-mono" style="font-size: 0.65rem; letter-spacing: 0.18em;">${cat.subtitle}</span>
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-top: 0.25rem; letter-spacing: -0.02em;">${cat.category}</h3>
+              </div>
+              <span class="pill-badge" style="font-family: var(--font-mono); font-size: 0.65rem; padding: 0.2rem 0.55rem; border: 1px dashed var(--border-dashed);">
+                ${cat.items.length} Skills
+              </span>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 0.25rem; border-top: 1px dashed var(--border-dashed); padding-top: 0.75rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
               ${itemsListHtml}
             </div>
           </div>
@@ -1238,14 +1346,18 @@
       <section class="capabilities-section" id="capabilities">
         <div class="section-header">
           <div>
-            <h2 class="section-title">Core Competencies</h2>
-            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
-              Analytical frameworks, system modeling tools, and execution capabilities.
+            <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="width: 8px; height: 8px; border-radius: 9999px; background-color: var(--text-primary); display: inline-block;"></span>
+              <span class="eyebrow-mono">Professional Competencies</span>
+            </div>
+            <h2 class="section-title">Core Engineering & Capabilities</h2>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.35rem; max-width: 42rem; line-height: 1.6;">
+              Analytical frameworks, systems modeling instruments, modern web architecture, and execution capabilities.
             </p>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.35rem; margin-top: 1.5rem;">
           ${cardsHtml}
         </div>
       </section>
@@ -1255,7 +1367,7 @@
   // --- About & Education ---
   function renderAbout() {
     const bioParagraphsHtml = profileData.aboutBio
-      .map((p) => `<p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary);">${p}</p>`)
+      .map((p) => `<p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); text-align: left;">${p}</p>`)
       .join('');
 
     const languagesHtml = languageData
@@ -1389,8 +1501,51 @@
     const activeItem = personalGalleryData[initialTopIndex] || personalGalleryData[0];
 
     return `
-      <section class="other-side-section" id="other-side" style="margin-top: 1.5rem;">
-        <div class="section-header">
+      <section class="other-side-section" id="other-side" aria-label="Personal and creative showcase">
+        <!-- React Bits <BendingMarquee /> Top (Right to Left / Kanan ke Kiri) -->
+        ${renderBendingMarquee({
+          marqueeText: "Hey Hey It's Vidd!!",
+          direction: 'left',
+          bend: 60,
+          curveAmount: -60,
+          depth: -200,
+          perspective: 800,
+          speed: 16.0,
+          fontSize: 34,
+          fontWeight: 600,
+          letterSpacing: 1.0,
+          separator: '*',
+          bandPadding: 12,
+          interactive: false,
+          className: 'bending-marquee-top'
+        })}
+
+        <!-- React Bits <TextScatter /> Interactive Typography (@reactbits-starter/text-scatter-tw) -->
+        <div class="text-scatter-wrapper" style="text-align: center; padding: 1.5rem 0.5rem; position: relative; z-index: 25; overflow: visible !important;">
+          <span class="text-scatter-container text-scatter-hero-heading text-scatter-gradient-text" data-text-scatter="Who's Vidd?" style="font-size: clamp(2.2rem, 5.2vw, 3.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.15; display: inline-block; cursor: pointer; user-select: none; overflow: visible !important;">
+            Who's Vidd?
+          </span>
+        </div>
+
+        <!-- React Bits <BendingMarquee /> Bottom (Left to Right / Kiri ke Kanan) -->
+        ${renderBendingMarquee({
+          marqueeText: "Hey Hey It's Vidd!!",
+          direction: 'right',
+          bend: 60,
+          curveAmount: 60,
+          depth: -200,
+          perspective: 800,
+          speed: 16.0,
+          fontSize: 34,
+          fontWeight: 600,
+          letterSpacing: 1.0,
+          separator: '*',
+          bandPadding: 12,
+          interactive: false,
+          className: 'bending-marquee-bottom'
+        })}
+
+        <div class="section-header" style="margin-top: 1.5rem;">
           <div>
             <h2 class="section-title">The other side of Vidd</h2>
             <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
@@ -1705,8 +1860,14 @@
     renderStackPositions(false);
   }
 
-  // --- Real-time GitHub Contribution Calendar Table ---
+  // --- Real-time GitHub Contribution Calendar Table Starting January ---
   function renderGitHubActivity() {
+    const currentYear = new Date().getFullYear();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthsHtml = months
+      .map((m) => `<span>${m}</span>`)
+      .join('');
+
     return `
       <section class="github-activity-section" id="github-activity" style="margin-top: 1.5rem;">
         <div class="section-header">
@@ -1728,7 +1889,7 @@
         <div class="github-calendar-box">
           <div class="github-cal-header">
             <span style="font-weight: 500; font-size: 0.88rem;" id="github-total-contributions">
-              8 contributions in the last year
+              8 contributions in ${currentYear}
             </span>
             <div style="display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">
               <span class="beacon-dot" style="width: 0.4rem; height: 0.4rem;"></span>
@@ -1737,34 +1898,24 @@
           </div>
 
           <div class="github-cal-overflow">
-            <div class="github-cal-months">
-              <span>Aug</span>
-              <span>Sep</span>
-              <span>Oct</span>
-              <span>Nov</span>
-              <span>Dec</span>
-              <span>Jan</span>
-              <span>Feb</span>
-              <span>Mar</span>
-              <span>Apr</span>
-              <span>May</span>
-              <span>Jun</span>
-              <span>Jul</span>
-              <span>Aug</span>
-            </div>
-
-            <div class="github-cal-grid-body">
-              <div class="github-cal-days-label">
-                <span></span>
-                <span>Mon</span>
-                <span></span>
-                <span>Wed</span>
-                <span></span>
-                <span>Fri</span>
-                <span></span>
+            <div class="github-cal-inner-wrapper">
+              <div class="github-cal-months">
+                ${monthsHtml}
               </div>
 
-              <div class="github-cal-weeks" id="github-weeks-container">
+              <div class="github-cal-grid-body">
+                <div class="github-cal-days-label">
+                  <span></span>
+                  <span>Mon</span>
+                  <span></span>
+                  <span>Wed</span>
+                  <span></span>
+                  <span>Fri</span>
+                  <span></span>
+                </div>
+
+                <div class="github-cal-weeks" id="github-weeks-container">
+                </div>
               </div>
             </div>
           </div>
@@ -1774,7 +1925,7 @@
               Learn how we count contributions
             </a>
 
-            <div style="display: flex; align-items: center; gap: 0.35rem;">
+            <div class="github-cal-legend">
               <span>Less</span>
               <span class="github-cal-cell" style="cursor: default;"></span>
               <span class="github-cal-cell" data-level="1" style="cursor: default;"></span>
@@ -1794,23 +1945,42 @@
     const totalCountEl = document.getElementById('github-total-contributions');
     if (!weeksContainer) return;
 
+    const currentYear = new Date().getFullYear();
+
     function renderCalendarGrid(daysArray) {
       weeksContainer.innerHTML = '';
-      const columnsCount = Math.ceil(daysArray.length / 7);
+      const firstDate = new Date(`${currentYear}-01-01T00:00:00`);
+      const startDayOfWeek = firstDate.getDay();
+
+      const gridDays = [];
+      for (let p = 0; p < startDayOfWeek; p++) {
+        gridDays.push({ isPad: true, level: 0, count: 0, date: '' });
+      }
+
+      daysArray.forEach((d) => {
+        gridDays.push({ ...d, isPad: false });
+      });
+
+      const columnsCount = Math.ceil(gridDays.length / 7);
       for (let c = 0; c < columnsCount; c++) {
         const colDiv = document.createElement('div');
         colDiv.className = 'github-cal-col';
 
         for (let r = 0; r < 7; r++) {
           const idx = c * 7 + r;
-          if (idx < daysArray.length) {
-            const day = daysArray[idx];
+          if (idx < gridDays.length) {
+            const day = gridDays[idx];
             const cell = document.createElement('div');
             cell.className = 'github-cal-cell';
-            if (day.level > 0) {
-              cell.setAttribute('data-level', day.level.toString());
+            if (day.isPad) {
+              cell.style.opacity = '0';
+              cell.style.pointerEvents = 'none';
+            } else {
+              if (day.level > 0) {
+                cell.setAttribute('data-level', day.level.toString());
+              }
+              cell.title = `${day.count || 0} contributions on ${day.date}`;
             }
-            cell.title = `${day.count || 0} contributions on ${day.date}`;
             colDiv.appendChild(cell);
           }
         }
@@ -1818,21 +1988,20 @@
       }
     }
 
-    function generateFallbackDays() {
+    function generateDaysStartingJan(targetYear) {
       const days = [];
-      const today = new Date();
-      for (let i = 364; i >= 0; i--) {
-        const d = new Date(today);
-        d.setDate(d.getDate() - i);
+      const startDate = new Date(targetYear, 0, 1);
+      const endDate = new Date(targetYear, 11, 31);
+
+      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
         const dateStr = d.toISOString().split('T')[0];
-        
         let count = 0;
         let level = 0;
 
-        if (dateStr === '2026-07-28' || dateStr.endsWith('07-28')) {
+        if (dateStr === `${targetYear}-07-28`) {
           count = 1;
           level = 4;
-        } else if (dateStr === '2026-08-10' || dateStr.endsWith('08-10')) {
+        } else if (dateStr === `${targetYear}-08-10`) {
           count = 7;
           level = 4;
         }
@@ -1842,16 +2011,20 @@
       return days;
     }
 
-    renderCalendarGrid(generateFallbackDays());
+    const initialDays = generateDaysStartingJan(currentYear);
+    renderCalendarGrid(initialDays);
 
-    fetch(`https://github-contributions-api.jogruber.de/v4/${profileData.githubUsername}?y=last`)
+    fetch(`https://github-contributions-api.jogruber.de/v4/${profileData.githubUsername}?y=${currentYear}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && data.contributions && data.contributions.length > 0) {
-          if (totalCountEl && data.total && typeof data.total.lastYear !== 'undefined') {
-            totalCountEl.textContent = `${data.total.lastYear} contributions in the last year`;
+          if (totalCountEl && data.total && typeof data.total[currentYear] !== 'undefined') {
+            totalCountEl.textContent = `${data.total[currentYear]} contributions in ${currentYear}`;
           }
-          renderCalendarGrid(data.contributions);
+          const filtered = data.contributions.filter((d) => d.date && d.date.startsWith(`${currentYear}-`));
+          if (filtered.length > 0) {
+            renderCalendarGrid(filtered);
+          }
         }
       })
       .catch((err) => {
@@ -1869,7 +2042,7 @@
 
         <div class="outside-ide-layout" style="align-items: flex-start;">
           <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); max-width: 28rem;">
+            <p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); max-width: 28rem; text-align: justify; text-justify: inter-word; text-indent: 1.75rem;">
               Whether you have a strategic business challenge, an enterprise system or ERP to model, or an AI/web product to build — I’m always open to discussing new opportunities and collaborations.
             </p>
 
@@ -2204,6 +2377,8 @@
   function initHomePageEvents() {
     initHeroAvatarPhysics();
     initSpotlightPhysics();
+    initTextScatter();
+    initBendingMarquee();
     initOtherSideCarousel();
     initGitHubActivityEvents();
     initScrollRevealObserver();
@@ -2568,10 +2743,165 @@
     initBackToTopEvents();
     initChatEvents();
     initPageEvents();
+    initSpotlightPhysics();
+    initTextScatter();
+    initStaggeredText();
   }
 
-  // --- Warp Twister React Bits Pro Distortion Background Engine ---
-  function initWarpTwister() {
+  // --- Preloader React Bits Pro Animated Loading Screen Engine (@reactbits-starter/preloader-tw) ---
+  function initPreloader(options = {}) {
+    const brandName = options.brandName || 'VIDD';
+    const words = options.words || [
+      'SYSTEMS ARCHITECTURE',
+      'OPERATIONS & STRATEGY',
+      'UI/UX & WEB ENGINEERING',
+      'WELCOME TO VIDD'
+    ];
+    const logoSrc = options.logoSrc || 'src/assets/images/spider-icon.png';
+    const duration = options.duration || 1800;
+    const stairCount = options.stairCount || 5;
+
+    if (document.body) {
+      document.body.classList.add('preloader-active');
+    }
+
+    let loader = document.getElementById('preloader-screen');
+    if (!loader) {
+      loader = document.createElement('div');
+      loader.id = 'preloader-screen';
+      loader.className = 'preloader-root preloader-stairs';
+      loader.setAttribute('role', 'dialog');
+      loader.setAttribute('aria-label', 'Loading experience');
+
+      let stairsHtml = '<div class="preloader-stairs-container">';
+      for (let i = 0; i < stairCount; i++) {
+        stairsHtml += `<div class="preloader-stair-col" style="--stair-index: ${i};"></div>`;
+      }
+      stairsHtml += '</div>';
+
+      loader.innerHTML = `
+        ${stairsHtml}
+        <div class="preloader-glow-orb"></div>
+        <div class="preloader-content">
+          <div class="preloader-badge">
+            <img src="${logoSrc}" alt="${brandName}" />
+          </div>
+          <div class="preloader-titles">
+            <h1 class="preloader-brand-title">${brandName}</h1>
+            <p id="preloader-word-cycle" class="preloader-word-cycle">${words[0]}</p>
+          </div>
+          <div class="preloader-bar-track">
+            <div id="preloader-bar-indicator" class="preloader-bar-indicator"></div>
+          </div>
+          <div class="preloader-info-row">
+            <span id="preloader-status-text" class="preloader-status-text">INITIALIZING ARCHITECTURE</span>
+            <span id="preloader-counter-digits" class="preloader-counter-digits">00%</span>
+          </div>
+        </div>
+      `;
+      document.body.prepend(loader);
+    }
+
+    const fillEl = document.getElementById('preloader-bar-indicator');
+    const percentEl = document.getElementById('preloader-counter-digits');
+    const statusEl = document.getElementById('preloader-status-text');
+    const wordEl = document.getElementById('preloader-word-cycle');
+
+    let isDone = false;
+    let animFrameId;
+    let wordIntervalId;
+
+    let wordIdx = 0;
+    if (words && words.length > 1) {
+      const wordInterval = Math.max(duration / words.length, 280);
+      wordIntervalId = setInterval(() => {
+        if (isDone) return;
+        wordIdx = (wordIdx + 1) % words.length;
+        if (wordEl) {
+          wordEl.style.opacity = '0';
+          wordEl.style.transform = 'translateY(3px)';
+          setTimeout(() => {
+            if (wordEl && !isDone) {
+              wordEl.textContent = words[wordIdx];
+              wordEl.style.opacity = '1';
+              wordEl.style.transform = 'translateY(0px)';
+            }
+          }, 100);
+        }
+      }, wordInterval);
+    }
+
+    function finishLoader() {
+      if (isDone) return;
+      isDone = true;
+      if (wordIntervalId) clearInterval(wordIntervalId);
+
+      if (fillEl) fillEl.style.width = '100%';
+      if (percentEl) percentEl.textContent = '100%';
+      if (statusEl) statusEl.textContent = 'READY';
+      if (wordEl) {
+        wordEl.textContent = words[words.length - 1];
+        wordEl.style.opacity = '1';
+        wordEl.style.transform = 'translateY(0px)';
+      }
+
+      // Fast, smooth & seamless switch (zero hesitation)
+      setTimeout(() => {
+        loader.classList.add('is-exiting');
+        loader.style.pointerEvents = 'none';
+
+        // Trigger post-preloader page entrance reveal
+        if (document.body) {
+          document.body.classList.add('page-revealed');
+        }
+
+        setTimeout(() => {
+          if (document.body) {
+            document.body.classList.remove('preloader-active');
+          }
+          if (loader.parentNode) {
+            loader.parentNode.removeChild(loader);
+          }
+          cancelAnimationFrame(animFrameId);
+        }, 750);
+      }, 60);
+    }
+
+    const startTime = performance.now();
+
+    function tick(now) {
+      if (isDone) return;
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1.0);
+
+      const eased = progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      const currentPercent = Math.min(Math.round(eased * 100), 100);
+
+      if (fillEl) fillEl.style.width = `${currentPercent}%`;
+      if (percentEl) percentEl.textContent = `${currentPercent.toString().padStart(2, '0')}%`;
+
+      if (statusEl) {
+        if (currentPercent < 30) statusEl.textContent = 'INITIALIZING ARCHITECTURE';
+        else if (currentPercent < 65) statusEl.textContent = 'LOADING DESIGN TOKENS';
+        else if (currentPercent < 98) statusEl.textContent = 'PREPARING ENVIRONMENT';
+        else statusEl.textContent = 'READY';
+      }
+
+      if (progress >= 1.0) {
+        finishLoader();
+      } else {
+        animFrameId = requestAnimationFrame(tick);
+      }
+    }
+
+    animFrameId = requestAnimationFrame(tick);
+  }
+
+  // --- Twist / Warp Twister React Bits Pro Spatial Distortion & Entrance Engine ---
+  function initWarpTwister(options = {}) {
     let canvas = document.getElementById('warp-twister-canvas');
     if (!canvas) {
       canvas = document.createElement('canvas');
@@ -2584,17 +2914,24 @@
       canvas.style.height = '100vh';
       canvas.style.pointerEvents = 'none';
       canvas.style.zIndex = '-1';
-      canvas.style.transition = 'opacity 0.6s ease';
+      canvas.style.transition = 'opacity 0.8s ease';
       document.body.prepend(canvas);
     }
 
     const ctx = canvas.getContext('2d');
-    let width, height;
+    if (!ctx) return;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
     let time = 0;
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetMouseX = 0;
-    let targetMouseY = 0;
+    let introTime = 0;
+    const introSpeed = options.introSpeed || 1.2;
+    const twistStrength = options.twistStrength || 0.65;
+
+    let mouseX = width / 2;
+    let mouseY = height / 2;
+    let targetMouseX = mouseX;
+    let targetMouseY = mouseY;
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -2603,10 +2940,12 @@
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.scale(dpr, dpr);
-      mouseX = width / 2;
-      mouseY = height / 2;
-      targetMouseX = mouseX;
-      targetMouseY = mouseY;
+      if (introTime === 0) {
+        mouseX = width / 2;
+        mouseY = height / 2;
+        targetMouseX = mouseX;
+        targetMouseY = mouseY;
+      }
     }
 
     resize();
@@ -2621,13 +2960,35 @@
       { passive: true }
     );
 
+    window.addEventListener(
+      'touchmove',
+      (e) => {
+        if (e.touches && e.touches[0]) {
+          targetMouseX = e.touches[0].clientX;
+          targetMouseY = e.touches[0].clientY;
+        }
+      },
+      { passive: true }
+    );
+
     function draw() {
       time += 0.007;
+      introTime = Math.min(introTime + 0.016 * introSpeed, 1.0);
 
+      // Smooth cubic intro surge
+      const introProgress = 1 - Math.pow(1 - introTime, 3.5);
+      const introTwistBoost = (1 - introProgress) * 2.5;
+
+      // Smooth pointer easing
       mouseX += (targetMouseX - mouseX) * 0.04;
       mouseY += (targetMouseY - mouseY) * 0.04;
 
       ctx.clearRect(0, 0, width, height);
+
+      const isMobile = width < 768;
+      const rings = isMobile ? 12 : 22;
+      const pointsPerRing = isMobile ? 32 : 56;
+      const maxRadius = Math.hypot(width, height) * (0.45 + introProgress * 0.25);
 
       const isDark = document.documentElement.classList.contains('dark');
       
@@ -2635,36 +2996,33 @@
       const strokeStyleB = isDark ? 'rgba(56, 189, 248, 0.35)' : 'rgba(59, 130, 246, 0.30)';
       const strokeStyleC = isDark ? 'rgba(232, 121, 249, 0.25)' : 'rgba(168, 85, 247, 0.20)';
 
-      const centerX = width * 0.5 + (mouseX - width * 0.5) * 0.25;
-      const centerY = height * 0.45 + (mouseY - height * 0.45) * 0.25;
-
-      const rings = window.innerWidth < 768 ? 14 : 22;
-      const pointsPerRing = window.innerWidth < 768 ? 36 : 56;
-      const maxRadius = Math.hypot(width, height) * 0.65;
+      const centerX = width * 0.5 + (mouseX - width * 0.5) * 0.22;
+      const centerY = height * 0.45 + (mouseY - height * 0.45) * 0.22;
 
       for (let r = 1; r <= rings; r++) {
         const radiusProgress = r / rings;
-        const baseRadius = radiusProgress * maxRadius;
+        const baseRadius = radiusProgress * maxRadius * introProgress;
         
         if (r % 3 === 0) ctx.strokeStyle = strokeStyleA;
         else if (r % 3 === 1) ctx.strokeStyle = strokeStyleB;
         else ctx.strokeStyle = strokeStyleC;
 
-        ctx.lineWidth = 1 + (1 - radiusProgress) * 0.8;
+        ctx.lineWidth = (1 + (1 - radiusProgress) * 0.8) * (isMobile ? 0.9 : 1.0);
         ctx.beginPath();
 
         for (let p = 0; p <= pointsPerRing; p++) {
           const angle = (p / pointsPerRing) * Math.PI * 2;
 
-          const twist = Math.sin(time * 0.8 + radiusProgress * 3.5) * 0.65;
-          const waveA = Math.sin(angle * 4 + time * 1.5 + r * 0.3) * (18 * radiusProgress);
-          const waveB = Math.cos(angle * 3 - time * 1.2 + r * 0.2) * (14 * radiusProgress);
+          // Twisting vortex warp mathematics
+          const twist = Math.sin(time * 0.8 + radiusProgress * 3.5) * (twistStrength + introTwistBoost);
+          const waveA = Math.sin(angle * 4 + time * 1.5 + r * 0.3) * (18 * radiusProgress * introProgress);
+          const waveB = Math.cos(angle * 3 - time * 1.2 + r * 0.2) * (14 * radiusProgress * introProgress);
 
           const currentAngle = angle + twist * (1 - radiusProgress * 0.5);
           const currentRadius = baseRadius + waveA + waveB;
 
           const x = centerX + Math.cos(currentAngle) * currentRadius;
-          const y = centerY + Math.sin(currentAngle) * (currentRadius * 0.62);
+          const y = centerY + Math.sin(currentAngle) * (currentRadius * (isMobile ? 0.72 : 0.62));
 
           if (p === 0) {
             ctx.moveTo(x, y);
@@ -2834,7 +3192,7 @@
       }
 
       const target = e.target;
-      if (target && target.closest('a, button, input, textarea, select, [role="button"], .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .tag-chip, .logo-loop-link, .interactive')) {
+      if (target && target.closest('a, button, input, textarea, select, [role="button"], .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .tag-chip, .logo-loop-link, .interactive, .competency-item-row, .card-spotlight, .cert-thumb-btn, .project-filter-btn, .theme-toggle-btn, .mobile-menu-btn, .chat-trigger-btn, .chat-category-btn, .suggestion-chip, .back-to-top-btn, .pill-badge')) {
         container.classList.add('is-pointer');
       } else {
         container.classList.remove('is-pointer');
@@ -2851,16 +3209,539 @@
       container.classList.remove('visible');
     }
 
+    function onMouseDown() {
+      container.classList.add('is-clicking');
+    }
+
+    function onMouseUp() {
+      container.classList.remove('is-clicking');
+    }
+
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mouseenter', onMouseEnter);
     document.addEventListener('mouseleave', onMouseLeave);
+    window.addEventListener('mousedown', onMouseDown, { passive: true });
+    window.addEventListener('mouseup', onMouseUp, { passive: true });
+  }
+
+  // --- React Bits Pro <TextScatter /> Engine (@reactbits-starter/text-scatter-tw) ---
+  function initTextScatter(options = {}) {
+    const {
+      selector = '[data-text-scatter]',
+      scatterRadius = 120,
+      scatterForce = 45,
+      velocity,
+      rotationRange = 35,
+      rotation,
+      springDuration = 800,
+      duration,
+      returnDelay = 2.0,
+      returnAfter,
+      scale = 1.05
+    } = options;
+
+    const effectiveForce = velocity !== undefined ? velocity : scatterForce;
+    const effectiveRotation = rotation !== undefined ? rotation : rotationRange;
+    const effectiveDuration = duration !== undefined ? (duration <= 10 ? duration * 1000 : duration) : springDuration;
+    const effectiveDelay = returnAfter !== undefined ? returnAfter : returnDelay;
+
+    const elements = document.querySelectorAll(selector);
+
+    elements.forEach((container) => {
+      if (container.dataset.textScatterProcessed === 'true') return;
+      container.dataset.textScatterProcessed = 'true';
+
+      const rawText = container.getAttribute('data-text-scatter') || container.textContent || "Who's Vidd?";
+      const chars = rawText.trim().split('');
+
+      const isImmediateReturn = container.classList.contains('text-scatter-hero-heading') ||
+                                container.classList.contains('text-scatter-giant') ||
+                                container.getAttribute('data-immediate-return') === 'true' ||
+                                container.getAttribute('data-return-delay') === '0';
+
+      container.innerHTML = '';
+      const charElements = [];
+
+      chars.forEach((char, index) => {
+        const span = document.createElement('span');
+        span.className = 'text-scatter-char';
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        span.setAttribute('aria-hidden', 'true');
+        span.dataset.charIndex = String(index);
+        span.dataset.isScattered = 'false';
+        container.appendChild(span);
+        charElements.push(span);
+      });
+
+      container.setAttribute('aria-label', rawText);
+
+      let resetTimer = null;
+      let rafId = null;
+      let cachedCharCenters = [];
+      let isInteracting = false;
+
+      const updateCachedCenters = () => {
+        cachedCharCenters = charElements.map((el) => {
+          const rect = el.getBoundingClientRect();
+          return {
+            centerX: rect.left + rect.width / 2,
+            centerY: rect.top + rect.height / 2
+          };
+        });
+      };
+
+      const returnToRest = () => {
+        if (isInteracting) return;
+        charElements.forEach((charEl) => {
+          charEl.style.transition = 'transform ' + effectiveDuration + 'ms cubic-bezier(0.22, 1, 0.36, 1)';
+          charEl.style.transform = 'translate3d(0, 0, 0) rotate(0deg) scale(1)';
+          charEl.dataset.isScattered = 'false';
+        });
+      };
+
+      const cancelPendingReset = () => {
+        if (resetTimer) {
+          clearTimeout(resetTimer);
+          resetTimer = null;
+        }
+      };
+
+      const scheduleReset = () => {
+        cancelPendingReset();
+        if (isImmediateReturn) {
+          returnToRest();
+        } else {
+          const delayMs = Math.max(effectiveDelay * 1000, 2000);
+          resetTimer = setTimeout(() => {
+            returnToRest();
+            resetTimer = null;
+          }, delayMs);
+        }
+      };
+
+      const handlePointerStart = (clientX, clientY) => {
+        isInteracting = true;
+        cancelPendingReset();
+        updateCachedCenters();
+        handlePointerMoveCoords(clientX, clientY);
+      };
+
+      const handlePointerMoveCoords = (clientX, clientY) => {
+        isInteracting = true;
+        cancelPendingReset();
+
+        if (!cachedCharCenters.length) {
+          updateCachedCenters();
+        }
+
+        if (rafId) cancelAnimationFrame(rafId);
+
+        rafId = requestAnimationFrame(() => {
+          charElements.forEach((charEl, index) => {
+            const center = cachedCharCenters[index];
+            if (!center) return;
+
+            const dx = center.centerX - clientX;
+            const dy = center.centerY - clientY;
+            const distance = Math.hypot(dx, dy);
+
+            if (distance < scatterRadius) {
+              const proximity = Math.pow(1 - distance / scatterRadius, 1.15);
+              const force = proximity * effectiveForce;
+              const angle = Math.atan2(dy, dx);
+              const offsetX = Math.cos(angle) * force;
+              const offsetY = Math.sin(angle) * force;
+              const rotDir = index % 2 === 0 ? 1 : -1;
+              const rot = rotDir * proximity * effectiveRotation;
+              const charScale = 1 + proximity * (scale - 1);
+
+              charEl.style.transition = 'transform 0.06s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+              charEl.style.transform = 'translate3d(' + offsetX.toFixed(2) + 'px, ' + offsetY.toFixed(2) + 'px, 0) rotate(' + rot.toFixed(2) + 'deg) scale(' + charScale.toFixed(3) + ')';
+              charEl.dataset.isScattered = 'true';
+            }
+          });
+        });
+      };
+
+      const handlePointerEnd = () => {
+        isInteracting = false;
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        scheduleReset();
+      };
+
+      container.addEventListener('mouseenter', (e) => handlePointerStart(e.clientX, e.clientY), { passive: true });
+      container.addEventListener('mousemove', (e) => handlePointerMoveCoords(e.clientX, e.clientY), { passive: true });
+      container.addEventListener('mouseleave', handlePointerEnd, { passive: true });
+
+      container.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches[0]) {
+          handlePointerStart(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: true });
+
+      container.addEventListener('touchmove', (e) => {
+        if (e.touches && e.touches[0]) {
+          handlePointerMoveCoords(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: true });
+
+      container.addEventListener('touchend', handlePointerEnd, { passive: true });
+      container.addEventListener('touchcancel', handlePointerEnd, { passive: true });
+
+      window.addEventListener('resize', updateCachedCenters, { passive: true });
+    });
+  }
+
+  // --- React Bits Pro <BendingMarquee /> Engine (@reactbits-starter/bending-marquee-tw) ---
+  let marqueeInstanceCount = 0;
+  function renderBendingMarquee({
+    marqueeText = "Hey Hey It's Vidd!!",
+    direction = 'left',
+    bend = 60,
+    curveAmount,
+    depth = -200,
+    perspective = 800,
+    fontSize = 34,
+    fontWeight = 600,
+    letterSpacing = 1.0,
+    separator = '*',
+    bandPadding = 12,
+    speed = 16.0,
+    interactive = false,
+    className = '',
+    textColor = '',
+    bandColor = ''
+  } = {}) {
+    marqueeInstanceCount += 1;
+    const uid = 'bm-' + marqueeInstanceCount + '-' + Math.random().toString(36).substring(2, 7);
+    const pathId = 'curve-path-' + uid;
+    const effectiveBend = curveAmount !== undefined ? curveAmount : bend;
+    const baseY = 50;
+    const pathD = 'M-300,' + baseY + ' Q720,' + (baseY + effectiveBend) + ' 1740,' + baseY;
+
+    const trimmed = marqueeText.trim();
+    const cleanText = trimmed + '\u00A0\u00A0\u00A0' + separator + '\u00A0\u00A0\u00A0';
+
+    return `
+      <div 
+        class="bending-marquee-container unclickable ${className}" 
+        id="${uid}" 
+        data-marquee-text="${encodeURIComponent(cleanText)}"
+        data-direction="${direction}"
+        data-speed="${speed}"
+        data-depth="${depth}"
+        data-perspective="${perspective}"
+        data-font-size="${fontSize}"
+        data-font-weight="${fontWeight}"
+        data-letter-spacing="${letterSpacing}"
+        data-band-padding="${bandPadding}"
+        data-interactive="false"
+        data-path-id="${pathId}"
+        style="perspective: ${perspective}px; padding-top: ${bandPadding}px; padding-bottom: ${bandPadding}px; ${bandColor ? `background-color: ${bandColor};` : ''}"
+        role="region"
+        aria-hidden="true"
+      >
+        <div class="bending-marquee-3d-stage" style="transform: translate3d(0, 0, ${depth}px) scale(${1 - Math.abs(depth) * 0.0006});">
+          <svg class="bending-marquee-svg" viewBox="0 0 1440 100" preserveAspectRatio="xMidYMid meet">
+            <text class="bending-marquee-measure" xml:space="preserve" style="visibility: hidden; opacity: 0; pointer-events: none; font-size: ${fontSize}px; font-weight: ${fontWeight}; letter-spacing: ${letterSpacing}px;">
+              ${cleanText}
+            </text>
+            <defs>
+              <path id="${pathId}" d="${pathD}" fill="none" stroke="transparent"></path>
+            </defs>
+            <text xml:space="preserve" class="bending-marquee-text" style="font-size: ${fontSize}px; font-weight: ${fontWeight}; letter-spacing: ${letterSpacing}px; ${textColor ? `fill: ${textColor};` : ''}">
+              <textPath class="bending-marquee-text-path" href="#${pathId}" startOffset="0px" xmlSpace="preserve">
+                ${cleanText}
+              </textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+    `;
+  }
+
+  function initBendingMarquee(selector = '.bending-marquee-container') {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
+    const containers = document.querySelectorAll(selector);
+    if (!containers || containers.length === 0) return;
+
+    containers.forEach((container) => {
+      if (container.dataset.initialized === 'true') return;
+      container.dataset.initialized = 'true';
+
+      const measureEl = container.querySelector('.bending-marquee-measure');
+      const textPathEl = container.querySelector('.bending-marquee-text-path');
+      if (!measureEl || !textPathEl) return;
+
+      const rawText = decodeURIComponent(container.dataset.marqueeText || "Hey Hey It's Vidd!!\u00A0\u00A0\u00A0*\u00A0\u00A0\u00A0");
+      const direction = container.dataset.direction || 'left';
+      const speed = parseFloat(container.dataset.speed || '16.0');
+      const isRight = direction === 'right';
+
+      let spacing = 0;
+
+      const computeSpacing = () => {
+        if (!measureEl) return;
+        const measured = measureEl.getComputedTextLength();
+        if (measured && measured > 10) {
+          spacing = measured;
+        } else {
+          spacing = rawText.length * 22;
+        }
+
+        const repeatCount = Math.max(8, Math.ceil(3600 / spacing) + 6);
+        const fullText = Array(repeatCount).fill(rawText).join('');
+        if (textPathEl.textContent !== fullText) {
+          textPathEl.textContent = fullText;
+        }
+      };
+
+      computeSpacing();
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(computeSpacing);
+      }
+
+      let accumulatedDistance = 0;
+      let lastTimestamp = null;
+      let rafId = null;
+
+      function step(timestamp) {
+        if (!container.isConnected) {
+          if (rafId) cancelAnimationFrame(rafId);
+          return;
+        }
+
+        if (!lastTimestamp) lastTimestamp = timestamp;
+        const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.033);
+        lastTimestamp = timestamp;
+
+        if (spacing > 0 && textPathEl) {
+          const pxPerSec = (speed / 16.0) * 85;
+          accumulatedDistance += pxPerSec * dt;
+
+          const normalized = ((accumulatedDistance % spacing) + spacing) % spacing;
+          const currentOffset = isRight
+            ? -spacing * 1.5 + normalized
+            : -spacing * 1.5 - normalized;
+
+          textPathEl.setAttribute('startOffset', currentOffset.toFixed(2) + 'px');
+        }
+
+        rafId = requestAnimationFrame(step);
+      }
+
+      rafId = requestAnimationFrame(step);
+    });
+  }
+
+  // --- Minimalist Spider Icon Pull-to-Refresh Engine ---
+  function initPullToRefresh(options = {}) {
+    const pullThreshold = options.pullThreshold || 70;
+    const maxPull = options.maxPull || 120;
+    const spiderSrc = options.spiderSrc || 'src/assets/images/spider-icon.png';
+    const onRefresh = options.onRefresh || (async () => {
+      window.dispatchEvent(new CustomEvent('app:refresh'));
+      await new Promise((r) => setTimeout(r, 1200));
+    });
+
+    let indicator = document.getElementById('pull-to-refresh-indicator');
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.id = 'pull-to-refresh-indicator';
+      indicator.className = 'pull-to-refresh-indicator';
+      indicator.innerHTML = `
+        <div class="ptr-mascot-box">
+          <svg class="ptr-ring-svg" viewBox="0 0 32 32">
+            <defs>
+              <linearGradient id="ptr-gradient-bundle" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#818cf8" />
+                <stop offset="50%" stop-color="#a855f7" />
+                <stop offset="100%" stop-color="#38bdf8" />
+              </linearGradient>
+            </defs>
+            <circle class="ptr-ring-bg" cx="16" cy="16" r="14" />
+            <circle id="ptr-ring-bar" class="ptr-ring-progress" cx="16" cy="16" r="14" style="stroke: url(#ptr-gradient-bundle);" />
+          </svg>
+          <img id="ptr-spider-img" src="${spiderSrc}" alt="Spider" class="ptr-spider-img" />
+        </div>
+        <div class="ptr-text-group">
+          <span id="ptr-status-title" class="ptr-status-title">Pull to refresh</span>
+          <span id="ptr-status-sub" class="ptr-status-sub">PORTFOLIO SYNC</span>
+        </div>
+      `;
+      document.body.appendChild(indicator);
+    }
+
+    const ringBar = document.getElementById('ptr-ring-bar');
+    const titleEl = document.getElementById('ptr-status-title');
+    const subEl = document.getElementById('ptr-status-sub');
+
+    let startY = 0;
+    let isDragging = false;
+    let isRefreshing = false;
+    let pullDistance = 0;
+
+    function updateIndicator(pull) {
+      if (!indicator) return;
+      const progress = Math.min(pull / pullThreshold, 1.0);
+      const ringOffset = 88 - progress * 88;
+
+      if (ringBar) ringBar.style.strokeDashoffset = String(ringOffset);
+
+      const isReady = pull >= pullThreshold;
+
+      if (isRefreshing) {
+        indicator.className = 'pull-to-refresh-indicator is-refreshing';
+        if (titleEl) titleEl.textContent = 'Refreshing...';
+        if (subEl) subEl.textContent = 'SYNCING DATA';
+      } else if (isReady) {
+        indicator.className = 'pull-to-refresh-indicator is-ready';
+        if (titleEl) titleEl.textContent = 'Release to refresh';
+        if (subEl) subEl.textContent = 'RELEASE NOW';
+      } else if (pull > 25) {
+        indicator.className = 'pull-to-refresh-indicator';
+        if (titleEl) titleEl.textContent = 'Pull to refresh';
+        if (subEl) subEl.textContent = (progress * 100).toFixed(0) + '%';
+      } else {
+        indicator.className = 'pull-to-refresh-indicator';
+        if (titleEl) titleEl.textContent = 'Pull to refresh';
+        if (subEl) subEl.textContent = 'PORTFOLIO SYNC';
+      }
+
+      if (pull > 4 || isRefreshing) {
+        indicator.style.opacity = '1';
+        indicator.style.transform = 'translateX(-50%) translateY(' + (isRefreshing ? 60 : pull + 14) + 'px)';
+      } else {
+        indicator.style.opacity = '0';
+        indicator.style.transform = 'translateX(-50%) translateY(-110%)';
+      }
+    }
+
+    function handleStart(e) {
+      if (window.scrollY > 4 || isRefreshing) return;
+      startY = e.touches ? e.touches[0].clientY : e.clientY;
+      isDragging = true;
+    }
+
+    function handleMove(e) {
+      if (!isDragging || isRefreshing) return;
+      const currentY = e.touches ? e.touches[0].clientY : e.clientY;
+      const diff = currentY - startY;
+
+      if (diff > 0 && window.scrollY <= 2) {
+        if (e.cancelable && diff > 10) e.preventDefault();
+        const damped = Math.pow(diff, 0.82) * 0.85;
+        pullDistance = Math.min(damped, maxPull);
+        updateIndicator(pullDistance);
+      } else {
+        pullDistance = 0;
+        updateIndicator(0);
+      }
+    }
+
+    async function handleEnd() {
+      if (!isDragging || isRefreshing) return;
+      isDragging = false;
+
+      if (pullDistance >= pullThreshold) {
+        isRefreshing = true;
+        pullDistance = 55;
+        updateIndicator(pullDistance);
+
+        try {
+          await onRefresh();
+          indicator.className = 'pull-to-refresh-indicator is-success';
+          if (titleEl) titleEl.textContent = 'Updated';
+          if (subEl) subEl.textContent = 'ALL UP TO DATE';
+          await new Promise((r) => setTimeout(r, 450));
+        } catch (err) {
+          console.error('Refresh error:', err);
+        } finally {
+          isRefreshing = false;
+          pullDistance = 0;
+          updateIndicator(0);
+        }
+      } else {
+        pullDistance = 0;
+        updateIndicator(0);
+      }
+    }
+
+    window.addEventListener('touchstart', handleStart, { passive: true });
+    window.addEventListener('touchmove', handleMove, { passive: false });
+    window.addEventListener('touchend', handleEnd);
+
+    window.addEventListener('mousedown', handleStart, { passive: true });
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+  }
+
+  // --- StaggeredText React Bits Pro Engine (@reactbits-starter/staggered-text-tw) ---
+  function initStaggeredText(options = {}) {
+    const selector = options.selector || '[data-staggered-text]';
+    const elements = document.querySelectorAll(selector);
+
+    elements.forEach((el) => {
+      if (el.dataset.staggeredProcessed === 'true') return;
+      el.dataset.staggeredProcessed = 'true';
+
+      const rawText = el.getAttribute('data-staggered-text') || el.textContent.trim();
+      const staggerBy = el.getAttribute('data-stagger-by') || options.staggerBy || 'words';
+      const staggerDelay = parseFloat(el.getAttribute('data-stagger-delay')) || options.staggerDelay || 0.035;
+      const duration = parseFloat(el.getAttribute('data-stagger-duration')) || options.duration || 0.7;
+      const direction = el.getAttribute('data-stagger-direction') || options.direction || 'up';
+      const initialDelay = parseFloat(el.getAttribute('data-stagger-initial-delay')) || options.initialDelay || 0.1;
+
+      const tokens = staggerBy === 'letters' ? rawText.split('') : rawText.split(' ');
+
+      el.classList.add('staggered-text-root', 'dir-' + direction);
+      el.style.setProperty('--stagger-duration', duration + 's');
+      el.setAttribute('aria-label', rawText);
+      el.innerHTML = '';
+
+      tokens.forEach((token, idx) => {
+        const itemDelay = initialDelay + idx * staggerDelay;
+
+        const maskSpan = document.createElement('span');
+        maskSpan.className = 'staggered-text-mask';
+
+        const itemSpan = document.createElement('span');
+        itemSpan.className = 'staggered-text-item';
+        itemSpan.style.setProperty('--stagger-delay', itemDelay.toFixed(3) + 's');
+        itemSpan.textContent = token === ' ' ? '\u00A0' : token;
+
+        maskSpan.appendChild(itemSpan);
+        el.appendChild(maskSpan);
+
+        if (staggerBy === 'words' && idx < tokens.length - 1) {
+          const spaceSpan = document.createElement('span');
+          spaceSpan.className = 'staggered-text-space';
+          spaceSpan.innerHTML = '&nbsp;';
+          el.appendChild(spaceSpan);
+        }
+      });
+
+      requestAnimationFrame(() => {
+        el.classList.add('is-visible');
+      });
+    });
   }
 
   function initApp() {
     initTheme();
+    initPreloader();
     initWarpTwister();
     initClickSpark();
     initUserCursor({ name: 'Jhon Doe' });
+    initTextScatter();
+    initBendingMarquee();
+    initStaggeredText();
+    initPullToRefresh();
     window.addEventListener('hashchange', handleRoute);
     handleRoute();
   }

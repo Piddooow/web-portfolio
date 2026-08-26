@@ -5,6 +5,7 @@
 // ==========================================================================
 
 import { personalGalleryData } from '../data.js';
+import { renderBendingMarquee, initBendingMarquee } from './bending-marquee.js';
 
 export function renderOtherSide() {
   const total = personalGalleryData.length;
@@ -12,8 +13,51 @@ export function renderOtherSide() {
   const activeItem = personalGalleryData[initialTopIndex] || personalGalleryData[0];
 
   return `
-    <section class="other-side-section" id="other-side" style="margin-top: 1.5rem;">
-      <div class="section-header">
+    <section class="other-side-section" id="other-side" aria-label="Personal and creative showcase">
+      <!-- React Bits <BendingMarquee /> Top (Right to Left / Kanan ke Kiri) -->
+      ${renderBendingMarquee({
+        marqueeText: "Hey Hey It's Vidd!!",
+        direction: 'left',
+        bend: 60,
+        curveAmount: -60,
+        depth: -200,
+        perspective: 800,
+        speed: 16.0,
+        fontSize: 34,
+        fontWeight: 600,
+        letterSpacing: 1.0,
+        separator: '*',
+        bandPadding: 12,
+        interactive: false,
+        className: 'bending-marquee-top'
+      })}
+
+      <!-- React Bits <TextScatter /> Interactive Typography (@reactbits-starter/text-scatter-tw) -->
+      <div class="text-scatter-wrapper" style="text-align: center; padding: 1.5rem 0.5rem; position: relative; z-index: 25; overflow: visible !important;">
+        <span class="text-scatter-container text-scatter-hero-heading text-scatter-gradient-text" data-text-scatter="Who's Vidd?" style="font-size: clamp(2.2rem, 5.2vw, 3.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.15; display: inline-block; cursor: pointer; user-select: none; overflow: visible !important;">
+          Who's Vidd?
+        </span>
+      </div>
+
+      <!-- React Bits <BendingMarquee /> Bottom (Left to Right / Kiri ke Kanan) -->
+      ${renderBendingMarquee({
+        marqueeText: "Hey Hey It's Vidd!!",
+        direction: 'right',
+        bend: 60,
+        curveAmount: 60,
+        depth: -200,
+        perspective: 800,
+        speed: 16.0,
+        fontSize: 34,
+        fontWeight: 600,
+        letterSpacing: 1.0,
+        separator: '*',
+        bandPadding: 12,
+        interactive: false,
+        className: 'bending-marquee-bottom'
+      })}
+
+      <div class="section-header" style="margin-top: 1.5rem;">
         <div>
           <h2 class="section-title">The other side of Vidd</h2>
           <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
@@ -356,4 +400,5 @@ export function initOtherSideCarousel() {
   // Initial Render
   renderStackPositions(false);
   startAutoplay();
+  initBendingMarquee();
 }

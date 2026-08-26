@@ -1,6 +1,7 @@
 // ==========================================================================
 // UserCursor Physics Engine — React Bits Live Multiplayer User Cursor
 // 100% Real-Time Zero-Lag Cursor Tracking (Replaces Default OS Cursor)
+// Monochromatic Dark/Light Theme Adaptive
 // ==========================================================================
 
 export function initUserCursor(options = {}) {
@@ -38,7 +39,7 @@ export function initUserCursor(options = {}) {
     }
 
     const target = e.target;
-    if (target && target.closest('a, button, input, textarea, select, [role="button"], .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .tag-chip, .logo-loop-link, .interactive')) {
+    if (target && target.closest('a, button, input, textarea, select, [role="button"], .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .tag-chip, .logo-loop-link, .interactive, .competency-item-row, .card-spotlight, .cert-thumb-btn, .project-filter-btn, .theme-toggle-btn, .mobile-menu-btn, .chat-trigger-btn, .chat-category-btn, .suggestion-chip, .back-to-top-btn, .pill-badge')) {
       container.classList.add('is-pointer');
     } else {
       container.classList.remove('is-pointer');
@@ -55,7 +56,17 @@ export function initUserCursor(options = {}) {
     container.classList.remove('visible');
   }
 
+  function onMouseDown() {
+    container.classList.add('is-clicking');
+  }
+
+  function onMouseUp() {
+    container.classList.remove('is-clicking');
+  }
+
   window.addEventListener('mousemove', onMouseMove, { passive: true });
   document.addEventListener('mouseenter', onMouseEnter);
   document.addEventListener('mouseleave', onMouseLeave);
+  window.addEventListener('mousedown', onMouseDown, { passive: true });
+  window.addEventListener('mouseup', onMouseUp, { passive: true });
 }

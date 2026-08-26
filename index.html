@@ -65,7 +65,7 @@
     <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
     <!-- FontAwesome 6.7.1 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -90,6 +90,34 @@
     </script>
   </head>
   <body>
+    <!-- React Bits Pro Preloader (@reactbits-starter/preloader-tw) -->
+    <div id="preloader-screen" class="preloader-root preloader-stairs" role="dialog" aria-label="Loading experience">
+      <div class="preloader-stairs-container">
+        <div class="preloader-stair-col" style="--stair-index: 0;"></div>
+        <div class="preloader-stair-col" style="--stair-index: 1;"></div>
+        <div class="preloader-stair-col" style="--stair-index: 2;"></div>
+        <div class="preloader-stair-col" style="--stair-index: 3;"></div>
+        <div class="preloader-stair-col" style="--stair-index: 4;"></div>
+      </div>
+      <div class="preloader-glow-orb"></div>
+      <div class="preloader-content">
+        <div class="preloader-badge">
+          <img src="src/assets/images/spider-icon.png" alt="Vidd" />
+        </div>
+        <div class="preloader-titles">
+          <h1 class="preloader-brand-title">VIDD</h1>
+          <p id="preloader-word-cycle" class="preloader-word-cycle">SYSTEMS ARCHITECTURE</p>
+        </div>
+        <div class="preloader-bar-track">
+          <div id="preloader-bar-indicator" class="preloader-bar-indicator"></div>
+        </div>
+        <div class="preloader-info-row">
+          <span id="preloader-status-text" class="preloader-status-text">INITIALIZING ARCHITECTURE</span>
+          <span id="preloader-counter-digits" class="preloader-counter-digits">00%</span>
+        </div>
+      </div>
+    </div>
+
     <div id="root"></div>
 
     <!-- Application Entry (Works on both HTTP and local file:// protocols) -->

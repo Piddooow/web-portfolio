@@ -1,0 +1,62 @@
+/* ==========================================================================
+   React Bits Pro <StaggeredText /> Component Styles (@reactbits-starter/staggered-text-tw)
+   Docs: https://pro.reactbits.dev/docs/components/staggered-text
+   Buttery Smooth Masked Character/Word Stagger Reveals
+   ========================================================================== */
+
+.staggered-text-root {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  overflow: visible;
+  line-height: inherit;
+}
+
+.staggered-text-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.staggered-text-item {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+  transform: translate3d(0, 110%, 0);
+  opacity: 0;
+  filter: blur(5px);
+  transition: transform var(--stagger-duration, 0.7s) cubic-bezier(0.16, 1, 0.3, 1),
+              opacity var(--stagger-duration, 0.7s) cubic-bezier(0.16, 1, 0.3, 1),
+              filter var(--stagger-duration, 0.7s) cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+.staggered-text-root.is-visible .staggered-text-item,
+body.page-revealed .staggered-text-root .staggered-text-item {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  filter: blur(0px);
+}
+
+.staggered-text-space {
+  display: inline;
+  white-space: pre;
+}
+
+/* Direction Variants */
+.staggered-text-root.dir-down .staggered-text-item {
+  transform: translate3d(0, -110%, 0);
+}
+.staggered-text-root.dir-left .staggered-text-item {
+  transform: translate3d(60px, 0, 0);
+}
+.staggered-text-root.dir-right .staggered-text-item {
+  transform: translate3d(-60px, 0, 0);
+}
+
+.staggered-text-root.dir-down.is-visible .staggered-text-item,
+.staggered-text-root.dir-left.is-visible .staggered-text-item,
+.staggered-text-root.dir-right.is-visible .staggered-text-item {
+  transform: translate3d(0, 0, 0);
+}

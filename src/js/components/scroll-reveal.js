@@ -13,6 +13,8 @@ export function initScrollRevealObserver() {
     '.capabilities-section',
     '.about-section',
     '.experience-section',
+    '.other-side-section',
+    '.github-activity-section',
     '.outside-ide-section',
     '.github-section',
     '.contact-section',

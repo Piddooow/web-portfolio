@@ -1,6 +1,7 @@
 /* ==========================================================================
    React Bits UserCursor Component Styles
    100% Real-Time Instant Cursor Tracking + Default Cursor Hidden
+   Monochromatic Theme-Adaptive (Black in Light Mode, White in Dark Mode)
    ========================================================================== */
 
 /* Hide OS default cursor on desktop devices with mouse/trackpad pointer */
@@ -8,7 +9,7 @@
   *, *::before, *::after,
   html, body,
   a, button, input, textarea, select, [role="button"],
-  .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .pill-badge {
+  .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .pill-badge, .logo-loop-link, .competency-item-row {
     cursor: none !important;
   }
 }
@@ -43,6 +44,10 @@
 
 .user-cursor-container.is-pointer .user-cursor-pointer {
   transform: scale(1.15) rotate(-5deg);
+}
+
+.user-cursor-container.is-clicking .user-cursor-pointer {
+  transform: scale(0.92) rotate(-2deg);
 }
 
 .user-cursor-svg-path {
@@ -84,6 +89,10 @@ html.dark .user-cursor-svg-path {
   transform: scale(1.05);
 }
 
+.user-cursor-container.is-clicking .user-cursor-badge {
+  transform: scale(0.95);
+}
+
 html.dark .user-cursor-badge {
   background-color: #ffffff;
   color: #09090b;
@@ -91,7 +100,7 @@ html.dark .user-cursor-badge {
   box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
 }
 
-/* Hide on mobile & touch devices */
+/* Hide completely on mobile & touch devices */
 @media (pointer: coarse), (hover: none) {
   .user-cursor-container {
     display: none !important;

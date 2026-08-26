@@ -11,6 +11,8 @@ import { renderCapabilities } from '../components/capabilities.js';
 import { renderAbout } from '../components/about.js';
 import { renderExperience } from '../components/experience.js';
 import { renderOtherSide, initOtherSideCarousel } from '../components/other-side.js';
+import { initTextScatter } from '../components/text-scatter.js';
+import { initBendingMarquee } from '../components/bending-marquee.js';
 import { renderGitHubActivity, initGitHubActivityEvents } from '../components/github-activity.js';
 import { renderContact } from '../components/contact.js';
 
@@ -37,4 +39,6 @@ export function initHomePageEvents() {
   initOtherSideCarousel();
   initGitHubActivityEvents();
   initScrollRevealObserver();
+  initTextScatter();
+  initBendingMarquee();
 }

@@ -1,11 +1,18 @@
 // ==========================================================================
 // GitHub Activity & Real-Time Contribution Calendar Table Component
-// Clean Single Source of Truth for @Piddooow
+// Clean Single Source of Truth for @Piddooow — Starts January of Current Year
+// Fully Responsive on Desktop Web & Mobile Phones
 // ==========================================================================
 
 import { profileData } from '../data.js';
 
 export function renderGitHubActivity() {
+  const currentYear = new Date().getFullYear();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const monthsHtml = months
+    .map((m) => `<span>${m}</span>`)
+    .join('');
+
   return `
     <section class="github-activity-section" id="github-activity" style="margin-top: 1.5rem;">
       <div class="section-header">
@@ -28,7 +35,7 @@ export function renderGitHubActivity() {
       <div class="github-calendar-box">
         <div class="github-cal-header">
           <span style="font-weight: 500; font-size: 0.88rem;" id="github-total-contributions">
-            8 contributions in the last year
+            8 contributions in ${currentYear}
           </span>
           <div style="display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">
             <span class="beacon-dot" style="width: 0.4rem; height: 0.4rem;"></span>
@@ -37,38 +44,28 @@ export function renderGitHubActivity() {
         </div>
 
         <div class="github-cal-overflow">
-          <!-- Months Row -->
-          <div class="github-cal-months">
-            <span>Aug</span>
-            <span>Sep</span>
-            <span>Oct</span>
-            <span>Nov</span>
-            <span>Dec</span>
-            <span>Jan</span>
-            <span>Feb</span>
-            <span>Mar</span>
-            <span>Apr</span>
-            <span>May</span>
-            <span>Jun</span>
-            <span>Jul</span>
-            <span>Aug</span>
-          </div>
-
-          <!-- Days & Grid Row -->
-          <div class="github-cal-grid-body">
-            <div class="github-cal-days-label">
-              <span></span>
-              <span>Mon</span>
-              <span></span>
-              <span>Wed</span>
-              <span></span>
-              <span>Fri</span>
-              <span></span>
+          <div class="github-cal-inner-wrapper">
+            <!-- Months Row Starting January -->
+            <div class="github-cal-months">
+              ${monthsHtml}
             </div>
 
-            <!-- 52-Week Grid Columns -->
-            <div class="github-cal-weeks" id="github-weeks-container">
-              <!-- Dynamically populated / Fallback pre-rendered -->
+            <!-- Days & Grid Row -->
+            <div class="github-cal-grid-body">
+              <div class="github-cal-days-label">
+                <span></span>
+                <span>Mon</span>
+                <span></span>
+                <span>Wed</span>
+                <span></span>
+                <span>Fri</span>
+                <span></span>
+              </div>
+
+              <!-- Week Columns starting from January 1st -->
+              <div class="github-cal-weeks" id="github-weeks-container">
+                <!-- Dynamically populated via JavaScript -->
+              </div>
             </div>
           </div>
         </div>
@@ -79,7 +76,7 @@ export function renderGitHubActivity() {
             Learn how we count contributions
           </a>
 
-          <div style="display: flex; align-items: center; gap: 0.35rem;">
+          <div class="github-cal-legend">
             <span>Less</span>
             <span class="github-cal-cell" style="cursor: default;"></span>
             <span class="github-cal-cell" data-level="1" style="cursor: default;"></span>
@@ -99,23 +96,45 @@ export function initGitHubActivityEvents() {
   const totalCountEl = document.getElementById('github-total-contributions');
   if (!weeksContainer) return;
 
+  const currentYear = new Date().getFullYear();
+
   function renderCalendarGrid(daysArray) {
     weeksContainer.innerHTML = '';
-    const columnsCount = Math.ceil(daysArray.length / 7);
+
+    // Align start day to Sunday of the first week of January
+    const firstDate = new Date(`${currentYear}-01-01T00:00:00`);
+    const startDayOfWeek = firstDate.getDay(); // 0 is Sunday
+
+    // Prepare full grid with leading empty slots if necessary
+    const gridDays = [];
+    for (let p = 0; p < startDayOfWeek; p++) {
+      gridDays.push({ isPad: true, level: 0, count: 0, date: '' });
+    }
+
+    daysArray.forEach((d) => {
+      gridDays.push({ ...d, isPad: false });
+    });
+
+    const columnsCount = Math.ceil(gridDays.length / 7);
     for (let c = 0; c < columnsCount; c++) {
       const colDiv = document.createElement('div');
       colDiv.className = 'github-cal-col';
 
       for (let r = 0; r < 7; r++) {
         const idx = c * 7 + r;
-        if (idx < daysArray.length) {
-          const day = daysArray[idx];
+        if (idx < gridDays.length) {
+          const day = gridDays[idx];
           const cell = document.createElement('div');
           cell.className = 'github-cal-cell';
-          if (day.level > 0) {
-            cell.setAttribute('data-level', day.level.toString());
+          if (day.isPad) {
+            cell.style.opacity = '0';
+            cell.style.pointerEvents = 'none';
+          } else {
+            if (day.level > 0) {
+              cell.setAttribute('data-level', day.level.toString());
+            }
+            cell.title = `${day.count || 0} contributions on ${day.date}`;
           }
-          cell.title = `${day.count || 0} contributions on ${day.date}`;
           colDiv.appendChild(cell);
         }
       }
@@ -123,21 +142,21 @@ export function initGitHubActivityEvents() {
     }
   }
 
-  function generateFallbackDays() {
+  function generateDaysStartingJan(targetYear) {
     const days = [];
-    const today = new Date();
-    for (let i = 364; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
+    const startDate = new Date(targetYear, 0, 1);
+    const endDate = new Date(targetYear, 11, 31);
+
+    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().split('T')[0];
-      
       let count = 0;
       let level = 0;
 
-      if (dateStr === '2026-07-28' || dateStr.endsWith('07-28')) {
+      // Realistic activity peaks for David Antono
+      if (dateStr === `${targetYear}-07-28`) {
         count = 1;
         level = 4;
-      } else if (dateStr === '2026-08-10' || dateStr.endsWith('08-10')) {
+      } else if (dateStr === `${targetYear}-08-10`) {
         count = 7;
         level = 4;
       }
@@ -147,17 +166,22 @@ export function initGitHubActivityEvents() {
     return days;
   }
 
-  renderCalendarGrid(generateFallbackDays());
+  const initialDays = generateDaysStartingJan(currentYear);
+  renderCalendarGrid(initialDays);
 
-  // Fetch live API for real-time update
-  fetch(`https://github-contributions-api.jogruber.de/v4/${profileData.githubUsername}?y=last`)
+  // Fetch live API for real-time update starting January
+  fetch(`https://github-contributions-api.jogruber.de/v4/${profileData.githubUsername}?y=${currentYear}`)
     .then((res) => res.json())
     .then((data) => {
       if (data && data.contributions && data.contributions.length > 0) {
-        if (totalCountEl && data.total && typeof data.total.lastYear !== 'undefined') {
-          totalCountEl.textContent = `${data.total.lastYear} contributions in the last year`;
+        if (totalCountEl && data.total && typeof data.total[currentYear] !== 'undefined') {
+          totalCountEl.textContent = `${data.total[currentYear]} contributions in ${currentYear}`;
         }
-        renderCalendarGrid(data.contributions);
+        // Filter strictly to current year starting January 1st
+        const filtered = data.contributions.filter((d) => d.date && d.date.startsWith(`${currentYear}-`));
+        if (filtered.length > 0) {
+          renderCalendarGrid(filtered);
+        }
       }
     })
     .catch((err) => {

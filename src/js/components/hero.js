@@ -66,7 +66,7 @@ export function renderHero() {
       <div style="display: flex; flex-direction: column; gap: 1.15rem;">
         <div>
           <span class="eyebrow-mono shiny-text" style="font-size: 0.72rem; letter-spacing: 0.25em;">${profileData.heroEyebrow}</span>
-          <h2 class="hero-headline" style="margin-top: 0.4rem;">
+          <h2 class="hero-headline" style="margin-top: 0.4rem;" data-staggered-text="${profileData.heroHeading}" data-stagger-by="words" data-stagger-delay="0.035" data-stagger-initial-delay="0.12">
             ${profileData.heroHeadingHtml || profileData.heroHeading}
           </h2>
         </div>

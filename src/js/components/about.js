@@ -6,7 +6,7 @@ import { profileData, educationData, languageData } from '../data.js';
 
 export function renderAbout() {
   const bioParagraphsHtml = profileData.aboutBio
-    .map((p) => `<p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary);">${p}</p>`)
+    .map((p) => `<p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); text-align: left;">${p}</p>`)
     .join('');
 
   const languagesHtml = languageData

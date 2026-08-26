@@ -1,6 +1,6 @@
 // ==========================================================================
-// Warp Twister — React Bits Pro Distortion Background Engine
-// Smooth, swirling spatial warp field with dynamic theme-responsive opacity
+// Twist / Warp Twister — React Bits Pro Spatial Distortion Engine
+// Ambient kinetic background field with responsive web & mobile optimization
 // ==========================================================================
 
 export function initWarpTwister(options = {}) {
@@ -16,18 +16,23 @@ export function initWarpTwister(options = {}) {
     canvas.style.height = '100vh';
     canvas.style.pointerEvents = 'none';
     canvas.style.zIndex = '-1';
-    canvas.style.transition = 'opacity 0.6s ease';
+    canvas.style.transition = 'opacity 0.8s ease';
     document.body.prepend(canvas);
   }
 
   const ctx = canvas.getContext('2d');
-  let width, height;
+  if (!ctx) return;
+
+  let width = window.innerWidth;
+  let height = window.innerHeight;
   let animationFrameId;
   let time = 0;
-  let mouseX = 0;
-  let mouseY = 0;
-  let targetMouseX = 0;
-  let targetMouseY = 0;
+  const twistStrength = options.twistStrength || 0.65;
+
+  let mouseX = width / 2;
+  let mouseY = height / 2;
+  let targetMouseX = mouseX;
+  let targetMouseY = mouseY;
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -36,10 +41,6 @@ export function initWarpTwister(options = {}) {
     canvas.width = width * dpr;
     canvas.height = height * dpr;
     ctx.scale(dpr, dpr);
-    mouseX = width / 2;
-    mouseY = height / 2;
-    targetMouseX = mouseX;
-    targetMouseY = mouseY;
   }
 
   resize();
@@ -54,6 +55,17 @@ export function initWarpTwister(options = {}) {
     { passive: true }
   );
 
+  window.addEventListener(
+    'touchmove',
+    (e) => {
+      if (e.touches && e.touches[0]) {
+        targetMouseX = e.touches[0].clientX;
+        targetMouseY = e.touches[0].clientY;
+      }
+    },
+    { passive: true }
+  );
+
   function draw() {
     time += 0.007;
 
@@ -63,6 +75,11 @@ export function initWarpTwister(options = {}) {
 
     ctx.clearRect(0, 0, width, height);
 
+    const isMobile = width < 768;
+    const rings = isMobile ? 12 : 22;
+    const pointsPerRing = isMobile ? 32 : 56;
+    const maxRadius = Math.hypot(width, height) * 0.65;
+
     const isDark = document.documentElement.classList.contains('dark');
     
     // Dynamic theme palette with adjustable low-opacity
@@ -70,12 +87,8 @@ export function initWarpTwister(options = {}) {
     const strokeStyleB = isDark ? 'rgba(56, 189, 248, 0.35)' : 'rgba(59, 130, 246, 0.30)'; // Cyan/Blue
     const strokeStyleC = isDark ? 'rgba(232, 121, 249, 0.25)' : 'rgba(168, 85, 247, 0.20)'; // Fuchsia/Pink
 
-    const centerX = width * 0.5 + (mouseX - width * 0.5) * 0.25;
-    const centerY = height * 0.45 + (mouseY - height * 0.45) * 0.25;
-
-    const rings = window.innerWidth < 768 ? 14 : 22;
-    const pointsPerRing = window.innerWidth < 768 ? 36 : 56;
-    const maxRadius = Math.hypot(width, height) * 0.65;
+    const centerX = width * 0.5 + (mouseX - width * 0.5) * 0.22;
+    const centerY = height * 0.45 + (mouseY - height * 0.45) * 0.22;
 
     for (let r = 1; r <= rings; r++) {
       const radiusProgress = r / rings;
@@ -86,14 +99,14 @@ export function initWarpTwister(options = {}) {
       else if (r % 3 === 1) ctx.strokeStyle = strokeStyleB;
       else ctx.strokeStyle = strokeStyleC;
 
-      ctx.lineWidth = 1 + (1 - radiusProgress) * 0.8;
+      ctx.lineWidth = (1 + (1 - radiusProgress) * 0.8) * (isMobile ? 0.9 : 1.0);
       ctx.beginPath();
 
       for (let p = 0; p <= pointsPerRing; p++) {
         const angle = (p / pointsPerRing) * Math.PI * 2;
 
         // Twisting vortex warp mathematics
-        const twist = Math.sin(time * 0.8 + radiusProgress * 3.5) * 0.65;
+        const twist = Math.sin(time * 0.8 + radiusProgress * 3.5) * twistStrength;
         const waveA = Math.sin(angle * 4 + time * 1.5 + r * 0.3) * (18 * radiusProgress);
         const waveB = Math.cos(angle * 3 - time * 1.2 + r * 0.2) * (14 * radiusProgress);
 
@@ -101,7 +114,7 @@ export function initWarpTwister(options = {}) {
         const currentRadius = baseRadius + waveA + waveB;
 
         const x = centerX + Math.cos(currentAngle) * currentRadius;
-        const y = centerY + Math.sin(currentAngle) * (currentRadius * 0.62); // Isometric ellipse perspective
+        const y = centerY + Math.sin(currentAngle) * (currentRadius * (isMobile ? 0.72 : 0.62));
 
         if (p === 0) {
           ctx.moveTo(x, y);

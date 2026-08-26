@@ -5,6 +5,7 @@
 import { renderNavbar, initNavbarEvents } from './components/navbar.js';
 import { renderFooter, initBackToTopEvents } from './components/footer.js';
 import { renderChatWidget, initChatEvents } from './components/chat.js';
+import { initTextScatter } from './components/text-scatter.js';
 
 import { renderHomePage, initHomePageEvents } from './pages/home.js';
 import { renderProjectsPage, initProjectsPageEvents } from './pages/projects-page.js';
@@ -107,6 +108,7 @@ export function handleRoute() {
   initBackToTopEvents();
   initChatEvents();
   initPageEvents();
+  initTextScatter();
 }
 
 export function initRouter() {

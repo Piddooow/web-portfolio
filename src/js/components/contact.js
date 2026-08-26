@@ -13,7 +13,7 @@ export function renderContact() {
 
       <div class="outside-ide-layout" style="align-items: flex-start;">
         <div style="display: flex; flex-direction: column; gap: 1rem;">
-          <p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); max-width: 28rem;">
+          <p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); max-width: 28rem; text-align: justify; text-justify: inter-word; text-indent: 1.75rem;">
             Whether you have a strategic business challenge, an enterprise system or ERP to model, or an AI/web product to build — I’m always open to discussing new opportunities and collaborations.
           </p>
 

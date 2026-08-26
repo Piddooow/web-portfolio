@@ -11,6 +11,7 @@ export type RandomLetterSwapProps = {
   staggerDuration?: number;
   className?: string;
   onClick?: () => void;
+  [key: string]: any;
 };
 
 export function RandomLetterSwap({

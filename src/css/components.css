@@ -917,17 +917,17 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
 }
 
 .logo-loop-track.scale-on-hover .logo-loop-link:hover {
-  transform: scale(1.08) translateY(-2px);
+  transform: translateY(-1px);
   border-color: var(--brand-color, var(--border-active));
-  box-shadow: 0 8px 24px -4px var(--brand-glow, rgba(0, 0, 0, 0.25)), 0 0 0 1px var(--brand-color, var(--border-active));
-  background-color: var(--bg-surface-card);
+  box-shadow: 0 2px 10px -2px var(--brand-glow, rgba(0, 0, 0, 0.15));
+  background-color: var(--bg-surface-elevated);
   color: var(--text-primary);
 }
 
 .logo-loop-track.scale-on-hover .logo-loop-link:hover i,
 .logo-loop-track.scale-on-hover .logo-loop-link:hover svg {
   color: var(--brand-color, inherit) !important;
-  transform: scale(1.18);
+  transform: scale(1.08);
 }
 
 @keyframes loop-left {
@@ -938,6 +938,19 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
 @keyframes loop-right {
   0% { transform: translateX(calc(-50% - var(--logo-gap, 16px) / 2)); }
   100% { transform: translateX(0); }
+}
+
+.tech-stack-dashed-wrapper {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-surface-card);
+  border: 1px dashed var(--border-dashed);
+  border-radius: 0.85rem;
+  transition: border-color 0.25s ease;
+}
+
+.tech-stack-dashed-wrapper:hover {
+  border-color: var(--border-subtle);
 }
 
 /* --------------------------------------------------------------------------
@@ -987,10 +1000,25 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
    4. Card Spotlight Physics
    -------------------------------------------------------------------------- */
 /* --------------------------------------------------------------------------
-   4. React Bits <BorderGlow /> & Card Spotlight Physics
+   4. React Bits <BorderGlow /> & Card Spotlight Physics (Universal Glow Hover)
    -------------------------------------------------------------------------- */
 .card-spotlight,
-.border-glow-card {
+.border-glow-card,
+.resume-item,
+.edu-item,
+.cert-card,
+.certification-card,
+.event-card,
+.events-card,
+.contact-item,
+.contact-card,
+.tech-grid-card,
+.personal-photo-card,
+.philosophy-card,
+.case-study-hero-card,
+.metric-card,
+.solution-card,
+.feature-block {
   --edge-proximity: 0;
   --cursor-angle: 45deg;
   --edge-sensitivity: 25;
@@ -1040,7 +1068,22 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
 
 /* Conic Mesh Gradient Border Glow — Follows exact border dimensions */
 .card-spotlight::before,
-.border-glow-card::before {
+.border-glow-card::before,
+.resume-item::before,
+.edu-item::before,
+.cert-card::before,
+.certification-card::before,
+.event-card::before,
+.events-card::before,
+.contact-item::before,
+.contact-card::before,
+.tech-grid-card::before,
+.personal-photo-card::before,
+.philosophy-card::before,
+.case-study-hero-card::before,
+.metric-card::before,
+.solution-card::before,
+.feature-block::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -1079,7 +1122,22 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
 
 /* Outer Edge Radiance on Edge Proximity */
 .card-spotlight::after,
-.border-glow-card::after {
+.border-glow-card::after,
+.resume-item::after,
+.edu-item::after,
+.cert-card::after,
+.certification-card::after,
+.event-card::after,
+.events-card::after,
+.contact-item::after,
+.contact-card::after,
+.tech-grid-card::after,
+.personal-photo-card::after,
+.philosophy-card::after,
+.case-study-hero-card::after,
+.metric-card::after,
+.solution-card::after,
+.feature-block::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1096,7 +1154,22 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
 }
 
 .card-spotlight:hover::after,
-.border-glow-card:hover::after {
+.border-glow-card:hover::after,
+.resume-item:hover::after,
+.edu-item:hover::after,
+.cert-card:hover::after,
+.certification-card:hover::after,
+.event-card:hover::after,
+.events-card:hover::after,
+.contact-item:hover::after,
+.contact-card:hover::after,
+.tech-grid-card:hover::after,
+.personal-photo-card:hover::after,
+.philosophy-card:hover::after,
+.case-study-hero-card:hover::after,
+.metric-card:hover::after,
+.solution-card:hover::after,
+.feature-block:hover::after {
   opacity: 1;
 }
 
@@ -1143,7 +1216,22 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
 
 /* In-Reach Highlight: Brighter & Elevated */
 .card-spotlight:hover,
-.border-glow-card:hover {
+.border-glow-card:hover,
+.resume-item:hover,
+.edu-item:hover,
+.cert-card:hover,
+.certification-card:hover,
+.event-card:hover,
+.events-card:hover,
+.contact-item:hover,
+.contact-card:hover,
+.tech-grid-card:hover,
+.personal-photo-card:hover,
+.philosophy-card:hover,
+.case-study-hero-card:hover,
+.metric-card:hover,
+.solution-card:hover,
+.feature-block:hover {
   opacity: 1 !important;
   filter: brightness(1.04) !important;
   border-style: solid;
@@ -1153,7 +1241,22 @@ html:not(.dark) .theme-toggle-btn:hover .theme-icon-sun {
 }
 
 html.dark .card-spotlight:hover,
-html.dark .border-glow-card:hover {
+html.dark .border-glow-card:hover,
+html.dark .resume-item:hover,
+html.dark .edu-item:hover,
+html.dark .cert-card:hover,
+html.dark .certification-card:hover,
+html.dark .event-card:hover,
+html.dark .events-card:hover,
+html.dark .contact-item:hover,
+html.dark .contact-card:hover,
+html.dark .tech-grid-card:hover,
+html.dark .personal-photo-card:hover,
+html.dark .philosophy-card:hover,
+html.dark .case-study-hero-card:hover,
+html.dark .metric-card:hover,
+html.dark .solution-card:hover,
+html.dark .feature-block:hover {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 18px 42px -8px rgba(0, 0, 0, 0.7);
 }
 
@@ -1161,6 +1264,20 @@ html.dark .border-glow-card:hover {
 .border-glow-card > * {
   position: relative;
   z-index: 2;
+}
+
+/* Competency Row Hover */
+.competency-item-row:hover {
+  transform: translateX(4px);
+  border-color: var(--border-active) !important;
+  background-color: var(--bg-surface-card) !important;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+}
+
+.competency-item-row:hover .competency-icon-box {
+  border-color: var(--text-primary) !important;
+  color: var(--text-primary) !important;
+  transform: scale(1.08);
 }
 
 /* Projects Grid */
@@ -2194,14 +2311,32 @@ html.dark .stack-card-inner {
 .github-cal-overflow {
   width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+}
+
+.github-cal-overflow::-webkit-scrollbar {
+  height: 4px;
+}
+
+.github-cal-overflow::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+
+.github-cal-inner-wrapper {
+  min-width: 680px;
+  display: flex;
+  flex-direction: column;
 }
 
 .github-cal-months {
   display: flex;
   justify-content: space-between;
   margin-left: 2rem;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   color: var(--text-muted);
@@ -2221,11 +2356,13 @@ html.dark .stack-card-inner {
   font-size: 0.62rem;
   color: var(--text-muted);
   width: 1.5rem;
+  flex-shrink: 0;
 }
 
 .github-cal-weeks {
   display: flex;
   gap: 3px;
+  flex: 1;
 }
 
 .github-cal-col {
@@ -2263,12 +2400,905 @@ html:not(.dark) .github-cal-cell[data-level="4"] { background-color: #216e39; }
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
   font-size: 0.72rem;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  padding-top: 0.5rem;
+  padding-top: 0.65rem;
   border-top: 1px dashed var(--border-dashed);
 }
+
+.github-cal-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+@media (max-width: 768px) {
+  .github-calendar-box {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .github-calendar-box {
+    padding: 0.85rem;
+  }
+  .github-cal-header {
+    font-size: 0.78rem;
+  }
+  .github-cal-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   14. React Bits <TextScatter /> Component Styles (@reactbits-starter/text-scatter-tw)
+   -------------------------------------------------------------------------- */
+.text-scatter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.38rem 0.95rem 0.38rem 0.75rem;
+  border-radius: 9999px;
+  background: var(--bg-surface-elevated);
+  border: 1px dashed var(--border-dashed);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  margin-bottom: 0.85rem;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+  width: fit-content;
+  position: relative;
+  z-index: 15;
+}
+
+.text-scatter-badge:hover {
+  border-style: solid;
+  border-color: var(--border-active);
+  background-color: var(--bg-surface-card);
+  box-shadow: 0 0 0 2px var(--border-subtle), 0 8px 20px -4px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.text-scatter-other-side-badge {
+  margin-bottom: 0.75rem;
+  background: var(--bg-surface-card);
+}
+
+.text-scatter-contact-badge {
+  padding: 0.4rem 1rem 0.4rem 0.75rem;
+  background: var(--bg-surface-card);
+}
+
+.text-scatter-sparkle-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface-card);
+  border: 1px dashed var(--border-dashed);
+  color: var(--accent-gold, #c084fc);
+  font-size: 0.72rem;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease;
+}
+
+.text-scatter-badge:hover .text-scatter-sparkle-icon {
+  transform: rotate(15deg) scale(1.15);
+  color: var(--text-primary);
+}
+
+.text-scatter-container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: visible !important;
+  z-index: 30;
+}
+
+.text-scatter-wrapper {
+  position: relative;
+  overflow: visible !important;
+  z-index: 25;
+}
+
+.text-scatter-hero-heading,
+.text-scatter-giant {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  overflow: visible !important;
+}
+
+.text-scatter-hero-heading .text-scatter-char,
+.text-scatter-giant .text-scatter-char {
+  padding: 0 0.02em;
+}
+
+.text-scatter-char {
+  display: inline-block;
+  transform-origin: center center;
+  will-change: transform;
+  transition: transform 2000ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  color: var(--text-primary);
+  pointer-events: none !important;
+  cursor: default !important;
+  overflow: visible !important;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.text-scatter-gradient-text .text-scatter-char {
+  background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark .text-scatter-gradient-text .text-scatter-char {
+  background: linear-gradient(135deg, #ffffff 40%, rgba(255, 255, 255, 0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+html:not(.dark) .text-scatter-giant .text-scatter-char {
+  background: linear-gradient(135deg, #09090b 30%, #3f3f46 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   15. React Bits <BendingMarquee /> Styles (@reactbits-starter/bending-marquee-tw)
+   ========================================================================== */
+
+.bending-marquee-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  cursor: default;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.bending-marquee-container.unclickable {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+.bending-marquee-3d-stage {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.bending-marquee-svg {
+  width: 100%;
+  overflow: visible;
+  display: block;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+.bending-marquee-text {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  transition: fill 0.3s ease, opacity 0.3s ease;
+}
+
+/* Monochromatic Dark/Light Web Theme Adaptation */
+html.dark .bending-marquee-text {
+  fill: rgba(255, 255, 255, 0.42);
+}
+
+html:not(.dark) .bending-marquee-text {
+  fill: rgba(15, 23, 42, 0.38);
+}
+
+.bending-marquee-top {
+  margin-top: 0.5rem;
+  margin-bottom: -1.25rem;
+}
+
+.bending-marquee-bottom {
+  margin-top: -1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .bending-marquee-svg {
+    font-size: 24px;
+    letter-spacing: 0.8px;
+  }
+  .bending-marquee-top {
+    margin-top: 0.25rem;
+    margin-bottom: -0.75rem;
+  }
+  .bending-marquee-bottom {
+    margin-top: -0.75rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* ==========================================================================
+   4. React Bits Pro Preloader (@reactbits-starter/preloader-tw)
+   ========================================================================== */
+
+/* Lock body scrolling while preloader is active */
+body.preloader-active {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+.preloader-root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+  background: var(--bg-primary, #121212);
+  cursor: default;
+  transition: background-color 0.3s ease;
+}
+
+.preloader-root.is-exiting {
+  pointer-events: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   1. Stairs Variant Slats (Snappy & Ultra-Smooth Cascade Reveal)
+   -------------------------------------------------------------------------- */
+.preloader-stairs-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--bg-primary, #121212);
+}
+
+.preloader-stair-col {
+  flex: 1 0 calc(20% + 1px);
+  margin-right: -1px;
+  height: 100%;
+  background: var(--bg-primary, #121212);
+  transition: transform 0.68s cubic-bezier(0.76, 0, 0.24, 1);
+  transition-delay: calc(var(--stair-index, 0) * 0.045s);
+  will-change: transform;
+}
+
+.preloader-stair-col:last-child {
+  margin-right: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Ambient Radial Glow Orb
+   -------------------------------------------------------------------------- */
+.preloader-glow-orb {
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(129, 140, 248, 0.18) 0%, rgba(168, 85, 247, 0.10) 40%, transparent 70%);
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: 2;
+  animation: preloader-glow-pulse 2.4s ease-in-out infinite alternate;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html:not(.dark) .preloader-glow-orb {
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.12) 0%, rgba(124, 58, 237, 0.07) 40%, transparent 70%);
+}
+
+/* --------------------------------------------------------------------------
+   3. Center Content Card & Typography
+   -------------------------------------------------------------------------- */
+.preloader-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem;
+  text-align: center;
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+/* Brand Badge / Emblem */
+.preloader-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 1.15rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 14px 32px -4px rgba(0, 0, 0, 0.5), 0 0 24px rgba(129, 140, 248, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+html:not(.dark) .preloader-badge {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.01));
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.08), 0 0 18px rgba(79, 70, 229, 0.15);
+}
+
+.preloader-badge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.3), rgba(168, 85, 247, 0.18));
+  opacity: 0.85;
+}
+
+html:not(.dark) .preloader-badge::before {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.18), rgba(124, 58, 237, 0.12));
+}
+
+.preloader-badge img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+  animation: preloader-badge-float 2.8s ease-in-out infinite alternate;
+}
+
+/* Typography Titles */
+.preloader-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 50px;
+}
+
+.preloader-brand-title {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  color: var(--text-primary, #f4f4f5);
+  text-transform: uppercase;
+  margin: 0;
+  text-indent: 0.35em;
+  text-shadow: 0 0 20px rgba(129, 140, 248, 0.35);
+  transition: color 0.3s ease;
+}
+
+html:not(.dark) .preloader-brand-title {
+  color: var(--text-primary, #09090b);
+  text-shadow: 0 0 16px rgba(79, 70, 229, 0.2);
+}
+
+.preloader-word-cycle {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--text-secondary, #a1a1aa);
+  text-transform: uppercase;
+  margin: 0;
+  text-indent: 0.2em;
+  min-height: 1.2em;
+  line-height: 1.2;
+  transition: opacity 0.18s ease, transform 0.18s ease, color 0.3s ease;
+}
+
+html:not(.dark) .preloader-word-cycle {
+  color: var(--text-secondary, #71717a);
+}
+
+/* --------------------------------------------------------------------------
+   4. Loading Line & Status (Themed Dark-to-Light Integration)
+   -------------------------------------------------------------------------- */
+.preloader-bar-track {
+  width: 240px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+html:not(.dark) .preloader-bar-track {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.preloader-bar-indicator {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #818cf8 0%, #a855f7 50%, #38bdf8 100%);
+  border-radius: 9999px;
+  box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
+  transition: width 0.06s linear, background 0.3s ease;
+}
+
+html:not(.dark) .preloader-bar-indicator {
+  background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 50%, #0284c7 100%);
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.45);
+}
+
+/* Status & Digit Counter */
+.preloader-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 240px;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  color: var(--text-secondary, #a1a1aa);
+  transition: color 0.3s ease;
+}
+
+html:not(.dark) .preloader-info-row {
+  color: var(--text-secondary, #71717a);
+}
+
+.preloader-status-text {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted, #71717a);
+  text-transform: uppercase;
+}
+
+html:not(.dark) .preloader-status-text {
+  color: var(--text-muted, #a1a1aa);
+}
+
+.preloader-counter-digits {
+  font-weight: 700;
+  color: var(--text-primary, #f4f4f5);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 10px rgba(129, 140, 248, 0.3);
+}
+
+html:not(.dark) .preloader-counter-digits {
+  color: var(--text-primary, #09090b);
+  text-shadow: 0 0 8px rgba(79, 70, 229, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   5. Snappy Exit Animations (Fast, Smooth & Seamless Switch)
+   -------------------------------------------------------------------------- */
+.preloader-root.is-exiting .preloader-content {
+  opacity: 0 !important;
+  transform: scale(1.02) translateY(-14px) !important;
+  filter: blur(4px) !important;
+}
+
+.preloader-root.is-exiting .preloader-glow-orb {
+  opacity: 0 !important;
+  transform: scale(0.6) !important;
+}
+
+/* Stairs exit: Fast, staggered smooth upward wipe */
+.preloader-root.is-exiting .preloader-stair-col {
+  transform: translateY(-100%) !important;
+}
+
+.preloader-root.is-hidden {
+  display: none !important;
+}
+
+@keyframes preloader-badge-float {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-3px) scale(1.03); }
+}
+
+@keyframes preloader-glow-pulse {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   6. Mobile & Tablet Responsive Optimizations
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .preloader-content {
+    padding: 1.5rem;
+    gap: 1.15rem;
+  }
+  .preloader-bar-track,
+  .preloader-info-row {
+    width: 200px;
+  }
+  .preloader-brand-title {
+    font-size: 1.15rem;
+  }
+  .preloader-word-cycle {
+    font-size: 0.68rem;
+  }
+  .preloader-glow-orb {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .preloader-content {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+  .preloader-badge {
+    width: 48px;
+    height: 48px;
+  }
+  .preloader-badge img {
+    width: 28px;
+    height: 28px;
+  }
+  .preloader-bar-track,
+  .preloader-info-row {
+    width: 185px;
+  }
+  .preloader-brand-title {
+    font-size: 1.05rem;
+    letter-spacing: 0.3em;
+  }
+  .preloader-word-cycle {
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+  }
+  .preloader-status-text {
+    font-size: 0.62rem;
+  }
+  .preloader-counter-digits {
+    font-size: 0.72rem;
+  }
+}
+
+/* ==========================================================================
+   16. Minimalist & Elegant Spider Pull-to-Refresh Component Styles
+   ========================================================================== */
+
+.pull-to-refresh-indicator {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-110%);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1.15rem 0.5rem 0.65rem;
+  background: var(--bg-surface-elevated, rgba(23, 23, 23, 0.94));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+  border-radius: 9999px;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.4),
+              0 0 20px rgba(129, 140, 248, 0.2);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  color: var(--text-primary, #ffffff);
+  will-change: transform, opacity;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease,
+              background-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+html:not(.dark) .pull-to-refresh-indicator {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.12),
+              0 0 18px rgba(79, 70, 229, 0.15);
+}
+
+.ptr-mascot-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.2), rgba(168, 85, 247, 0.15));
+  border: 1px solid rgba(129, 140, 248, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html:not(.dark) .ptr-mascot-box {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(124, 58, 237, 0.08));
+  border-color: rgba(79, 70, 229, 0.25);
+}
+
+.ptr-spider-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: block;
+}
+
+html.dark .ptr-spider-img {
+  filter: invert(1) brightness(1.2);
+  mix-blend-mode: screen;
+}
+
+.ptr-ring-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ptr-ring-bg {
+  stroke: rgba(255, 255, 255, 0.12);
+  fill: none;
+  stroke-width: 2.2;
+}
+
+html:not(.dark) .ptr-ring-bg {
+  stroke: rgba(0, 0, 0, 0.08);
+}
+
+.ptr-ring-progress {
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-dasharray: 88;
+  stroke-dashoffset: 88;
+  transition: stroke-dashoffset 0.06s linear;
+}
+
+.ptr-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.ptr-status-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary, #f4f4f5);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+html:not(.dark) .ptr-status-title {
+  color: var(--text-primary, #09090b);
+}
+
+.ptr-status-sub {
+  font-size: 0.64rem;
+  color: var(--text-secondary, #a1a1aa);
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pull-to-refresh-indicator.is-refreshing .ptr-spider-img {
+  animation: ptr-spider-spin 1.25s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.pull-to-refresh-indicator.is-refreshing .ptr-mascot-box {
+  animation: ptr-box-pulse 1.25s ease-in-out infinite alternate;
+  border-color: #818cf8;
+  box-shadow: 0 0 16px rgba(129, 140, 248, 0.5);
+}
+
+.pull-to-refresh-indicator.is-ready .ptr-mascot-box {
+  transform: scale(1.12);
+  border-color: #38bdf8;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+}
+
+.pull-to-refresh-indicator.is-success .ptr-mascot-box {
+  transform: scale(1.1);
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.2);
+}
+
+@keyframes ptr-spider-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes ptr-box-pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.06); }
+}
+
+/* ==========================================================================
+   17. React Bits Pro <StaggeredText /> Component Styles (@reactbits-starter/staggered-text-tw)
+   ========================================================================== */
+
+.staggered-text-root {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  overflow: visible;
+  line-height: inherit;
+}
+
+.staggered-text-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.staggered-text-item {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+  transform: translate3d(0, 110%, 0);
+  opacity: 0;
+  filter: blur(5px);
+  transition: transform var(--stagger-duration, 0.7s) cubic-bezier(0.16, 1, 0.3, 1),
+              opacity var(--stagger-duration, 0.7s) cubic-bezier(0.16, 1, 0.3, 1),
+              filter var(--stagger-duration, 0.7s) cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+.staggered-text-root.is-visible .staggered-text-item,
+body.page-revealed .staggered-text-root .staggered-text-item {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  filter: blur(0px);
+}
+
+.staggered-text-space {
+  display: inline;
+  white-space: pre;
+}
+
+.staggered-text-root.dir-down .staggered-text-item {
+  transform: translate3d(0, -110%, 0);
+}
+.staggered-text-root.dir-left .staggered-text-item {
+  transform: translate3d(60px, 0, 0);
+}
+.staggered-text-root.dir-right .staggered-text-item {
+  transform: translate3d(-60px, 0, 0);
+}
+
+.staggered-text-root.dir-down.is-visible .staggered-text-item,
+.staggered-text-root.dir-left.is-visible .staggered-text-item,
+.staggered-text-root.dir-right.is-visible .staggered-text-item {
+  transform: translate3d(0, 0, 0);
+}
+
+/* ==========================================================================
+   18. Post-Preloader Seamless Page Entrance Reveal Animations
+   ========================================================================== */
+
+body.preloader-active #app-main,
+body.preloader-active .portfolio-navbar,
+body.preloader-active .ambient-twister-canvas {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.page-revealed .portfolio-navbar {
+  animation: page-entrance-navbar 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body.page-revealed #app-main {
+  animation: page-entrance-main 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body.page-revealed .hero-section {
+  animation: page-entrance-hero 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body.page-revealed .ambient-twister-canvas {
+  animation: page-entrance-canvas 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes page-entrance-navbar {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes page-entrance-main {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes page-entrance-hero {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes page-entrance-canvas {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
 
 

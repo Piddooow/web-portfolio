@@ -14,6 +14,7 @@ export const UserCursor = ({
   const cursorRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isPointer, setIsPointer] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
 
   useEffect(() => {
     // Only enable on desktop pointer-fine devices
@@ -26,9 +27,8 @@ export const UserCursor = ({
       cursorEl.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
       if (!isVisible) setIsVisible(true);
 
-      // Check if hovering interactive elements
       const target = e.target;
-      if (target && target.closest('a, button, input, textarea, select, [role="button"], .interactive, .card-action-btn, .deck-nav-btn')) {
+      if (target && target.closest('a, button, input, textarea, select, [role="button"], .btn-primary, .btn-secondary, .card-action-btn, .deck-nav-btn, .tag-chip, .logo-loop-link, .interactive, .competency-item-row, .card-spotlight')) {
         setIsPointer(true);
       } else {
         setIsPointer(false);
@@ -37,22 +37,28 @@ export const UserCursor = ({
 
     const handleMouseEnter = () => setIsVisible(true);
     const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseDown = () => setIsClicking(true);
+    const handleMouseUp = () => setIsClicking(false);
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isVisible]);
 
   return (
     <div
       ref={cursorRef}
-      className={`user-cursor-container ${isVisible ? 'visible' : ''} ${isPointer ? 'is-pointer' : ''} ${className}`}
+      className={`user-cursor-container ${isVisible ? 'visible' : ''} ${isPointer ? 'is-pointer' : ''} ${isClicking ? 'is-clicking' : ''} ${className}`}
       aria-hidden="true"
       {...props}
     >

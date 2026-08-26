@@ -77,10 +77,10 @@ export function renderLogoLoop() {
 
         <div style="display: flex; flex-direction: column; gap: 0.85rem;">
           
-          <!-- Category 1: Languages & Core (Right to Left stream / Kanan ke Kiri) -->
+          <!-- Category 1: Languages & Core (Left to Right stream / Kiri ke Kanan) -->
           <div class="tech-stream-row">
             <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 34s;">
-              <div class="logo-loop-track left scale-on-hover">
+              <div class="logo-loop-track right scale-on-hover">
                 <div class="logo-loop-group">
                   ${row1Html}
                 </div>
@@ -91,10 +91,10 @@ export function renderLogoLoop() {
             </div>
           </div>
 
-          <!-- Category 2: Frameworks & UI/UX (Left to Right stream / Kiri ke Kanan) -->
+          <!-- Category 2: Frameworks & UI/UX (Right to Left stream / Kanan ke Kiri) -->
           <div class="tech-stream-row">
             <div class="logo-loop-container horizontal has-fade" style="--logo-height: 42px; --logo-gap: 16px; --loop-duration: 32s;">
-              <div class="logo-loop-track right scale-on-hover">
+              <div class="logo-loop-track left scale-on-hover">
                 <div class="logo-loop-group">
                   ${row2Html}
                 </div>
