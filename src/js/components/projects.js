@@ -1,5 +1,6 @@
 // ==========================================================================
-// Projects Component — Verified Projects + Minimal Coming Soon Card
+// Projects Component — React Bits Pro Modal Cards Template (@reactbits-starter/modal-cards-tw)
+// Expandable interactive cards with spotlight physics & full-screen modal triggers
 // ==========================================================================
 
 import { projectsData } from '../data.js';
@@ -11,14 +12,14 @@ export function renderProjects(limit = 6) {
     .map((p) => {
       const isComingSoon = p.isComingSoon === true;
 
-      const tagsHtml = p.techTags
+      const tagsHtml = (p.techTags || [])
         .map((t) => `<span class="tag-chip" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;">${t}</span>`)
         .join('');
 
       const liveBtnHtml = p.liveUrl
         ? `
-          <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="link-live" style="display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-primary); margin-top: 0.5rem; text-decoration: underline; text-underline-offset: 3px;">
-            <span>Visit Live Site</span>
+          <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="link-live" style="display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px;" onclick="event.stopPropagation();">
+            <span>Visit Live</span>
             <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
             </svg>
@@ -27,10 +28,15 @@ export function renderProjects(limit = 6) {
         : '';
 
       return `
-        <article class="card-spotlight project-card ${isComingSoon ? 'coming-soon-card' : ''}" data-slug="${p.slug}" style="${isComingSoon ? 'border: 1px dashed var(--border-dashed);' : ''}">
+        <article class="card-spotlight project-card modal-card-item ${isComingSoon ? 'coming-soon-card' : ''}" data-slug="${p.slug}" data-modal-slug="${p.slug}" style="${isComingSoon ? 'border: 1px dashed var(--border-dashed);' : ''}">
           <span class="edge-light"></span>
           <div class="project-card-img-wrap">
             <img src="${p.image}" alt="${p.title}" class="project-card-img" />
+            <div class="modal-card-expand-badge" aria-hidden="true" title="Expand card details">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+              </svg>
+            </div>
           </div>
 
           <div class="project-card-body">
@@ -49,11 +55,19 @@ export function renderProjects(limit = 6) {
                 ${p.tech}
               </div>
 
-              <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+              <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.85rem;">
                 ${tagsHtml}
               </div>
 
-              ${liveBtnHtml}
+              <div class="project-card-footer">
+                <button type="button" class="btn-modal-expand" data-modal-slug="${p.slug}" aria-label="View ${p.title} details">
+                  <span>View Details</span>
+                  <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </button>
+                ${liveBtnHtml}
+              </div>
             </div>
           </div>
         </article>

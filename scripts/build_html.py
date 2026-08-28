@@ -2,7 +2,8 @@ import os
 import subprocess
 import re
 
-bundle_path = '/Users/piddooow/Documents/web-portfolio/src/js/bundle.js'
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+bundle_path = os.path.join(base_dir, 'src', 'js', 'bundle.js')
 with open(bundle_path, 'r', encoding='utf-8') as f:
     js_content = f.read()
 
@@ -28,7 +29,7 @@ var localStorage = {{ getItem: function() {{ return null; }}, setItem: function(
 {modified_js}
 """
 
-temp_js = '/Users/piddooow/Documents/web-portfolio/scripts/temp_render.js'
+temp_js = os.path.join(base_dir, 'scripts', 'temp_render.js')
 with open(temp_js, 'w', encoding='utf-8') as f:
     f.write(runner_code)
 
@@ -50,7 +51,7 @@ else:
     print("Has 'Let’s connect & build.':", "Let’s connect & build." in rendered_html)
     
     # Read index.html and update the inner content of <div id="root">
-    index_html_path = '/Users/piddooow/Documents/web-portfolio/index.html'
+    index_html_path = os.path.join(base_dir, 'index.html')
     with open(index_html_path, 'r', encoding='utf-8') as f:
         current_html = f.read()
     

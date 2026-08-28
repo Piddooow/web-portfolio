@@ -1,5 +1,5 @@
 // ==========================================================================
-// Featured Project Component — Bengkel Waena Jaya Motor (Live Screenshot)
+// Featured Project Component — Primary Showcase with Modal Card Integration
 // ==========================================================================
 
 import { featuredProject } from '../data.js';
@@ -10,11 +10,14 @@ export function renderFeatured() {
     .join('');
 
   return `
-    <section class="featured-card" id="featured-work">
+    <section class="featured-card modal-card-item" id="featured-work" data-slug="${featuredProject.slug}" data-modal-slug="${featuredProject.slug}" style="cursor: pointer;">
       <div class="featured-img-wrap">
-        <a href="${featuredProject.liveUrl}" target="_blank" rel="noopener noreferrer" title="View live website" style="display: block; width: 100%; height: 100%;">
-          <img src="${featuredProject.image}" alt="${featuredProject.title} live screenshot" class="featured-img" />
-        </a>
+        <img src="${featuredProject.image}" alt="${featuredProject.title} live screenshot" class="featured-img" />
+        <div class="modal-card-expand-badge" aria-hidden="true" title="Expand showcase details">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+          </svg>
+        </div>
       </div>
 
       <div class="featured-content">
@@ -40,12 +43,21 @@ export function renderFeatured() {
             ${tagsHtml}
           </div>
 
-          <a href="${featuredProject.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size: 0.76rem; padding: 0.4rem 0.85rem; gap: 0.35rem;">
-            <span>Visit Live Website</span>
-            <svg style="width: 0.8rem; height: 0.8rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
-            </svg>
-          </a>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <button type="button" class="btn-secondary btn-modal-expand" data-modal-slug="${featuredProject.slug}" style="font-size: 0.76rem; padding: 0.4rem 0.85rem; gap: 0.35rem;" aria-label="View ${featuredProject.title} details">
+              <span>View Details</span>
+              <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+
+            <a href="${featuredProject.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary link-live" style="font-size: 0.76rem; padding: 0.4rem 0.85rem; gap: 0.35rem;" onclick="event.stopPropagation();">
+              <span>Visit Live</span>
+              <svg style="width: 0.8rem; height: 0.8rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </section>

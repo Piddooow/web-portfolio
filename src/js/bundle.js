@@ -110,12 +110,21 @@
     {
       slug: "waena-jaya",
       title: "Bengkel Waena Jaya Motor",
-      category: "Website Development",
+      category: "Website Development & Digital Presence",
       role: "Full-Stack Developer",
       year: "2025",
       summary: "Production website built for Bengkel Waena Jaya Motor (Jayapura, Papua). Features verified spare parts catalogs, transparent diagnostic workflows, and instant WhatsApp booking.",
+      overview: "Official production website and digital presence engineered for Bengkel Waena Jaya Motor in Jayapura, Papua (Keeping Waena Moving Since 2007). Built to streamline workshop service discovery, provide transparent pricing breakdowns, and enable direct WhatsApp emergency booking.",
+      challenge: "Customers struggled with opaque repair pricing and lack of verifiable parts catalog for local motorcycle models, leading to prolonged consultation times and lost bookings.",
+      solution: "Engineered a lightning-fast, mobile-first responsive web portal with real-time service catalogs, interactive price estimates, and 1-tap WhatsApp direct API booking integration.",
+      features: [
+        { title: "1-Tap WhatsApp Booking", text: "Instant connection to workshop technicians with pre-filled service diagnostics." },
+        { title: "Service & Parts Catalog", text: "Transparent pricing breakdown for genuine spare parts and labor costs." },
+        { title: "Mobile-First Optimization", text: "Fast load times (<0.8s) even on low-bandwidth 3G/4G cellular networks in Papua." },
+        { title: "Local Trust Signaling", text: "Verified location data, operating hours, and customer service guarantees." }
+      ],
       tech: "Production Website • Responsive UI • WhatsApp Integration",
-      techTags: ["Live Site", "Digital Presence", "Fast Loading"],
+      techTags: ["Live Production Site", "Digital Presence", "Fast Loading", "WhatsApp API", "Tailwind CSS"],
       image: "src/assets/images/waena-jaya-preview.png",
       liveUrl: "https://waenjayamotor.github.io/waena-jaya-website/",
       featured: true
@@ -127,8 +136,17 @@
       role: "System Analyst & UI/UX Designer",
       year: "May 2025",
       summary: "Collaborated in a team of 4 to design 90+ UI screens and develop formal system models (Use Case, ERD, System Sequence Diagrams) for an e-commerce platform with complex inventory and product-variation logic.",
+      overview: "Comprehensive end-to-end e-commerce system architecture and design system engineered for an eco-conscious fashion marketplace. Designed in a collaborative team of 4.",
+      challenge: "Managing complex multi-attribute inventory matrices (size, color, sustainable material certifications) while keeping checkout friction under 3 taps.",
+      solution: "Designed normalized 3NF Relational ERD models, 15+ System Sequence Diagrams (SSD), and a 90+ screen design system with interactive Figma component states.",
+      features: [
+        { title: "90+ High-Fidelity UI Screens", text: "Comprehensive design system covering discovery, filtering, cart, checkout, and order tracking." },
+        { title: "3NF Relational ERD Architecture", text: "Normalized data models supporting complex product variants, stock alerts, and vendor payouts." },
+        { title: "System Sequence Diagrams (SSD)", text: "Formal UML flowcharts mapping client-server interactions across authentication and payment." },
+        { title: "Interactive Figma Prototyping", text: "Validated through click-through micro-interactions and responsive desktop/mobile layouts." }
+      ],
       tech: "Figma • ERD Modeling • SSD • Team of 4",
-      techTags: ["90+ UI Screens", "SSD Modeling", "Complex Inventory"],
+      techTags: ["90+ UI Screens", "SSD Modeling", "Complex Inventory", "Figma Design System", "Visual Paradigm"],
       image: "src/assets/images/szan-preview.png",
       featured: true
     },
@@ -139,20 +157,37 @@
       role: "System Analyst & UI/UX Designer",
       year: "Dec 2025",
       summary: "Translated stakeholder requirements into comprehensive system architecture (use cases, ERD, workflows) for a multi-service integration travel platform. Designed 120+ screens & interactive prototypes and led usability testing with 30+ users.",
+      overview: "All-in-one travel planning, itinerary management, and multi-vendor booking ecosystem tailored for Southeast Asian travelers.",
+      challenge: "Consolidating flight, accommodation, attraction, and transit bookings into a unified timeline without overwhelming user cognitive load.",
+      solution: "Architected intuitive multi-tiered UX flows with 120+ screens, validated through rigorous usability testing with 30+ participants (System Usability Scale score: 86.4).",
+      features: [
+        { title: "120+ Screen Mobile Architecture", text: "End-to-end user journeys for multi-city itinerary building, booking, and offline voucher access." },
+        { title: "Usability Testing (SUS: 86.4)", text: "Conducted structured testing sessions with 30+ users to refine navigation and booking clarity." },
+        { title: "Unified Travel Timeline", text: "Dynamic itinerary view grouping flights, hotels, and attractions into chronologically sorted cards." },
+        { title: "Enterprise System Specifications", text: "Complete Use Case specifications, Activity Diagrams, and Data Dictionaries." }
+      ],
       tech: "Figma • Visual Paradigm • System Architecture • Usability Testing",
-      techTags: ["120+ UI Screens", "ERD & Use Cases", "30+ User Testing"],
+      techTags: ["120+ UI Screens", "ERD & Use Cases", "30+ User Testing", "SUS 86.4 Score", "Mobile Prototyping"],
       image: "src/assets/images/travio-preview.png",
       featured: true
     },
     {
       slug: "coming-soon",
-      title: "Coming Soon",
-      category: "Project",
-      role: "In Development",
+      title: "Next Flagship Venture",
+      category: "System Architecture & AI Platform",
+      role: "Full-Stack Engineer & Analyst",
       year: "2026",
-      summary: "Coming Soon",
-      tech: "Coming Soon",
-      techTags: ["Coming Soon"],
+      summary: "Next-generation enterprise operations system and AI integration platform currently in active development.",
+      overview: "An upcoming full-stack platform focused on intelligent enterprise automation, operational workflow modeling, and modern dashboard analytics.",
+      challenge: "Bridging complex legacy enterprise workflows with modern real-time AI automation and intuitive reactive interfaces.",
+      solution: "Developing modular micro-frontend architecture paired with high-performance edge APIs and localized inference models.",
+      features: [
+        { title: "Real-Time Operational Analytics", text: "Telemetry dashboards with millisecond data synchronization." },
+        { title: "AI-Powered Workflow Automation", text: "Intelligent assistant for automating routine enterprise reporting and triage." },
+        { title: "Cloud-Native Infrastructure", text: "High-availability, containerized microservices architecture." }
+      ],
+      tech: "Full-Stack • AI Integrations • Enterprise Modeling",
+      techTags: ["Full-Stack", "AI Integrations", "Operations", "Enterprise Architecture"],
       image: "src/assets/images/coming-soon-preview.svg",
       isComingSoon: true,
       featured: true
@@ -1125,20 +1160,224 @@
     `;
   }
 
-  // --- Verified Projects Grid ---
-  function renderProjects() {
-    const cardsHtml = projectsData
+  // --- React Bits Pro Modal Cards Template (@reactbits-starter/modal-cards-tw) ---
+  let isModalOpen = false;
+  let activeModalSlug = null;
+
+  function initModalCards() {
+    let modalRoot = document.getElementById('modal-card-root');
+    if (!modalRoot) {
+      modalRoot = document.createElement('div');
+      modalRoot.id = 'modal-card-root';
+      modalRoot.className = 'modal-card-root';
+      modalRoot.setAttribute('role', 'dialog');
+      modalRoot.setAttribute('aria-modal', 'true');
+      modalRoot.setAttribute('aria-hidden', 'true');
+      modalRoot.innerHTML = `
+        <div class="modal-card-backdrop" id="modal-card-backdrop"></div>
+        <div class="modal-card-container" id="modal-card-container">
+          <div class="modal-card-dialog" id="modal-card-dialog"></div>
+        </div>
+      `;
+      document.body.appendChild(modalRoot);
+    }
+
+    modalRoot.addEventListener('click', (e) => {
+      if (e.target.id === 'modal-card-backdrop' || e.target.id === 'modal-card-container') {
+        closeProjectModal();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.link-live') || e.target.closest('#modal-card-close') || e.target.closest('.modal-close-btn')) {
+        return;
+      }
+
+      const trigger = e.target.closest('[data-modal-slug], .project-card, .featured-card');
+      if (trigger) {
+        const slug = trigger.getAttribute('data-modal-slug') || trigger.getAttribute('data-slug');
+        if (slug) {
+          if (trigger.tagName === 'A' && trigger.getAttribute('href')?.startsWith('#')) {
+            e.preventDefault();
+          }
+          openProjectModal(slug);
+        }
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeProjectModal();
+      }
+    });
+  }
+
+  function openProjectModal(slug) {
+    const project = projectsData.find((p) => p.slug === slug) || projectsData[0];
+    if (!project) return;
+
+    const modalRoot = document.getElementById('modal-card-root');
+    const dialog = document.getElementById('modal-card-dialog');
+    if (!modalRoot || !dialog) return;
+
+    activeModalSlug = slug;
+    isModalOpen = true;
+
+    const tagsHtml = (project.techTags || [])
+      .map((t) => `<span class="tag-chip" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;">${t}</span>`)
+      .join('');
+
+    const featuresHtml = (project.features || [])
+      .map(
+        (f) => `
+        <div class="modal-card-feature-item">
+          <div class="modal-card-feature-header">
+            <span class="modal-card-feature-dot"></span>
+            <h5 class="modal-card-feature-title">${f.title}</h5>
+          </div>
+          <p class="modal-card-feature-text">${f.text}</p>
+        </div>
+      `
+      )
+      .join('');
+
+    const liveActionBtn = project.liveUrl
+      ? `
+        <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size: 0.82rem; padding: 0.55rem 1.15rem; gap: 0.45rem;">
+          <span>Visit Live Website</span>
+          <svg style="width: 0.85rem; height: 0.85rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+          </svg>
+        </a>
+      `
+      : '';
+
+    dialog.innerHTML = `
+      <div class="modal-card-hero">
+        <img src="${project.image}" alt="${project.title}" class="modal-card-hero-img" />
+        <div class="modal-card-hero-scrim"></div>
+        
+        <button type="button" class="modal-card-close-btn" id="modal-card-close" aria-label="Close modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <div class="modal-card-hero-badge">
+          <span class="eyebrow-mono" style="color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.6);">${project.category}</span>
+        </div>
+      </div>
+
+      <div class="modal-card-body">
+        <div class="modal-card-header-group">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <span class="eyebrow-mono" style="font-size: 0.7rem;">${project.role}</span>
+            <span class="modal-card-year-pill">${project.year}</span>
+          </div>
+          <h2 class="modal-card-title">${project.title}</h2>
+          <p class="modal-card-summary">${project.summary}</p>
+        </div>
+
+        <div class="modal-card-breakdown-grid">
+          <div class="modal-card-breakdown-box challenge-box">
+            <div class="breakdown-box-header">
+              <svg class="breakdown-box-icon" style="color: #f43f5e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span class="eyebrow-mono" style="color: #f43f5e; font-size: 0.68rem;">The Challenge</span>
+            </div>
+            <p class="breakdown-box-text">${project.challenge || project.summary}</p>
+          </div>
+
+          <div class="modal-card-breakdown-box solution-box">
+            <div class="breakdown-box-header">
+              <svg class="breakdown-box-icon" style="color: #10b981;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span class="eyebrow-mono" style="color: #10b981; font-size: 0.68rem;">The Solution</span>
+            </div>
+            <p class="breakdown-box-text">${project.solution || project.overview || project.summary}</p>
+          </div>
+        </div>
+
+        ${
+          featuresHtml
+            ? `
+          <div class="modal-card-features-section">
+            <h4 class="modal-card-section-heading">Key Architecture & Features</h4>
+            <div class="modal-card-features-grid">
+              ${featuresHtml}
+            </div>
+          </div>
+        `
+            : ''
+        }
+
+        <div class="modal-card-stack-section">
+          <h4 class="modal-card-section-heading">Technologies & Methodologies</h4>
+          <div class="modal-card-tags-wrap">
+            ${tagsHtml}
+          </div>
+        </div>
+
+        <div class="modal-card-footer-actions">
+          ${liveActionBtn}
+          <button type="button" class="btn-secondary modal-close-btn" style="font-size: 0.82rem; padding: 0.55rem 1rem;">
+            <span>Close</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    const closeBtn = dialog.querySelector('#modal-card-close');
+    const closeBtnSec = dialog.querySelector('.modal-close-btn');
+    if (closeBtn) closeBtn.addEventListener('click', closeProjectModal);
+    if (closeBtnSec) closeBtnSec.addEventListener('click', closeProjectModal);
+
+    document.body.classList.add('modal-card-open');
+    modalRoot.setAttribute('aria-hidden', 'false');
+    modalRoot.classList.remove('is-closing');
+    modalRoot.classList.add('is-open');
+    dialog.scrollTop = 0;
+  }
+
+  function closeProjectModal() {
+    const modalRoot = document.getElementById('modal-card-root');
+    if (!modalRoot || !isModalOpen) return;
+
+    isModalOpen = false;
+    activeModalSlug = null;
+
+    modalRoot.classList.add('is-closing');
+    modalRoot.classList.remove('is-open');
+
+    setTimeout(() => {
+      modalRoot.classList.remove('is-closing');
+      modalRoot.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-card-open');
+    }, 220);
+  }
+
+  // --- Verified Projects Grid (Modal Cards) ---
+  function renderProjects(limit = 6) {
+    const displayProjects = projectsData.slice(0, limit);
+
+    const cardsHtml = displayProjects
       .map((p) => {
         const isComingSoon = p.isComingSoon === true;
 
-        const tagsHtml = p.techTags
+        const tagsHtml = (p.techTags || [])
           .map((t) => `<span class="tag-chip" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;">${t}</span>`)
           .join('');
 
         const liveBtnHtml = p.liveUrl
           ? `
-            <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="link-live" style="display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-primary); margin-top: 0.5rem; text-decoration: underline; text-underline-offset: 3px;">
-              <span>Visit Live Site</span>
+            <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="link-live" style="display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px;" onclick="event.stopPropagation();">
+              <span>Visit Live</span>
               <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
               </svg>
@@ -1146,80 +1385,63 @@
           `
           : '';
 
-        const githubBtnHtml = p.githubUrl
-          ? `
-            <a href="${p.githubUrl}" target="_blank" rel="noopener noreferrer" class="card-action-btn" title="View Source on GitHub">
-              <i class="fa-brands fa-github"></i>
-            </a>
-          `
-          : '';
-
-        const caseStudyBtnHtml = p.caseStudyUrl
-          ? `
-            <a href="${p.caseStudyUrl}" class="btn-primary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
-              <span>Read Case Study</span>
-              <i class="fa-solid fa-arrow-right" style="font-size: 0.7rem;"></i>
-            </a>
-          `
-          : '';
-
         return `
-          <div class="card-spotlight border-glow-card" style="display: flex; flex-direction: column; overflow: hidden;">
-            <div class="edge-light"></div>
-            
-            <div style="width: 100%; aspect-ratio: 16/10; overflow: hidden; background-color: var(--bg-surface-elevated); border-bottom: 1px dashed var(--border-dashed); position: relative;">
-              <img
-                src="${p.image}"
-                alt="${p.title}"
-                class="project-card-img"
-                loading="lazy"
-                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';"
-              />
-              ${
-                isComingSoon
-                  ? `<div style="position: absolute; top: 0.75rem; right: 0.75rem; z-index: 10; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); padding: 0.2rem 0.55rem; border-radius: 9999px; font-family: var(--font-mono); font-size: 0.65rem; color: #fff; font-weight: 600;">Coming Soon</div>`
-                  : ''
-              }
+          <article class="card-spotlight project-card modal-card-item ${isComingSoon ? 'coming-soon-card' : ''}" data-slug="${p.slug}" data-modal-slug="${p.slug}" style="${isComingSoon ? 'border: 1px dashed var(--border-dashed);' : ''}">
+            <span class="edge-light"></span>
+            <div class="project-card-img-wrap">
+              <img src="${p.image}" alt="${p.title}" class="project-card-img" />
+              <div class="modal-card-expand-badge" aria-hidden="true" title="Expand card details">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
             </div>
 
             <div class="project-card-body">
               <div>
-                <span class="eyebrow-mono" style="font-size: 0.65rem;">${p.category}</span>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+                  <span class="eyebrow-mono" style="font-size: 0.65rem;">${p.category}</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">${p.year}</span>
+                </div>
                 <h3 class="project-card-title">${p.title}</h3>
-                <p class="project-card-desc">${p.description}</p>
-                <div class="featured-tags">${tagsHtml}</div>
-                ${liveBtnHtml}
+                <span style="display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.5rem;">${p.role}</span>
+                <p class="project-card-desc">${p.summary}</p>
               </div>
 
-              <div class="project-card-footer">
-                <div class="project-card-actions">
-                  ${githubBtnHtml}
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); font-style: italic; margin-bottom: 0.65rem;">
+                  ${p.tech}
                 </div>
-                ${caseStudyBtnHtml}
+
+                <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.85rem;">
+                  ${tagsHtml}
+                </div>
+
+                <div class="project-card-footer">
+                  <button type="button" class="btn-modal-expand" data-modal-slug="${p.slug}" aria-label="View ${p.title} details">
+                    <span>View Details</span>
+                    <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                  ${liveBtnHtml}
+                </div>
               </div>
             </div>
-          </div>
+          </article>
         `;
       })
       .join('');
 
     return `
-      <section class="featured-section" id="projects">
+      <section class="projects-section" id="projects">
         <div class="section-header">
           <div>
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="width: 8px; height: 8px; border-radius: 9999px; background-color: var(--text-primary); display: inline-block;"></span>
-              <span class="eyebrow-mono">Featured Engineering</span>
-            </div>
-            <h2 class="section-title">Verified Works & Systems</h2>
-            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.35rem; max-width: 38rem;">
-              Production ERP ecosystems, full-stack applications, and specialized management tools.
+            <h2 class="section-title">Verified Projects & Systems</h2>
+            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
+              Real-world web engineering, system architecture, UX prototypes, and upcoming projects.
             </p>
           </div>
-          <a href="#/projects" class="section-link">
-            <span>View All Projects</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </a>
         </div>
 
         <div class="projects-grid">
@@ -1227,6 +1449,145 @@
         </div>
       </section>
     `;
+  }
+
+  // --- Dedicated Projects Catalog Page ---
+  let activeProjectsCategory = 'All';
+
+  function renderProjectsPage() {
+    const categories = [
+      'All',
+      'Website Development & Digital Presence',
+      'System Analysis & UI/UX Design',
+      'System Architecture & AI Platform'
+    ];
+
+    const filteredProjects = activeProjectsCategory === 'All'
+      ? projectsData
+      : projectsData.filter((p) => p.category === activeProjectsCategory);
+
+    const filtersHtml = categories
+      .map((cat) => {
+        const isSelected = activeProjectsCategory === cat;
+        return `
+          <button type="button" class="project-filter-btn pill-badge ${isSelected ? 'active-filter' : ''}" data-category="${cat}" style="cursor: pointer; transition: all 0.2s ease; ${isSelected ? 'background-color: var(--text-primary); color: var(--text-inverse);' : ''}">
+            ${cat === 'Website Development & Digital Presence' ? 'Web Development' : cat === 'System Analysis & UI/UX Design' ? 'UI/UX & Analysis' : cat === 'System Architecture & AI Platform' ? 'AI & Architecture' : cat}
+          </button>
+        `;
+      })
+      .join('');
+
+    const cardsHtml = filteredProjects
+      .map((p) => {
+        const isComingSoon = p.isComingSoon === true;
+
+        const tagsHtml = (p.techTags || [])
+          .map((t) => `<span class="tag-chip" style="font-size: 0.68rem; padding: 0.15rem 0.45rem;">${t}</span>`)
+          .join('');
+
+        const liveBtnHtml = p.liveUrl
+          ? `
+            <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="link-live" style="display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px;" onclick="event.stopPropagation();">
+              <span>Visit Live</span>
+              <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+              </svg>
+            </a>
+          `
+          : '';
+
+        return `
+          <article class="card-spotlight project-card modal-card-item ${isComingSoon ? 'coming-soon-card' : ''}" data-slug="${p.slug}" data-modal-slug="${p.slug}" style="${isComingSoon ? 'border: 1px dashed var(--border-dashed);' : ''}">
+            <span class="edge-light"></span>
+            <div class="project-card-img-wrap">
+              <img src="${p.image}" alt="${p.title}" class="project-card-img" />
+              <div class="modal-card-expand-badge" aria-hidden="true" title="Expand card details">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="project-card-body">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem;">
+                  <span class="eyebrow-mono" style="font-size: 0.65rem;">${p.category}</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">${p.year}</span>
+                </div>
+                <h3 class="project-card-title">${p.title}</h3>
+                <span style="display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.5rem;">${p.role}</span>
+                <p class="project-card-desc">${p.summary}</p>
+              </div>
+
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); font-style: italic; margin-bottom: 0.65rem;">
+                  ${p.tech}
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.85rem;">
+                  ${tagsHtml}
+                </div>
+
+                <div class="project-card-footer">
+                  <button type="button" class="btn-modal-expand" data-modal-slug="${p.slug}" aria-label="View ${p.title} details">
+                    <span>View Details</span>
+                    <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                  ${liveBtnHtml}
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      })
+      .join('');
+
+    return `
+      <main class="site-container main-content" style="padding-top: 2rem;">
+        <div>
+          <a href="#/" class="section-link" style="margin-bottom: 1.5rem; display: inline-flex;">
+            <svg style="width: 0.9rem; height: 0.9rem; transform: rotate(180deg);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+            <span>Back to Home</span>
+          </a>
+
+          <h1 class="section-title" style="font-size: 2.25rem; margin-bottom: 0.5rem;">Selected Projects & Systems</h1>
+          <p style="max-width: 32rem; color: var(--text-secondary); margin-bottom: 1.75rem;">
+            Verified portfolio of real-world website engineering, enterprise system architecture, and UX prototypes.
+          </p>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">
+            ${filtersHtml}
+          </div>
+        </div>
+
+        <div class="projects-grid" id="projects-catalog-grid">
+          ${cardsHtml}
+        </div>
+      </main>
+    `;
+  }
+
+  function initProjectsPageEvents() {
+    initSpotlightPhysics();
+
+    const filterBtns = document.querySelectorAll('.project-filter-btn');
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-category');
+        if (cat && cat !== activeProjectsCategory) {
+          activeProjectsCategory = cat;
+          const app = document.getElementById('app-main');
+          if (app) {
+            app.innerHTML = renderProjectsPage();
+            initProjectsPageEvents();
+          }
+        }
+      });
+    });
   }
 
   function initSpotlightPhysics() {
@@ -2042,7 +2403,7 @@
 
         <div class="outside-ide-layout" style="align-items: flex-start;">
           <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); max-width: 28rem; text-align: justify; text-justify: inter-word; text-indent: 1.75rem;">
+            <p style="font-size: 0.95rem; line-height: 1.75; color: var(--text-secondary); max-width: 28rem; text-align: left; text-indent: 0;">
               Whether you have a strategic business challenge, an enterprise system or ERP to model, or an AI/web product to build — I’m always open to discussing new opportunities and collaborations.
             </p>
 
@@ -2746,6 +3107,7 @@
     initSpotlightPhysics();
     initTextScatter();
     initStaggeredText();
+    initModalCards();
   }
 
   // --- Preloader React Bits Pro Animated Loading Screen Engine (@reactbits-starter/preloader-tw) ---
@@ -2758,146 +3120,191 @@
       'WELCOME TO VIDD'
     ];
     const logoSrc = options.logoSrc || 'src/assets/images/spider-icon.png';
-    const duration = options.duration || 1800;
+    const duration = options.duration || 1600;
     const stairCount = options.stairCount || 5;
+    const onReady = options.onReady || null;
 
-    if (document.body) {
-      document.body.classList.add('preloader-active');
-    }
-
-    let loader = document.getElementById('preloader-screen');
-    if (!loader) {
-      loader = document.createElement('div');
-      loader.id = 'preloader-screen';
-      loader.className = 'preloader-root preloader-stairs';
-      loader.setAttribute('role', 'dialog');
-      loader.setAttribute('aria-label', 'Loading experience');
-
-      let stairsHtml = '<div class="preloader-stairs-container">';
-      for (let i = 0; i < stairCount; i++) {
-        stairsHtml += `<div class="preloader-stair-col" style="--stair-index: ${i};"></div>`;
+    return new Promise((resolve) => {
+      if (document.body) {
+        document.body.classList.add('preloader-active');
+        document.body.classList.remove('page-revealed');
       }
-      stairsHtml += '</div>';
 
-      loader.innerHTML = `
-        ${stairsHtml}
-        <div class="preloader-glow-orb"></div>
-        <div class="preloader-content">
-          <div class="preloader-badge">
-            <img src="${logoSrc}" alt="${brandName}" />
-          </div>
-          <div class="preloader-titles">
-            <h1 class="preloader-brand-title">${brandName}</h1>
-            <p id="preloader-word-cycle" class="preloader-word-cycle">${words[0]}</p>
-          </div>
-          <div class="preloader-bar-track">
-            <div id="preloader-bar-indicator" class="preloader-bar-indicator"></div>
-          </div>
-          <div class="preloader-info-row">
-            <span id="preloader-status-text" class="preloader-status-text">INITIALIZING ARCHITECTURE</span>
-            <span id="preloader-counter-digits" class="preloader-counter-digits">00%</span>
-          </div>
-        </div>
-      `;
-      document.body.prepend(loader);
-    }
+      let loader = document.getElementById('preloader-screen');
+      if (!loader) {
+        loader = document.createElement('div');
+        loader.id = 'preloader-screen';
+        loader.className = 'preloader-root preloader-stairs';
+        loader.setAttribute('role', 'dialog');
+        loader.setAttribute('aria-label', 'Loading experience');
 
-    const fillEl = document.getElementById('preloader-bar-indicator');
-    const percentEl = document.getElementById('preloader-counter-digits');
-    const statusEl = document.getElementById('preloader-status-text');
-    const wordEl = document.getElementById('preloader-word-cycle');
-
-    let isDone = false;
-    let animFrameId;
-    let wordIntervalId;
-
-    let wordIdx = 0;
-    if (words && words.length > 1) {
-      const wordInterval = Math.max(duration / words.length, 280);
-      wordIntervalId = setInterval(() => {
-        if (isDone) return;
-        wordIdx = (wordIdx + 1) % words.length;
-        if (wordEl) {
-          wordEl.style.opacity = '0';
-          wordEl.style.transform = 'translateY(3px)';
-          setTimeout(() => {
-            if (wordEl && !isDone) {
-              wordEl.textContent = words[wordIdx];
-              wordEl.style.opacity = '1';
-              wordEl.style.transform = 'translateY(0px)';
-            }
-          }, 100);
+        let stairsHtml = '<div class="preloader-stairs-container">';
+        for (let i = 0; i < stairCount; i++) {
+          stairsHtml += '<div class="preloader-stair-col" style="--stair-index: ' + i + ';"></div>';
         }
-      }, wordInterval);
-    }
+        stairsHtml += '</div>';
 
-    function finishLoader() {
-      if (isDone) return;
-      isDone = true;
-      if (wordIntervalId) clearInterval(wordIntervalId);
+        loader.innerHTML = `
+          ${stairsHtml}
+          <div class="preloader-glow-orb"></div>
+          <div class="preloader-content">
+            <div class="preloader-badge">
+              <img src="${logoSrc}" alt="${brandName}" />
+            </div>
+            <div class="preloader-titles">
+              <h1 class="preloader-brand-title">${brandName}</h1>
+              <p id="preloader-word-cycle" class="preloader-word-cycle">${words[0]}</p>
+            </div>
+            <div class="preloader-bar-track">
+              <div id="preloader-bar-indicator" class="preloader-bar-indicator"></div>
+            </div>
+            <div class="preloader-info-row">
+              <span id="preloader-status-text" class="preloader-status-text">INITIALIZING ARCHITECTURE</span>
+              <span id="preloader-counter-digits" class="preloader-counter-digits">00%</span>
+            </div>
+          </div>
+        `;
+        document.body.prepend(loader);
+      } else {
+        loader.classList.remove('is-exiting', 'is-hidden');
+        loader.style.pointerEvents = 'all';
+        const cols = loader.querySelectorAll('.preloader-stair-col');
+        cols.forEach((col) => {
+          col.style.transform = '';
+        });
+        const content = loader.querySelector('.preloader-content');
+        if (content) {
+          content.style.opacity = '';
+          content.style.transform = '';
+          content.style.filter = '';
+        }
+        const orb = loader.querySelector('.preloader-glow-orb');
+        if (orb) {
+          orb.style.opacity = '';
+          orb.style.transform = '';
+        }
+      }
 
-      if (fillEl) fillEl.style.width = '100%';
-      if (percentEl) percentEl.textContent = '100%';
-      if (statusEl) statusEl.textContent = 'READY';
+      const fillEl = document.getElementById('preloader-bar-indicator');
+      const percentEl = document.getElementById('preloader-counter-digits');
+      const statusEl = document.getElementById('preloader-status-text');
+      const wordEl = document.getElementById('preloader-word-cycle');
+
+      if (fillEl) fillEl.style.width = '0%';
+      if (percentEl) percentEl.textContent = '00%';
+      if (statusEl) statusEl.textContent = options.isRefresh ? 'SYNCHRONIZING ARCHITECTURE' : 'INITIALIZING ARCHITECTURE';
       if (wordEl) {
-        wordEl.textContent = words[words.length - 1];
+        wordEl.textContent = words[0];
         wordEl.style.opacity = '1';
         wordEl.style.transform = 'translateY(0px)';
       }
 
-      // Fast, smooth & seamless switch (zero hesitation)
-      setTimeout(() => {
-        loader.classList.add('is-exiting');
-        loader.style.pointerEvents = 'none';
+      let isDone = false;
+      let animFrameId;
+      let wordIntervalId;
 
-        // Trigger post-preloader page entrance reveal
-        if (document.body) {
-          document.body.classList.add('page-revealed');
+      let wordIdx = 0;
+      if (words && words.length > 1) {
+        const wordInterval = Math.max(duration / words.length, 260);
+        wordIntervalId = setInterval(() => {
+          if (isDone) return;
+          wordIdx = (wordIdx + 1) % words.length;
+          if (wordEl) {
+            wordEl.style.opacity = '0';
+            wordEl.style.transform = 'translateY(3px)';
+            setTimeout(() => {
+              if (wordEl && !isDone) {
+                wordEl.textContent = words[wordIdx];
+                wordEl.style.opacity = '1';
+                wordEl.style.transform = 'translateY(0px)';
+              }
+            }, 90);
+          }
+        }, wordInterval);
+      }
+
+      function finishLoader() {
+        if (isDone) return;
+        isDone = true;
+        if (wordIntervalId) clearInterval(wordIntervalId);
+
+        if (fillEl) fillEl.style.width = '100%';
+        if (percentEl) percentEl.textContent = '100%';
+        if (statusEl) statusEl.textContent = 'READY';
+        if (wordEl) {
+          wordEl.textContent = words[words.length - 1];
+          wordEl.style.opacity = '1';
+          wordEl.style.transform = 'translateY(0px)';
+        }
+
+        if (typeof onReady === 'function') {
+          try {
+            onReady();
+          } catch (e) {
+            console.error('Preloader onReady error:', e);
+          }
         }
 
         setTimeout(() => {
+          loader.classList.add('is-exiting');
+          loader.style.pointerEvents = 'none';
+
           if (document.body) {
-            document.body.classList.remove('preloader-active');
+            document.body.classList.add('page-revealed');
           }
-          if (loader.parentNode) {
-            loader.parentNode.removeChild(loader);
-          }
-          cancelAnimationFrame(animFrameId);
-        }, 750);
-      }, 60);
-    }
 
-    const startTime = performance.now();
-
-    function tick(now) {
-      if (isDone) return;
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1.0);
-
-      const eased = progress < 0.5
-        ? 4 * progress * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-      const currentPercent = Math.min(Math.round(eased * 100), 100);
-
-      if (fillEl) fillEl.style.width = `${currentPercent}%`;
-      if (percentEl) percentEl.textContent = `${currentPercent.toString().padStart(2, '0')}%`;
-
-      if (statusEl) {
-        if (currentPercent < 30) statusEl.textContent = 'INITIALIZING ARCHITECTURE';
-        else if (currentPercent < 65) statusEl.textContent = 'LOADING DESIGN TOKENS';
-        else if (currentPercent < 98) statusEl.textContent = 'PREPARING ENVIRONMENT';
-        else statusEl.textContent = 'READY';
+          setTimeout(() => {
+            if (document.body) {
+              document.body.classList.remove('preloader-active');
+            }
+            if (loader.parentNode) {
+              loader.parentNode.removeChild(loader);
+            }
+            cancelAnimationFrame(animFrameId);
+            resolve();
+          }, 750);
+        }, 80);
       }
 
-      if (progress >= 1.0) {
-        finishLoader();
-      } else {
-        animFrameId = requestAnimationFrame(tick);
-      }
-    }
+      const startTime = performance.now();
 
-    animFrameId = requestAnimationFrame(tick);
+      function tick(now) {
+        if (isDone) return;
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1.0);
+
+        const eased = progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+        const currentPercent = Math.min(Math.round(eased * 100), 100);
+
+        if (fillEl) fillEl.style.width = currentPercent + '%';
+        if (percentEl) percentEl.textContent = currentPercent.toString().padStart(2, '0') + '%';
+
+        if (statusEl) {
+          if (options.isRefresh) {
+            if (currentPercent < 30) statusEl.textContent = 'SYNCHRONIZING ARCHITECTURE';
+            else if (currentPercent < 65) statusEl.textContent = 'UPDATING SYSTEM TOKENS';
+            else if (currentPercent < 98) statusEl.textContent = 'RE-ALIGNING COMPONENTS';
+            else statusEl.textContent = 'READY';
+          } else {
+            if (currentPercent < 30) statusEl.textContent = 'INITIALIZING ARCHITECTURE';
+            else if (currentPercent < 65) statusEl.textContent = 'LOADING DESIGN TOKENS';
+            else if (currentPercent < 98) statusEl.textContent = 'PREPARING ENVIRONMENT';
+            else statusEl.textContent = 'READY';
+          }
+        }
+
+        if (progress >= 1.0) {
+          finishLoader();
+        } else {
+          animFrameId = requestAnimationFrame(tick);
+        }
+      }
+
+      animFrameId = requestAnimationFrame(tick);
+    });
   }
 
   // --- Twist / Warp Twister React Bits Pro Spatial Distortion & Entrance Engine ---
@@ -3539,14 +3946,38 @@
     });
   }
 
-  // --- Minimalist Spider Icon Pull-to-Refresh Engine ---
+  // --- Minimalist Spider Icon Pull-to-Refresh Engine (Phantom Troupe #0) ---
   function initPullToRefresh(options = {}) {
-    const pullThreshold = options.pullThreshold || 70;
-    const maxPull = options.maxPull || 120;
+    const pullThreshold = options.pullThreshold || 75;
+    const maxPull = options.maxPull || 125;
     const spiderSrc = options.spiderSrc || 'src/assets/images/spider-icon.png';
     const onRefresh = options.onRefresh || (async () => {
-      window.dispatchEvent(new CustomEvent('app:refresh'));
-      await new Promise((r) => setTimeout(r, 1200));
+      window.dispatchEvent(new CustomEvent('app:refresh', { detail: { timestamp: Date.now() } }));
+
+      if (typeof initPreloader === 'function') {
+        await initPreloader({
+          duration: 1400,
+          isRefresh: true,
+          words: [
+            'SYNCHRONIZING ARCHITECTURE',
+            'UPDATING PORTFOLIO TOKENS',
+            'RE-ALIGNING COMPONENTS',
+            'WELCOME TO VIDD'
+          ],
+          onReady: () => {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            if (typeof handleRoute === 'function') {
+              handleRoute();
+            }
+          }
+        });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        if (typeof handleRoute === 'function') {
+          handleRoute();
+        }
+        await new Promise((r) => setTimeout(r, 1100));
+      }
     });
 
     let indicator = document.getElementById('pull-to-refresh-indicator');
@@ -3554,20 +3985,22 @@
       indicator = document.createElement('div');
       indicator.id = 'pull-to-refresh-indicator';
       indicator.className = 'pull-to-refresh-indicator';
+      indicator.setAttribute('role', 'status');
+      indicator.setAttribute('aria-live', 'polite');
       indicator.innerHTML = `
         <div class="ptr-mascot-box">
-          <svg class="ptr-ring-svg" viewBox="0 0 32 32">
+          <svg class="ptr-ring-svg" viewBox="0 0 32 32" aria-hidden="true">
             <defs>
-              <linearGradient id="ptr-gradient-bundle" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id="ptr-spider-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#818cf8" />
                 <stop offset="50%" stop-color="#a855f7" />
                 <stop offset="100%" stop-color="#38bdf8" />
               </linearGradient>
             </defs>
             <circle class="ptr-ring-bg" cx="16" cy="16" r="14" />
-            <circle id="ptr-ring-bar" class="ptr-ring-progress" cx="16" cy="16" r="14" style="stroke: url(#ptr-gradient-bundle);" />
+            <circle id="ptr-ring-bar" class="ptr-ring-progress" cx="16" cy="16" r="14" style="stroke: url(#ptr-spider-gradient);" />
           </svg>
-          <img id="ptr-spider-img" src="${spiderSrc}" alt="Spider" class="ptr-spider-img" />
+          <img id="ptr-spider-img" src="${spiderSrc}" alt="Phantom Troupe Spider" class="ptr-spider-img" />
         </div>
         <div class="ptr-text-group">
           <span id="ptr-status-title" class="ptr-status-title">Pull to refresh</span>
@@ -3581,104 +4014,258 @@
     const titleEl = document.getElementById('ptr-status-title');
     const subEl = document.getElementById('ptr-status-sub');
 
+    let startX = 0;
     let startY = 0;
     let isDragging = false;
     let isRefreshing = false;
     let pullDistance = 0;
+    let hasTriggeredHaptic = false;
+    let isAngleLocked = false;
+    let isTouchGesture = false;
 
-    function updateIndicator(pull) {
+    const RING_CIRCUMFERENCE = 88; // 2 * PI * 14
+
+    function getScrollTop() {
+      return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    }
+
+    function triggerHaptic(ms = 10) {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try {
+          navigator.vibrate(ms);
+        } catch (_) {}
+      }
+    }
+
+    function updateIndicator(pull, dragging = false) {
       if (!indicator) return;
-      const progress = Math.min(pull / pullThreshold, 1.0);
-      const ringOffset = 88 - progress * 88;
 
-      if (ringBar) ringBar.style.strokeDashoffset = String(ringOffset);
+      if (dragging) {
+        indicator.classList.add('is-dragging');
+      } else {
+        indicator.classList.remove('is-dragging');
+      }
+
+      const progress = Math.max(0, Math.min(pull / pullThreshold, 1.0));
+      const ringOffset = RING_CIRCUMFERENCE - progress * RING_CIRCUMFERENCE;
+
+      if (ringBar && !indicator.classList.contains('is-success')) {
+        ringBar.style.strokeDashoffset = String(ringOffset);
+      }
 
       const isReady = pull >= pullThreshold;
 
       if (isRefreshing) {
         indicator.className = 'pull-to-refresh-indicator is-refreshing';
         if (titleEl) titleEl.textContent = 'Refreshing...';
-        if (subEl) subEl.textContent = 'SYNCING DATA';
-      } else if (isReady) {
-        indicator.className = 'pull-to-refresh-indicator is-ready';
+        if (subEl) subEl.textContent = 'SYNCING PORTFOLIO';
+        indicator.style.opacity = '1';
+        indicator.style.transform = 'translateX(-50%) translateY(24px)';
+        return;
+      }
+
+      if (isReady) {
+        if (!hasTriggeredHaptic) {
+          triggerHaptic(12);
+          hasTriggeredHaptic = true;
+        }
+        indicator.className = dragging ? 'pull-to-refresh-indicator is-dragging is-ready' : 'pull-to-refresh-indicator is-ready';
         if (titleEl) titleEl.textContent = 'Release to refresh';
         if (subEl) subEl.textContent = 'RELEASE NOW';
-      } else if (pull > 25) {
-        indicator.className = 'pull-to-refresh-indicator';
+      } else if (pull > 20) {
+        hasTriggeredHaptic = false;
+        indicator.className = dragging ? 'pull-to-refresh-indicator is-dragging' : 'pull-to-refresh-indicator';
         if (titleEl) titleEl.textContent = 'Pull to refresh';
-        if (subEl) subEl.textContent = (progress * 100).toFixed(0) + '%';
+        if (subEl) subEl.textContent = Math.round(progress * 100) + '%';
       } else {
-        indicator.className = 'pull-to-refresh-indicator';
+        hasTriggeredHaptic = false;
+        indicator.className = dragging ? 'pull-to-refresh-indicator is-dragging' : 'pull-to-refresh-indicator';
         if (titleEl) titleEl.textContent = 'Pull to refresh';
         if (subEl) subEl.textContent = 'PORTFOLIO SYNC';
       }
 
-      if (pull > 4 || isRefreshing) {
-        indicator.style.opacity = '1';
-        indicator.style.transform = 'translateX(-50%) translateY(' + (isRefreshing ? 60 : pull + 14) + 'px)';
+      if (pull > 0) {
+        const opacity = Math.min(1, Math.max(0.2, pull / 35));
+        const translateY = -50 + (pull * 0.75);
+        indicator.style.opacity = String(opacity);
+        indicator.style.transform = 'translateX(-50%) translateY(' + translateY + 'px)';
       } else {
         indicator.style.opacity = '0';
-        indicator.style.transform = 'translateX(-50%) translateY(-110%)';
+        indicator.style.transform = 'translateX(-50%) translateY(-140%)';
       }
     }
 
-    function handleStart(e) {
-      if (window.scrollY > 4 || isRefreshing) return;
-      startY = e.touches ? e.touches[0].clientY : e.clientY;
+    function handleTouchStart(e) {
+      if (isRefreshing) return;
+      if (getScrollTop() > 3) {
+        isDragging = false;
+        return;
+      }
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      startX = touch.clientX;
+      startY = touch.clientY;
       isDragging = true;
+      isTouchGesture = true;
+      isAngleLocked = false;
+      hasTriggeredHaptic = false;
     }
 
-    function handleMove(e) {
+    function handleTouchMove(e) {
       if (!isDragging || isRefreshing) return;
-      const currentY = e.touches ? e.touches[0].clientY : e.clientY;
-      const diff = currentY - startY;
+      const touch = e.touches[0];
+      if (!touch) return;
 
-      if (diff > 0 && window.scrollY <= 2) {
-        if (e.cancelable && diff > 10) e.preventDefault();
-        const damped = Math.pow(diff, 0.82) * 0.85;
-        pullDistance = Math.min(damped, maxPull);
-        updateIndicator(pullDistance);
-      } else {
+      const diffX = touch.clientX - startX;
+      const diffY = touch.clientY - startY;
+
+      if (!isAngleLocked && (Math.abs(diffX) > 6 || Math.abs(diffY) > 6)) {
+        isAngleLocked = true;
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          isDragging = false;
+          pullDistance = 0;
+          updateIndicator(0);
+          return;
+        }
+      }
+
+      const currentScroll = getScrollTop();
+      if (currentScroll > 3) {
+        isDragging = false;
         pullDistance = 0;
         updateIndicator(0);
+        return;
+      }
+
+      if (diffY > 0 && currentScroll <= 1) {
+        if (e.cancelable && diffY > 8) {
+          e.preventDefault();
+        }
+        const damping = 160;
+        const damped = maxPull * (1 - Math.exp(-diffY / damping));
+        pullDistance = Math.min(damped, maxPull);
+        updateIndicator(pullDistance, true);
+      } else {
+        pullDistance = 0;
+        updateIndicator(0, true);
       }
     }
 
-    async function handleEnd() {
-      if (!isDragging || isRefreshing) return;
+    async function handleTouchEnd() {
+      if (!isDragging || isRefreshing) {
+        isDragging = false;
+        return;
+      }
       isDragging = false;
 
       if (pullDistance >= pullThreshold) {
         isRefreshing = true;
-        pullDistance = 55;
-        updateIndicator(pullDistance);
+        triggerHaptic(15);
+        updateIndicator(pullThreshold, false);
 
         try {
           await onRefresh();
           indicator.className = 'pull-to-refresh-indicator is-success';
           if (titleEl) titleEl.textContent = 'Updated';
-          if (subEl) subEl.textContent = 'ALL UP TO DATE';
-          await new Promise((r) => setTimeout(r, 450));
+          if (subEl) subEl.textContent = 'ALL SYSTEMS SYNCED';
+          indicator.style.opacity = '1';
+          indicator.style.transform = 'translateX(-50%) translateY(24px)';
+          await new Promise((r) => setTimeout(r, 650));
         } catch (err) {
-          console.error('Refresh error:', err);
+          console.error('Pull to refresh error:', err);
+          indicator.className = 'pull-to-refresh-indicator';
+          if (titleEl) titleEl.textContent = 'Sync Failed';
+          if (subEl) subEl.textContent = 'TRY AGAIN';
+          await new Promise((r) => setTimeout(r, 600));
         } finally {
           isRefreshing = false;
           pullDistance = 0;
-          updateIndicator(0);
+          hasTriggeredHaptic = false;
+          updateIndicator(0, false);
         }
       } else {
         pullDistance = 0;
-        updateIndicator(0);
+        hasTriggeredHaptic = false;
+        updateIndicator(0, false);
       }
     }
 
-    window.addEventListener('touchstart', handleStart, { passive: true });
-    window.addEventListener('touchmove', handleMove, { passive: false });
-    window.addEventListener('touchend', handleEnd);
+    function handleTouchCancel() {
+      if (isRefreshing) return;
+      isDragging = false;
+      pullDistance = 0;
+      hasTriggeredHaptic = false;
+      updateIndicator(0, false);
+    }
 
-    window.addEventListener('mousedown', handleStart, { passive: true });
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('mouseup', handleEnd);
+    function handleMouseDown(e) {
+      if (isRefreshing || e.button !== 0) return;
+      if (getScrollTop() > 3) return;
+
+      const target = e.target;
+      if (target && target.closest && target.closest('a, button, input, textarea, select, [role="button"], .navbar-root, .chat-widget, #chat-widget-toggle')) {
+        return;
+      }
+
+      startX = e.clientX;
+      startY = e.clientY;
+      isDragging = true;
+      isTouchGesture = false;
+      isAngleLocked = false;
+      hasTriggeredHaptic = false;
+    }
+
+    function handleMouseMove(e) {
+      if (!isDragging || isRefreshing || isTouchGesture) return;
+
+      const diffX = e.clientX - startX;
+      const diffY = e.clientY - startY;
+
+      if (!isAngleLocked && (Math.abs(diffX) > 6 || Math.abs(diffY) > 6)) {
+        isAngleLocked = true;
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          isDragging = false;
+          pullDistance = 0;
+          updateIndicator(0);
+          return;
+        }
+      }
+
+      const currentScroll = getScrollTop();
+      if (currentScroll > 3) {
+        isDragging = false;
+        pullDistance = 0;
+        updateIndicator(0);
+        return;
+      }
+
+      if (diffY > 0 && currentScroll <= 1) {
+        const damping = 160;
+        const damped = maxPull * (1 - Math.exp(-diffY / damping));
+        pullDistance = Math.min(damped, maxPull);
+        updateIndicator(pullDistance, true);
+      } else {
+        pullDistance = 0;
+        updateIndicator(0, true);
+      }
+    }
+
+    function handleMouseUp() {
+      if (isTouchGesture) return;
+      handleTouchEnd();
+    }
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd);
+    window.addEventListener('touchcancel', handleTouchCancel);
+
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mouseleave', handleTouchCancel);
+    window.addEventListener('blur', handleTouchCancel);
   }
 
   // --- StaggeredText React Bits Pro Engine (@reactbits-starter/staggered-text-tw) ---
@@ -3742,6 +4329,7 @@
     initBendingMarquee();
     initStaggeredText();
     initPullToRefresh();
+    initModalCards();
     window.addEventListener('hashchange', handleRoute);
     handleRoute();
   }

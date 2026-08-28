@@ -221,6 +221,38 @@ html {
   overflow-x: clip;
 }
 
+/* ==========================================================================
+   Monochrome Contrast Text Selection System (Dark & White Theme Synced)
+   ========================================================================== */
+::selection {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+::-moz-selection {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+html.dark ::selection {
+  background-color: #ffffff !important;
+  color: #121212 !important;
+  text-shadow: none !important;
+}
+
+html.dark ::-moz-selection {
+  background-color: #ffffff !important;
+  color: #121212 !important;
+  text-shadow: none !important;
+}
+
+p, h1, h2, h3, h4, h5, h6, span, a, li, blockquote, code, pre, label, strong, em, b, i {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 body {
   min-height: 100vh;
   display: flex;
