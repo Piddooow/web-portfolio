@@ -59,7 +59,7 @@ export const BendingMarquee: React.FC<BendingMarqueeProps> = ({
   separator = '*',
   bandPadding = 12,
   direction = 'left',
-  interactive = false,
+  interactive = true,
   className = '',
   textColor,
   bandColor,
@@ -133,9 +133,11 @@ export const BendingMarquee: React.FC<BendingMarqueeProps> = ({
     return () => cancelAnimationFrame(frameId);
   }, [spacing, isRight, speed]);
 
+  const unclickableClass = interactive ? '' : 'unclickable';
+
   return (
     <div
-      className={`bending-marquee-container unclickable ${className}`}
+      className={`bending-marquee-container ${unclickableClass} ${className}`.trim()}
       style={{
         perspective: `${perspective}px`,
         paddingTop: `${bandPadding}px`,
@@ -143,7 +145,8 @@ export const BendingMarquee: React.FC<BendingMarqueeProps> = ({
         backgroundColor: bandColor || 'transparent',
         ...style
       }}
-      aria-hidden="true"
+      aria-label={content.trim()}
+      role="region"
     >
       <div
         className="bending-marquee-3d-stage"

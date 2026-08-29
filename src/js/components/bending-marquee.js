@@ -24,7 +24,7 @@ export function renderBendingMarquee({
   separator = '*',
   bandPadding = 12,
   speed = 16.0,
-  interactive = false,
+  interactive = true,
   className = '',
   textColor = '',
   bandColor = ''
@@ -39,10 +39,11 @@ export function renderBendingMarquee({
 
   const trimmed = marqueeText.trim();
   const cleanText = `${trimmed}\u00A0\u00A0\u00A0${separator}\u00A0\u00A0\u00A0`;
+  const unclickableClass = interactive ? '' : 'unclickable';
 
   return `
     <div 
-      class="bending-marquee-container unclickable ${className}" 
+      class="bending-marquee-container ${unclickableClass} ${className}".trim() 
       id="${uid}" 
       data-marquee-text="${encodeURIComponent(cleanText)}"
       data-direction="${direction}"
@@ -53,11 +54,11 @@ export function renderBendingMarquee({
       data-font-weight="${fontWeight}"
       data-letter-spacing="${letterSpacing}"
       data-band-padding="${bandPadding}"
-      data-interactive="false"
+      data-interactive="${interactive ? 'true' : 'false'}"
       data-path-id="${pathId}"
       style="perspective: ${perspective}px; padding-top: ${bandPadding}px; padding-bottom: ${bandPadding}px; ${bandColor ? `background-color: ${bandColor};` : ''}"
       role="region"
-      aria-hidden="true"
+      aria-label="${trimmed}"
     >
       <div class="bending-marquee-3d-stage" style="transform: translate3d(0, 0, ${depth}px) scale(${1 - Math.abs(depth) * 0.0006});">
         <svg class="bending-marquee-svg" viewBox="0 0 1440 100" preserveAspectRatio="xMidYMid meet">
@@ -97,7 +98,10 @@ export function initBendingMarquee(selector = '.bending-marquee-container') {
 
     const rawText = decodeURIComponent(container.dataset.marqueeText || "Hey Hey It's Vidd!!\u00A0\u00A0\u00A0*\u00A0\u00A0\u00A0");
     const direction = container.dataset.direction || 'left';
-    const speed = parseFloat(container.dataset.speed || '16.0');
+    const baseSpeed = parseFloat(container.dataset.speed || '16.0');
+    let currentSpeed = baseSpeed;
+    let targetSpeed = baseSpeed;
+    let isHovered = false;
     const isRight = direction === 'right';
 
     let spacing = 0;
@@ -124,6 +128,22 @@ export function initBendingMarquee(selector = '.bending-marquee-container') {
       document.fonts.ready.then(computeSpacing);
     }
 
+    // Interactivity handlers: click bursts speed smoothly, hover slightly relaxes speed
+    container.addEventListener('mouseenter', () => {
+      isHovered = true;
+      targetSpeed = baseSpeed * 0.75;
+    }, { passive: true });
+
+    container.addEventListener('mouseleave', () => {
+      isHovered = false;
+      targetSpeed = baseSpeed;
+    }, { passive: true });
+
+    container.addEventListener('click', () => {
+      // Dynamic velocity burst with smooth decay back to target
+      currentSpeed = baseSpeed * 2.4;
+    });
+
     let accumulatedDistance = 0;
     let lastTimestamp = null;
     let rafId = null;
@@ -138,8 +158,11 @@ export function initBendingMarquee(selector = '.bending-marquee-container') {
       const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.033);
       lastTimestamp = timestamp;
 
+      // Smooth decay / acceleration towards target speed
+      currentSpeed += (targetSpeed - currentSpeed) * Math.min(dt * 3.5, 1);
+
       if (spacing > 0 && textPathEl) {
-        const pxPerSec = (speed / 16.0) * 85;
+        const pxPerSec = (currentSpeed / 16.0) * 85;
         accumulatedDistance += pxPerSec * dt;
 
         const normalized = ((accumulatedDistance % spacing) + spacing) % spacing;

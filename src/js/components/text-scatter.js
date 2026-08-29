@@ -3,9 +3,12 @@
 // Docs: https://pro.reactbits.dev/docs/components/text-scatter
 // Features: 90+ FPS Vector Physics, Immediate Return on Hero Heading, 2.0s Hold Delay on Badges,
 // Full Mobile Touch & Pointer Support, Smooth Seamless Eased Recovery
+// Lifecycle-safe: handles SPA navigation, container remounts, and scroll-offset independence.
 // ==========================================================================
 
 export function initTextScatter(options = {}) {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
   const {
     selector = '[data-text-scatter]',
     scatterRadius = 120,
@@ -26,6 +29,7 @@ export function initTextScatter(options = {}) {
   const effectiveDelay = returnAfter !== undefined ? returnAfter : returnDelay;
 
   const elements = document.querySelectorAll(selector);
+  if (!elements || elements.length === 0) return;
 
   elements.forEach((container) => {
     if (container.dataset.textScatterProcessed === 'true') return;
@@ -58,23 +62,24 @@ export function initTextScatter(options = {}) {
 
     let resetTimer = null;
     let rafId = null;
-    let cachedCharCenters = [];
+    let cachedRelativeCenters = [];
     let isInteracting = false;
 
-    // Cache character bounding box centers to prevent layout thrashing
-    const updateCachedCenters = () => {
-      cachedCharCenters = charElements.map((el) => {
-        const rect = el.getBoundingClientRect();
-        return {
-          centerX: rect.left + rect.width / 2,
-          centerY: rect.top + rect.height / 2
-        };
-      });
+    // Cache character centers relative to the container element
+    // This is 100% immune to page scrolling, element offsets, or window scrolling
+    const updateRelativeCenters = () => {
+      if (!container.isConnected) return;
+      cachedRelativeCenters = charElements.map((el) => ({
+        x: el.offsetLeft + el.offsetWidth / 2,
+        y: el.offsetTop + el.offsetHeight / 2
+      }));
     };
+
+    updateRelativeCenters();
 
     // Smooth return to initial state with natural momentum
     const returnToRest = () => {
-      if (isInteracting) return; // Guard against late firing
+      if (!container.isConnected || isInteracting) return;
       charElements.forEach((charEl) => {
         charEl.style.transition = `transform ${effectiveDuration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
         charEl.style.transform = 'translate3d(0, 0, 0) rotate(0deg) scale(1)';
@@ -92,10 +97,8 @@ export function initTextScatter(options = {}) {
     const scheduleReset = () => {
       cancelPendingReset();
       if (isImmediateReturn) {
-        // Langsung kembali secara smooth & elegan setelah hover pada hero heading
         returnToRest();
       } else {
-        // Pertahankan posisi statis secara utuh selama tepat 2.0 detik (2000ms)
         const delayMs = Math.max(effectiveDelay * 1000, 2000);
         resetTimer = setTimeout(() => {
           returnToRest();
@@ -105,29 +108,36 @@ export function initTextScatter(options = {}) {
     };
 
     const handlePointerStart = (clientX, clientY) => {
+      if (!container.isConnected) return;
       isInteracting = true;
       cancelPendingReset();
-      updateCachedCenters();
+      updateRelativeCenters();
       handlePointerMoveCoords(clientX, clientY);
     };
 
     const handlePointerMoveCoords = (clientX, clientY) => {
+      if (!container.isConnected) return;
       isInteracting = true;
       cancelPendingReset();
 
-      if (!cachedCharCenters.length) {
-        updateCachedCenters();
+      if (!cachedRelativeCenters.length) {
+        updateRelativeCenters();
       }
 
       if (rafId) cancelAnimationFrame(rafId);
 
       rafId = requestAnimationFrame(() => {
+        if (!container.isConnected) return;
+        const containerRect = container.getBoundingClientRect();
+        const mouseRelX = clientX - containerRect.left;
+        const mouseRelY = clientY - containerRect.top;
+
         charElements.forEach((charEl, index) => {
-          const center = cachedCharCenters[index];
+          const center = cachedRelativeCenters[index];
           if (!center) return;
 
-          const dx = center.centerX - clientX;
-          const dy = center.centerY - clientY;
+          const dx = center.x - mouseRelX;
+          const dy = center.y - mouseRelY;
           const distance = Math.hypot(dx, dy);
 
           if (distance < scatterRadius) {
@@ -178,6 +188,14 @@ export function initTextScatter(options = {}) {
     container.addEventListener('touchend', handlePointerEnd, { passive: true });
     container.addEventListener('touchcancel', handlePointerEnd, { passive: true });
 
-    window.addEventListener('resize', updateCachedCenters, { passive: true });
+    // Window Resize with container connection guard
+    const handleResize = () => {
+      if (!container.isConnected) {
+        window.removeEventListener('resize', handleResize);
+        return;
+      }
+      updateRelativeCenters();
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
   });
 }

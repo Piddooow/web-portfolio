@@ -5,7 +5,9 @@
 import { experienceData, profileData } from '../data.js';
 
 export function renderExperience() {
-  const expItemsHtml = experienceData
+  const sortedExperience = [...experienceData].sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  const expItemsHtml = sortedExperience
     .map(
       (exp) => `
       <div class="experience-item" style="padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border-dashed);">
@@ -14,7 +16,7 @@ export function renderExperience() {
           <h3 class="exp-title">${exp.role}</h3>
           <p class="exp-company">${exp.company} • ${exp.location}</p>
           <ul class="exp-desc-list" style="margin-top: 0.6rem;">
-            ${exp.bulletPoints.map((b) => `<li>${b}</li>`).join('')}
+            ${(exp.bulletPoints || exp.description || []).map((b) => `<li>${b}</li>`).join('')}
           </ul>
         </div>
       </div>

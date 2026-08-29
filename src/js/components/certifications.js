@@ -71,33 +71,78 @@ export function initCertModalEvents() {
   });
 }
 
+let savedCertScrollPosition = 0;
+
 export function openCertModal(imgSrc) {
   const root = document.getElementById('cert-modal-root') || document.body;
   const modal = document.createElement('div');
   modal.className = 'cert-modal-backdrop';
   modal.id = 'active-cert-modal';
 
+  savedCertScrollPosition = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+
   modal.innerHTML = `
     <div class="cert-modal-dialog" onclick="event.stopPropagation()">
       <button type="button" class="cert-modal-close" id="close-modal-btn" aria-label="Close modal">
-        <svg style="width: 1rem; height: 1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 6L6 18M6 6l12 12"/>
+        <svg style="width: 1.1rem; height: 1.1rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <img src="${imgSrc}" alt="Certification credential view" style="width: 100%; height: auto; max-height: 75vh; object-fit: contain;" />
+      <img src="${imgSrc}" alt="Certification credential view" style="width: 100%; height: auto; max-height: 80vh; max-height: 80dvh; object-fit: contain; display: block;" />
     </div>
   `;
 
-  modal.addEventListener('click', () => modal.remove());
-  const closeBtn = modal.querySelector('#close-modal-btn');
-  if (closeBtn) closeBtn.addEventListener('click', () => modal.remove());
+  function closeModal() {
+    modal.classList.add('is-closing');
+    setTimeout(() => {
+      if (modal.parentNode) modal.parentNode.removeChild(modal);
+      document.documentElement.classList.remove('cert-modal-open');
+      document.body.classList.remove('cert-modal-open');
 
-  document.addEventListener('keydown', function escHandler(e) {
+      window.scrollTo({
+        top: savedCertScrollPosition,
+        behavior: 'instant'
+      });
+    }, 180);
+    document.removeEventListener('keydown', escHandler);
+  }
+
+  function escHandler(e) {
     if (e.key === 'Escape') {
-      modal.remove();
-      document.removeEventListener('keydown', escHandler);
+      closeModal();
     }
-  });
+  }
+
+  // Prevent touchmove/wheel leakage when touching backdrop outside dialog
+  modal.addEventListener(
+    'touchmove',
+    (e) => {
+      if (!e.target.closest('.cert-modal-dialog')) {
+        e.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+
+  modal.addEventListener(
+    'wheel',
+    (e) => {
+      if (!e.target.closest('.cert-modal-dialog')) {
+        e.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+
+  modal.addEventListener('click', closeModal);
+  const closeBtn = modal.querySelector('#close-modal-btn');
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', escHandler);
+
+  document.documentElement.classList.add('cert-modal-open');
+  document.body.classList.add('cert-modal-open');
 
   root.appendChild(modal);
 }

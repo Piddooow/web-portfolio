@@ -1,7 +1,7 @@
 // ==========================================================================
 // Preloader — React Bits Pro Animated Loading Screen Engine (@reactbits-starter/preloader-tw)
 // Docs: https://pro.reactbits.dev/docs/components/preloader
-// Features: Unskippable, Snappy & Seamless Switch with Page Entrance Trigger
+// Features: Snappy, Smooth, Resilient & Auto-Recovering with Hard Safety Timers
 // Returns a Promise that resolves when the loading & exit reveal sequence completes.
 // ==========================================================================
 
@@ -11,10 +11,10 @@ export function initPreloader(options = {}) {
     'SYSTEMS ARCHITECTURE',
     'OPERATIONS & STRATEGY',
     'UI/UX & WEB ENGINEERING',
-    'WELCOME TO VIDD'
+    'WELCOME TO VIDD PORTFOLIO'
   ];
   const logoSrc = options.logoSrc || 'src/assets/images/spider-icon.png';
-  const duration = options.duration || 1600;
+  const duration = options.duration || 900; // Snappy 900ms duration
   const stairCount = options.stairCount || 5;
   const onReady = options.onReady || null;
 
@@ -95,13 +95,15 @@ export function initPreloader(options = {}) {
     }
 
     let isDone = false;
-    let animFrameId;
-    let wordIntervalId;
+    let animFrameId = null;
+    let wordIntervalId = null;
+    let hardSafetyTimer = null;
+    let emergencyDismissTimer = null;
 
     // Rotating word cycle
     let wordIdx = 0;
     if (words && words.length > 1) {
-      const wordInterval = Math.max(duration / words.length, 260);
+      const wordInterval = Math.max(Math.floor(duration / words.length), 200);
       wordIntervalId = setInterval(() => {
         if (isDone) return;
         wordIdx = (wordIdx + 1) % words.length;
@@ -114,15 +116,34 @@ export function initPreloader(options = {}) {
               wordEl.style.opacity = '1';
               wordEl.style.transform = 'translateY(0px)';
             }
-          }, 90);
+          }, 60);
         }
       }, wordInterval);
+    }
+
+    function forceRemovePreloader() {
+      if (wordIntervalId) clearInterval(wordIntervalId);
+      if (hardSafetyTimer) clearTimeout(hardSafetyTimer);
+      if (emergencyDismissTimer) clearTimeout(emergencyDismissTimer);
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+
+      if (document.body) {
+        document.body.classList.remove('preloader-active');
+        document.body.classList.add('page-revealed');
+      }
+      const el = document.getElementById('preloader-screen');
+      if (el && el.parentNode) {
+        el.parentNode.removeChild(el);
+      }
     }
 
     function finishLoader() {
       if (isDone) return;
       isDone = true;
+
       if (wordIntervalId) clearInterval(wordIntervalId);
+      if (hardSafetyTimer) clearTimeout(hardSafetyTimer);
+      if (animFrameId) cancelAnimationFrame(animFrameId);
 
       if (fillEl) fillEl.style.width = '100%';
       if (percentEl) percentEl.textContent = '100%';
@@ -133,7 +154,6 @@ export function initPreloader(options = {}) {
         wordEl.style.transform = 'translateY(0px)';
       }
 
-      // Execute onReady callback while covered by preloader curtain
       if (typeof onReady === 'function') {
         try {
           onReady();
@@ -142,28 +162,41 @@ export function initPreloader(options = {}) {
         }
       }
 
-      // Fast, smooth & seamless switch (zero hesitation)
       setTimeout(() => {
-        loader.classList.add('is-exiting');
-        loader.style.pointerEvents = 'none';
+        if (loader) {
+          loader.classList.add('is-exiting');
+          loader.style.pointerEvents = 'none';
+        }
 
-        // Trigger post-preloader page entrance reveal
         if (document.body) {
           document.body.classList.add('page-revealed');
         }
 
         setTimeout(() => {
-          if (document.body) {
-            document.body.classList.remove('preloader-active');
-          }
-          if (loader.parentNode) {
-            loader.parentNode.removeChild(loader);
-          }
-          cancelAnimationFrame(animFrameId);
+          forceRemovePreloader();
           resolve();
-        }, 750);
-      }, 80);
+        }, 550);
+      }, 50);
     }
+
+    // Interactive user bypass (clicking loader immediately finishes it)
+    loader.addEventListener('click', finishLoader, { once: true });
+
+    // Hard failsafe timers to guarantee completion
+    hardSafetyTimer = setTimeout(finishLoader, duration + 300);
+    emergencyDismissTimer = setTimeout(() => {
+      forceRemovePreloader();
+      resolve();
+    }, duration + 1200);
+
+    // Tab visibility recovery (if tab was inactive when loaded)
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && !isDone) {
+        finishLoader();
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
     const startTime = performance.now();
 
@@ -172,7 +205,6 @@ export function initPreloader(options = {}) {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1.0);
 
-      // Smooth cubic easeInOut curve
       const eased = progress < 0.5
         ? 4 * progress * progress * progress
         : 1 - Math.pow(-2 * progress + 2, 3) / 2;
@@ -184,14 +216,12 @@ export function initPreloader(options = {}) {
 
       if (statusEl) {
         if (options.isRefresh) {
-          if (currentPercent < 30) statusEl.textContent = 'SYNCHRONIZING ARCHITECTURE';
-          else if (currentPercent < 65) statusEl.textContent = 'UPDATING SYSTEM TOKENS';
-          else if (currentPercent < 98) statusEl.textContent = 'RE-ALIGNING COMPONENTS';
+          if (currentPercent < 35) statusEl.textContent = 'SYNCHRONIZING ARCHITECTURE';
+          else if (currentPercent < 70) statusEl.textContent = 'UPDATING SYSTEM TOKENS';
           else statusEl.textContent = 'READY';
         } else {
-          if (currentPercent < 30) statusEl.textContent = 'INITIALIZING ARCHITECTURE';
-          else if (currentPercent < 65) statusEl.textContent = 'LOADING DESIGN TOKENS';
-          else if (currentPercent < 98) statusEl.textContent = 'PREPARING ENVIRONMENT';
+          if (currentPercent < 35) statusEl.textContent = 'INITIALIZING ARCHITECTURE';
+          else if (currentPercent < 70) statusEl.textContent = 'LOADING DESIGN TOKENS';
           else statusEl.textContent = 'READY';
         }
       }

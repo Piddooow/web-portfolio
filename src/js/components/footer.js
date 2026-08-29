@@ -5,6 +5,8 @@
 import { profileData } from '../data.js';
 
 export function renderFooter() {
+  const currentYear = new Date().getFullYear();
+
   return `
     <footer class="site-footer">
       <div class="site-container">
@@ -46,6 +48,18 @@ export function renderFooter() {
                 <i class="fa-solid fa-file-lines"></i>
               </a>
             </div>
+          </div>
+        </div>
+
+        <!-- Professional Copyright & Credits Section -->
+        <div class="footer-bottom-row">
+          <div class="footer-copyright">
+            <span>© ${currentYear} ${profileData.name}. All rights reserved.</span>
+          </div>
+          <div class="footer-credits">
+            <span>Designed &amp; Built with precision</span>
+            <span class="footer-credit-dot">•</span>
+            <span class="footer-credit-mono">Jakarta, ID (GMT+7)</span>
           </div>
         </div>
       </div>

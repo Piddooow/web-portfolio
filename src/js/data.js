@@ -13,11 +13,9 @@ export const profileData = {
   roleSubtitle: "BINUS University Double Degree (BBA & BSc)",
   status: "Available for selected projects",
   statusSub: "Open to modern websites, business systems, ERP, and AI integrations",
-  location: "Indonesia",
+  location: "Jakarta, Indonesia",
   timezone: "GMT+7",
   email: "david.enampatoo@gmail.com",
-  phone: "+62 812 4003 9652",
-  phoneRaw: "6281240039652",
   linkedinUrl: "https://www.linkedin.com/in/david-antono",
   instagramUrl: "https://www.instagram.com/david.antonoo/",
   githubUrl: "https://github.com/Piddooow",
@@ -32,7 +30,7 @@ export const profileData = {
   alias: "/ D4vd",
   
   // Main Philosophy Quote
-  mainQuote: "It’s going to happen because, I’m going to make it happen.",
+  mainQuote: "Don't wish for it, work for it.",
   quoteSupporting: "I believe good ideas become valuable when they are executed with consistency, curiosity, and attention to detail.",
   
   // Hero Typography & Positioning
@@ -70,70 +68,92 @@ export const educationData = {
 
 export const experienceData = [
   {
+    order: 1,
+    title: "Co-Manager",
     role: "Co-Manager",
     company: "Family Motorcycle Workshop (Private Enterprise)",
+    dates: "May 2016 – Jul 2023",
     period: "May 2016 – Jul 2023",
     location: "Indonesia",
+    description: [
+      "Led daily operations serving 60–150+ customers per day and supervised a team of 5–8 staff across service and technical functions, driving a ~40% increase in revenue through operational and customer experience improvements.",
+      "Negotiated with vendors and sourced new suppliers to resolve supply chain issues, managing 30–80+ inventory items to minimize service downtime.",
+      "Grew customer engagement and brand visibility through targeted social media outreach across digital platforms."
+    ],
     bulletPoints: [
       "Led daily operations serving 60–150+ customers per day and supervised a team of 5–8 staff across service and technical functions, driving a ~40% increase in revenue through operational and customer experience improvements.",
       "Negotiated with vendors and sourced new suppliers to resolve supply chain issues, managing 30–80+ inventory items to minimize service downtime.",
-      "Grew customer engagement and brand visibility through targeted social media outreach across Instagram, TikTok, and WhatsApp."
-    ]
+      "Grew customer engagement and brand visibility through targeted social media outreach across digital platforms."
+    ],
+    tech: ["Operations Management", "Supply Chain", "Vendor Negotiation", "Revenue Growth", "Inventory Control"]
   },
   {
+    order: 2,
+    title: "Media & Creative Team",
     role: "Media & Creative Team",
     company: "Church Organization (@freedom.nextgen)",
+    dates: "Sep 2025 – Present",
     period: "Sep 2025 – Present",
     location: "Indonesia",
+    description: [
+      "Produce visual content (posters, reels, presentations) for weekly events and manage a community of 300+ active followers.",
+      "Contribute to content strategy, creative direction, and brand consistency across digital platforms."
+    ],
     bulletPoints: [
       "Produce visual content (posters, reels, presentations) for weekly events and manage a community of 300+ active followers.",
-      "Contribute to content strategy and creative direction."
-    ]
+      "Contribute to content strategy, creative direction, and brand consistency across digital platforms."
+    ],
+    tech: ["Content Strategy", "Visual Design", "Community Management", "Event Media"]
+  },
+  {
+    order: 3,
+    title: "Full-Stack Systems Engineer & Analyst",
+    role: "Full-Stack Systems Engineer & Analyst",
+    company: "Autonomous Venture & Client Engineering",
+    dates: "2026 – Present",
+    period: "2026 – Present",
+    location: "Indonesia • Hybrid",
+    description: [
+      "Architecting scalable web applications and intelligent enterprise workflow automation platforms.",
+      "Developing responsive client-side interfaces, low-latency APIs, and normalized relational schemas for operational data management."
+    ],
+    bulletPoints: [
+      "Architecting scalable web applications and intelligent enterprise workflow automation platforms.",
+      "Developing responsive client-side interfaces, low-latency APIs, and normalized relational schemas for operational data management."
+    ],
+    tech: ["Full-Stack", "System Architecture", "UI/UX", "AI Platforms"],
+    status: "Active / Updated"
   }
 ];
 
-// Verified Real Projects (DWDG removed as requested)
+// Verified Real Projects
 export const featuredProject = {
   slug: "waena-jaya",
   title: "Bengkel Waena Jaya Motor",
   category: "Website Development & Digital Presence",
   role: "Full-Stack Developer",
+  status: "Production",
   year: "2025",
   summary: "Official production website and digital presence engineered for Bengkel Waena Jaya Motor in Jayapura, Papua (Keeping Waena Moving Since 2007). Features service catalogs, transparent pricing breakdown, emergency booking integration, and responsive mobile architecture.",
   tech: "HTML5 • Tailwind CSS • Modern JavaScript • Mobile-First Responsive",
-  techTags: ["Live Production Site", "Service Catalog", "WhatsApp API Booking"],
+  techTags: ["Live Production Site", "Service Catalog", "Online Booking"],
+  techIcons: [
+    { name: "HTML5", icon: "fa-brands fa-html5", color: "#E34F26" },
+    { name: "CSS3", icon: "fa-brands fa-css3-alt", color: "#1572B6" },
+    { name: "JavaScript", icon: "fa-brands fa-js", color: "#F7DF1E" }
+  ],
   image: "src/assets/images/waena-jaya-preview.png",
   liveUrl: "https://waenjayamotor.github.io/waena-jaya-website/"
 };
 
 export const projectsData = [
   {
-    slug: "waena-jaya",
-    title: "Bengkel Waena Jaya Motor",
-    category: "Website Development & Digital Presence",
-    role: "Full-Stack Developer",
-    year: "2025",
-    summary: "Production website built for Bengkel Waena Jaya Motor (Jayapura, Papua). Features verified spare parts catalogs, transparent diagnostic workflows, and instant WhatsApp booking.",
-    overview: "Official production website and digital presence engineered for Bengkel Waena Jaya Motor in Jayapura, Papua (Keeping Waena Moving Since 2007). Built to streamline workshop service discovery, provide transparent pricing breakdowns, and enable direct WhatsApp emergency booking.",
-    challenge: "Customers struggled with opaque repair pricing and lack of verifiable parts catalog for local motorcycle models, leading to prolonged consultation times and lost bookings.",
-    solution: "Engineered a lightning-fast, mobile-first responsive web portal with real-time service catalogs, interactive price estimates, and 1-tap WhatsApp direct API booking integration.",
-    features: [
-      { title: "1-Tap WhatsApp Booking", text: "Instant connection to workshop technicians with pre-filled service diagnostics." },
-      { title: "Service & Parts Catalog", text: "Transparent pricing breakdown for genuine spare parts and labor costs." },
-      { title: "Mobile-First Optimization", text: "Fast load times (<0.8s) even on low-bandwidth 3G/4G cellular networks in Papua." },
-      { title: "Local Trust Signaling", text: "Verified location data, operating hours, and customer service guarantees." }
-    ],
-    tech: "Production Website • Responsive UI • WhatsApp Integration",
-    techTags: ["Live Production Site", "Digital Presence", "Fast Loading", "WhatsApp API", "Tailwind CSS"],
-    image: "src/assets/images/waena-jaya-preview.png",
-    liveUrl: "https://waenjayamotor.github.io/waena-jaya-website/",
-    featured: true
-  },
-  {
+    order: 1,
     slug: "szan",
     title: "Szān — Sustainable Fashion E-Commerce",
     category: "System Analysis & UI/UX Design",
     role: "System Analyst & UI/UX Designer",
+    status: "Completed",
     year: "May 2025",
     summary: "Collaborated in a team of 4 to design 90+ UI screens and develop formal system models (Use Case, ERD, System Sequence Diagrams) for an e-commerce platform with complex inventory and product-variation logic.",
     overview: "Comprehensive end-to-end e-commerce system architecture and design system engineered for an eco-conscious fashion marketplace. Designed in a collaborative team of 4.",
@@ -147,14 +167,21 @@ export const projectsData = [
     ],
     tech: "Figma • ERD Modeling • SSD • Team of 4",
     techTags: ["90+ UI Screens", "SSD Modeling", "Complex Inventory", "Figma Design System", "Visual Paradigm"],
+    techIcons: [
+      { name: "Figma", icon: "fa-brands fa-figma", color: "#F24E1E" },
+      { name: "Relational DB", icon: "fa-solid fa-database", color: "#336791" },
+      { name: "System Modeling", icon: "fa-solid fa-diagram-project", color: "#6366F1" }
+    ],
     image: "src/assets/images/szan-preview.png",
     featured: true
   },
   {
+    order: 2,
     slug: "travio",
     title: "Travio — Travel Planning Mobile App",
     category: "System Analysis & UI/UX Design",
     role: "System Analyst & UI/UX Designer",
+    status: "SUS 86.4",
     year: "Dec 2025",
     summary: "Translated stakeholder requirements into comprehensive system architecture (use cases, ERD, workflows) for a multi-service integration travel platform. Designed 120+ screens & interactive prototypes and led usability testing with 30+ users.",
     overview: "All-in-one travel planning, itinerary management, and multi-vendor booking ecosystem tailored for Southeast Asian travelers.",
@@ -168,29 +195,204 @@ export const projectsData = [
     ],
     tech: "Figma • Visual Paradigm • System Architecture • Usability Testing",
     techTags: ["120+ UI Screens", "ERD & Use Cases", "30+ User Testing", "SUS 86.4 Score", "Mobile Prototyping"],
+    techIcons: [
+      { name: "Figma", icon: "fa-brands fa-figma", color: "#F24E1E" },
+      { name: "Mobile UI", icon: "fa-solid fa-mobile-screen", color: "#10B981" },
+      { name: "Architecture", icon: "fa-solid fa-network-wired", color: "#8B5CF6" }
+    ],
     image: "src/assets/images/travio-preview.png",
     featured: true
   },
   {
-    slug: "coming-soon",
-    title: "Next Flagship Venture",
-    category: "System Architecture & AI Platform",
-    role: "Full-Stack Engineer & Analyst",
-    year: "2026",
-    summary: "Next-generation enterprise operations system and AI integration platform currently in active development.",
-    overview: "An upcoming full-stack platform focused on intelligent enterprise automation, operational workflow modeling, and modern dashboard analytics.",
-    challenge: "Bridging complex legacy enterprise workflows with modern real-time AI automation and intuitive reactive interfaces.",
-    solution: "Developing modular micro-frontend architecture paired with high-performance edge APIs and localized inference models.",
+    order: 3,
+    slug: "waena-jaya",
+    title: "Bengkel Waena Jaya Motor",
+    category: "Website Development & Digital Presence",
+    role: "Full-Stack Developer",
+    status: "Production",
+    year: "2025",
+    summary: "Production website built for Bengkel Waena Jaya Motor (Jayapura, Papua). Features verified spare parts catalogs, transparent diagnostic workflows, and instant online booking.",
+    overview: "Official production website and digital presence engineered for Bengkel Waena Jaya Motor in Jayapura, Papua (Keeping Waena Moving Since 2007). Built to streamline workshop service discovery, provide transparent pricing breakdowns, and enable direct online emergency booking.",
+    challenge: "Customers struggled with opaque repair pricing and lack of verifiable parts catalog for local motorcycle models, leading to prolonged consultation times and lost bookings.",
+    solution: "Engineered a lightning-fast, mobile-first responsive web portal with real-time service catalogs, interactive price estimates, and 1-tap direct booking integration.",
     features: [
-      { title: "Real-Time Operational Analytics", text: "Telemetry dashboards with millisecond data synchronization." },
-      { title: "AI-Powered Workflow Automation", text: "Intelligent assistant for automating routine enterprise reporting and triage." },
-      { title: "Cloud-Native Infrastructure", text: "High-availability, containerized microservices architecture." }
+      { title: "Direct Online Booking", text: "Instant connection to workshop technicians with pre-filled service diagnostics." },
+      { title: "Service & Parts Catalog", text: "Transparent pricing breakdown for genuine spare parts and labor costs." },
+      { title: "Mobile-First Optimization", text: "Fast load times (<0.8s) even on low-bandwidth 3G/4G cellular networks in Papua." },
+      { title: "Local Trust Signaling", text: "Verified location data, operating hours, and customer service guarantees." }
     ],
-    tech: "Full-Stack • AI Integrations • Enterprise Modeling",
-    techTags: ["Full-Stack", "AI Integrations", "Operations", "Enterprise Architecture"],
+    tech: "Production Website • Responsive UI • Fast Performance",
+    techTags: ["Live Production Site", "Digital Presence", "Fast Loading", "Tailwind CSS"],
+    techIcons: [
+      { name: "HTML5", icon: "fa-brands fa-html5", color: "#E34F26" },
+      { name: "CSS3", icon: "fa-brands fa-css3-alt", color: "#1572B6" },
+      { name: "JavaScript", icon: "fa-brands fa-js", color: "#F7DF1E" }
+    ],
+    image: "src/assets/images/waena-jaya-preview.png",
+    liveUrl: "https://waenjayamotor.github.io/waena-jaya-website/",
+    featured: true
+  },
+  {
+    order: 4,
+    slug: "aura-ops",
+    title: "Aura — Intelligent Operations & Workflow Engine",
+    category: "Enterprise System & AI Integration",
+    role: "Systems Architect & Developer",
+    status: "Coming Soon",
+    year: "2026",
+    summary: "An event-driven operational nervous system engineered for real-time inventory telemetry, automated procurement triggers, and adaptive decision pipelines.",
+    overview: "A new chapter in enterprise operational efficiency taking shape. Aura unifies distributed supply-chain data, eliminates manual reconciliation friction, and orchestrates reactive business automations in real time.",
+    challenge: "Traditional operational tools trap businesses in fragmented spreadsheets and manual data entry, creating latency between physical floor movements and high-stakes executive decisions.",
+    solution: "Engineering a low-latency event-driven micro-architecture paired with automated inventory threshold rules, predictive stock triggers, and high-density telemetry dashboards.",
+    features: [
+      { title: "Event-Driven Ledger", text: "Zero-latency audit logging for mission-critical physical asset transitions and supply changes." },
+      { title: "Adaptive Flow Rules", text: "Configurable workflow triggers connecting real-time floor stock to automated supplier procurement." },
+      { title: "Operational Telemetry Cockpit", text: "High-contrast dark-mode interface built for instant tactical triage and KPI monitoring." },
+      { title: "Stealth Architecture Preview", text: "Full specifications and private benchmark testing currently underway for 2026 release." }
+    ],
+    tech: "Event Architecture • Reactive UI • TypeScript • Cloud APIs",
+    techTags: ["Stealth Architecture", "Event-Driven", "Operational Intelligence", "Coming Soon 2026"],
+    techIcons: [
+      { name: "TypeScript", icon: "fa-brands fa-js", color: "#3178C6" },
+      { name: "Architecture", icon: "fa-solid fa-network-wired", color: "#8B5CF6" },
+      { name: "Cloud Engine", icon: "fa-solid fa-cloud", color: "#38BDF8" }
+    ],
     image: "src/assets/images/coming-soon-preview.svg",
     isComingSoon: true,
     featured: true
+  },
+  {
+    order: 5,
+    slug: "vektor-bi",
+    title: "Vektor — High-Density Business Intelligence & Analytics",
+    category: "Business Analytics & Systems Modeling",
+    role: "Lead Analyst & Interface Engineer",
+    status: "Coming Soon",
+    year: "2026",
+    summary: "Translating complex enterprise transactional datasets into clean, actionable visual models with sub-second query latency and scenario forecasting.",
+    overview: "An exploratory decision-support platform designed to transform multi-source relational databases and unstructured logs into lucid financial models and operational forecasts.",
+    challenge: "Key business performance indicators are frequently buried across disconnected silos, making strategic decision-making and forecasting slow and prone to errors.",
+    solution: "Architecting normalized analytical data pipelines paired with lightweight canvas-accelerated charting and instant multi-variable scenario simulation.",
+    features: [
+      { title: "Sub-Second Query Pipeline", text: "Normalized in-memory aggregation for multi-year fiscal records and transaction streams." },
+      { title: "Dynamic Scenario Simulator", text: "Interactive sensitivity modeling studio with instant parametric cost-benefit adjustments." },
+      { title: "Automated Executive Briefs", text: "Intelligent scheduled reports highlighting margin variances and supply bottlenecks." },
+      { title: "Active Development", text: "Architecture and design validation in progress for public unveiling later this year." }
+    ],
+    tech: "Data Modeling • Canvas Visuals • Analytical Engines • SQL",
+    techTags: ["Decision Support", "Financial Modeling", "Sub-Second Queries", "Coming Soon 2026"],
+    techIcons: [
+      { name: "Relational DB", icon: "fa-solid fa-database", color: "#336791" },
+      { name: "Analytics", icon: "fa-solid fa-chart-simple", color: "#10B981" },
+      { name: "System Modeling", icon: "fa-solid fa-diagram-project", color: "#6366F1" }
+    ],
+    image: "src/assets/images/coming-soon-preview.svg",
+    isComingSoon: true,
+    featured: true
+  }
+];
+
+// Events & Moments Outside the IDE (Matching renlenon.vercel.app events gallery)
+export const eventsGalleryData = [
+  {
+    id: "1",
+    title: "Competitive Padel Match",
+    date: "2025",
+    location: "Max Padel Court, Indonesia",
+    category: "Athletics",
+    desc: "Speed, quick reflexes, strategy, and seamless teamwork on the padel court.",
+    img: "src/assets/images/personal/personal-1-padel.jpg",
+    height: 420
+  },
+  {
+    id: "2",
+    title: "Salomon Trail Exploration",
+    date: "2025",
+    location: "Nature Trail, Indonesia",
+    category: "Outdoor",
+    desc: "Exploring fresh perspectives, elevation, and steady footing off the beaten path.",
+    img: "src/assets/images/personal/personal-2-trail.jpg",
+    height: 300
+  },
+  {
+    id: "3",
+    title: "Heavy Deadlift Training",
+    date: "2025",
+    location: "Fitness Center",
+    category: "Discipline",
+    desc: "Physical discipline and mental resilience under heavy tension.",
+    img: "src/assets/images/personal/personal-3-deadlift.png",
+    height: 520
+  },
+  {
+    id: "4",
+    title: "Strength & Conditioning Routine",
+    date: "2025",
+    location: "Training Facility",
+    category: "Training",
+    desc: "Consistency over motivation — building long-term stamina and physical clarity.",
+    img: "src/assets/images/personal/personal-4-gym.jpg",
+    height: 360
+  },
+  {
+    id: "5",
+    title: "Precision Billiards Match",
+    date: "2025",
+    location: "Jakarta, Indonesia",
+    category: "Recreation",
+    desc: "Strategic geometric angles, patience, and memorable social moments.",
+    img: "src/assets/images/personal/personal-5-billiards.jpg",
+    height: 480
+  },
+  {
+    id: "6",
+    title: "Moments of Clarity & Focus",
+    date: "2025",
+    location: "Urban Lifestyle",
+    category: "Lifestyle",
+    desc: "Stepping away from the IDE to recharge, synthesize ideas, and plan ahead.",
+    img: "src/assets/images/personal/personal-6-lifestyle-a.jpg",
+    height: 340
+  },
+  {
+    id: "7",
+    title: "Youth Community Engagement",
+    date: "2025",
+    location: "Community Center",
+    category: "Community",
+    desc: "Creative collaboration, live media production, and community connection.",
+    img: "src/assets/images/personal/personal-7-lifestyle-b.jpg",
+    height: 400
+  },
+  {
+    id: "8",
+    title: "Everyday Balance & Growth",
+    date: "2025",
+    location: "Lifestyle",
+    category: "Everyday",
+    desc: "Staying grounded, curious, and committed to continuous learning.",
+    img: "src/assets/images/personal/personal-8-lifestyle-c.jpg",
+    height: 460
+  },
+  {
+    id: "9",
+    title: "Early Beginnings & Childhood",
+    date: "Roots",
+    location: "Indonesia",
+    category: "Roots",
+    desc: "Every journey begins with childhood wonder, experimentation, and curiosity.",
+    img: "src/assets/images/personal/personal-9-childhood.jpg",
+    height: 320
+  },
+  {
+    id: "10",
+    title: "Professional Craft & Vision",
+    date: "2025",
+    location: "Jakarta, Indonesia",
+    category: "Vision",
+    desc: "Crafting digital systems with clarity, performance, and commercial purpose.",
+    img: "src/assets/images/personal/personal-10-portrait.jpg",
+    height: 500
   }
 ];
 
@@ -303,42 +505,55 @@ export const languageData = [
   { name: "German", level: "Beginner" }
 ];
 
-// Personal Chat Categories & Dynamic WhatsApp Templates
+// Personal Inquiry Categories & Dynamic Email Templates
 export const personalChatCategories = [
   {
     id: "website",
     label: "Website",
     icon: "fa-solid fa-globe",
-    whatsappMessage: "Hi Vidd, I’m interested in discussing a website project. I’d like to share more details about what I need."
+    subject: "Website Development Inquiry",
+    defaultMessage: "Hi Vidd, I’m interested in discussing a website project. I’d like to share more details about our requirements and timeline."
   },
   {
     id: "erp",
     label: "ERP / Business System",
     icon: "fa-solid fa-network-wired",
-    whatsappMessage: "Hi Vidd, I’d like to discuss an ERP/business system project. I’d like to explain the workflow and requirements."
+    subject: "ERP & Business System Inquiry",
+    defaultMessage: "Hi Vidd, I’d like to discuss an ERP/business system project. I’d like to explain our workflow and architectural requirements."
   },
   {
     id: "business-app",
     label: "Business Application",
     icon: "fa-solid fa-laptop-code",
-    whatsappMessage: "Hi Vidd, I’d like to discuss a custom business application project for our operational workflows."
+    subject: "Custom Application Project Inquiry",
+    defaultMessage: "Hi Vidd, I’d like to discuss a custom business application project for our operational workflows."
   },
   {
     id: "ai-product",
     label: "AI Product",
     icon: "fa-solid fa-microchip",
-    whatsappMessage: "Hi Vidd, I’m interested in building an AI-powered product and would like to discuss the idea with you."
+    subject: "AI Product & Integration Inquiry",
+    defaultMessage: "Hi Vidd, I’m interested in building an AI-powered product and would like to explore technical possibilities with you."
   },
   {
     id: "collaboration",
     label: "Collaboration",
     icon: "fa-solid fa-handshake",
-    whatsappMessage: "Hi Vidd, I’d like to discuss a potential collaboration opportunity with you."
+    subject: "Collaboration Opportunity",
+    defaultMessage: "Hi Vidd, I’d like to discuss a potential collaboration or engineering opportunity with you."
   },
   {
     id: "general",
     label: "General Inquiry",
     icon: "fa-solid fa-comment-dots",
-    whatsappMessage: "Hi Vidd, I visited your portfolio and would like to connect with you."
+    subject: "Connecting from Portfolio",
+    defaultMessage: "Hi Vidd, I visited your portfolio and would like to connect with you regarding upcoming initiatives."
   }
 ];
+
+export const certificationsData = [];
+export const categorizedTechStack = {};
+export const techMarqueeData = [];
+export const outsideTheIdeData = personalGalleryData;
+export const caseStudies = {};
+

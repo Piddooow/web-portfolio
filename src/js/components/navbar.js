@@ -9,13 +9,16 @@ import { toggleTheme, isDark } from '../theme.js';
 export function renderNavbar(currentPath = '#/') {
   const dark = isDark();
   const navItems = [
-    { label: 'Projects', href: '#projects' },
-    { label: 'Competencies', href: '#capabilities' },
-    { label: 'About', href: '#about' },
-    { label: 'Experience', href: '#experience' },
-    { label: 'Personal', href: '#other-side' },
-    { label: 'Activity', href: '#github-activity' },
-    { label: 'Contact', href: '#contact' }
+    { label: 'Projects', href: '#/projects' },
+    { label: 'Experience', href: '#/experience' },
+    { label: 'Events', href: '#/events' }
+  ];
+
+  const mobileNavItems = [
+    { label: 'Home', href: '#/' },
+    { label: 'Projects', href: '#/projects' },
+    { label: 'Experience', href: '#/experience' },
+    { label: 'Events', href: '#/events' }
   ];
 
   function createLetterSwapHtml(label) {
@@ -42,7 +45,7 @@ export function renderNavbar(currentPath = '#/') {
 
   const desktopLinksHtml = navItems
     .map((item) => {
-      const active = currentPath === item.href ? 'active' : '';
+      const active = (currentPath === item.href || (item.href === '#/projects' && currentPath.startsWith('#/projects')) || (item.href === '#/experience' && currentPath.startsWith('#/experience')) || (item.href === '#/events' && currentPath.startsWith('#/events'))) ? 'active' : '';
       return `
         <a href="${item.href}" class="nav-link ${active}" data-label="${item.label}">
           ${createLetterSwapHtml(item.label)}
@@ -51,10 +54,10 @@ export function renderNavbar(currentPath = '#/') {
     })
     .join('');
 
-  const mobileLinksHtml = navItems
+  const mobileLinksHtml = mobileNavItems
     .map((item, idx) => {
       const num = String(idx + 1).padStart(2, '0');
-      const active = currentPath === item.href ? 'active' : '';
+      const active = (currentPath === item.href || (item.href === '#/projects' && currentPath.startsWith('#/projects')) || (item.href === '#/experience' && currentPath.startsWith('#/experience')) || (item.href === '#/events' && currentPath.startsWith('#/events')) || (item.href === '#/' && (currentPath === '#/' || currentPath === '#' || currentPath === ''))) ? 'active' : '';
       return `
         <a href="${item.href}" class="mobile-nav-link ${active}" data-label="${item.label}" style="--item-index: ${idx};">
           <span class="mobile-nav-link-num">${num}</span>

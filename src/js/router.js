@@ -104,16 +104,29 @@ export function handleRoute() {
     ${renderChatWidget()}
   `;
 
+  // Safe execution helper
+  const safeExec = (fn, name) => {
+    try {
+      if (typeof fn === 'function') fn();
+    } catch (err) {
+      console.warn(`[Router Init Warning] Failed to initialize ${name}:`, err);
+    }
+  };
+
   // Initialize interactive event listeners
-  initNavbarEvents();
-  initBackToTopEvents();
-  initChatEvents();
-  initPageEvents();
-  initTextScatter();
-  initModalCards();
+  safeExec(initNavbarEvents, 'Navbar');
+  safeExec(initBackToTopEvents, 'BackToTop');
+  safeExec(initChatEvents, 'Chat');
+  safeExec(initPageEvents, 'PageEvents');
+  safeExec(initTextScatter, 'TextScatter');
+  safeExec(initModalCards, 'ModalCards');
 }
 
 export function initRouter() {
-  window.addEventListener('hashchange', handleRoute);
+  if (typeof window !== 'undefined') {
+    window.handleRoute = handleRoute;
+    window.navigateTo = navigateTo;
+    window.addEventListener('hashchange', handleRoute);
+  }
   handleRoute();
 }

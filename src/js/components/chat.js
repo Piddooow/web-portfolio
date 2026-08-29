@@ -1,13 +1,14 @@
 // ==========================================================================
-// Personal Chat Interface Component — Vidd
-// Dynamic Inquiry & Seamless WhatsApp Routing
+// Personal Inquiry Interface Component — Vidd
+// Direct Email Gateway & Interactive Message Composer
 // ==========================================================================
 
 import { profileData, personalChatCategories } from '../data.js';
 
 let isChatOpen = false;
 let selectedCategory = personalChatCategories[0];
-let customMessage = selectedCategory.whatsappMessage;
+let customMessage = selectedCategory.defaultMessage;
+let customSubject = selectedCategory.subject;
 
 export function renderChatWidget() {
   const categoryChipsHtml = personalChatCategories
@@ -23,7 +24,7 @@ export function renderChatWidget() {
 
   return `
     <div class="chat-dock" id="chat-dock">
-      <!-- Personal Chat Window -->
+      <!-- Personal Inquiry Window -->
       <div class="chat-window" id="chat-window" style="display: ${isChatOpen ? 'flex' : 'none'};">
         <!-- Clean Header -->
         <div class="chat-header">
@@ -43,11 +44,11 @@ export function renderChatWidget() {
                   </span>
                 </h4>
               </div>
-              <span style="font-size: 0.68rem; color: var(--text-muted); font-family: var(--font-mono);">Direct WhatsApp & Email Gateway</span>
+              <span style="font-size: 0.68rem; color: var(--text-muted); font-family: var(--font-mono);">${profileData.email}</span>
             </div>
           </div>
 
-          <button type="button" id="close-chat-btn" style="color: var(--text-muted); cursor: pointer; padding: 0.25rem;" aria-label="Close chat">
+          <button type="button" id="close-chat-btn" style="color: var(--text-muted); background: none; border: none; cursor: pointer; padding: 0.25rem;" aria-label="Close message composer">
             <svg style="width: 1.125rem; height: 1.125rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
@@ -55,13 +56,13 @@ export function renderChatWidget() {
         </div>
 
         <!-- Chat Body -->
-        <div class="chat-messages" style="height: auto; max-height: 22rem; gap: 1rem;">
+        <div class="chat-messages" style="height: auto; max-height: 22rem; gap: 0.85rem;">
           <div class="chat-bubble chat-bubble-bot">
-            Hello! What kind of project or system are you looking to build with Vidd? Select an area below to generate your direct message:
+            Hello! Looking to discuss a website, system architecture, or consulting project? Select a scope below to generate your email draft:
           </div>
 
           <!-- Need Selection Grid -->
-          <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
             <span class="eyebrow-mono" style="font-size: 0.62rem; color: var(--text-muted);">Select Project Scope</span>
             <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;" id="chat-categories-wrap">
               ${categoryChipsHtml}
@@ -69,33 +70,33 @@ export function renderChatWidget() {
           </div>
 
           <!-- Dynamic Message Preview Area -->
-          <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-            <span class="eyebrow-mono" style="font-size: 0.62rem; color: var(--text-muted);">Message Preview (Editable)</span>
-            <textarea id="dynamic-whatsapp-text" rows="3" style="width: 100%; font-family: inherit; font-size: 0.82rem; line-height: 1.45; padding: 0.6rem 0.75rem; border-radius: 0.5rem; background: var(--bg-surface-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); resize: none;">${customMessage}</textarea>
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <span class="eyebrow-mono" style="font-size: 0.62rem; color: var(--text-muted);">Message Draft (Editable)</span>
+            <textarea id="dynamic-email-text" rows="3" style="width: 100%; font-family: inherit; font-size: 0.82rem; line-height: 1.45; padding: 0.6rem 0.75rem; border-radius: 0.5rem; background: var(--bg-surface-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); resize: none;">${customMessage}</textarea>
           </div>
 
           <!-- Direct Action Buttons -->
-          <div style="display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.25rem;">
-            <a href="https://wa.me/${profileData.phoneRaw}?text=${encodeURIComponent(customMessage)}" target="_blank" rel="noopener noreferrer" id="launch-whatsapp-btn" class="btn-primary" style="justify-content: center; background-color: #25D366; color: #ffffff; border-color: #25D366; font-weight: 500;">
-              <i class="fa-brands fa-whatsapp" style="font-size: 1rem;"></i>
-              <span>Continue on WhatsApp</span>
+          <div style="display: flex; flex-direction: column; gap: 0.45rem; padding-top: 0.25rem;">
+            <a href="mailto:${profileData.email}?subject=${encodeURIComponent(customSubject)}&body=${encodeURIComponent(customMessage)}" id="launch-email-btn" class="btn-primary" style="justify-content: center; font-weight: 500; padding: 0.65rem 1rem;">
+              <i class="fa-solid fa-paper-plane" style="font-size: 0.85rem;"></i>
+              <span>Send Direct Email</span>
               <svg style="width: 0.85rem; height: 0.85rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
 
-            <a href="mailto:${profileData.email}?subject=Project%20Inquiry%20from%20Portfolio&body=${encodeURIComponent(customMessage)}" id="launch-email-btn" class="btn-secondary" style="justify-content: center; font-size: 0.78rem;">
-              <i class="fa-solid fa-envelope" style="font-size: 0.8rem;"></i>
-              <span>Send as Email Instead</span>
-            </a>
+            <button type="button" id="copy-email-btn" class="btn-secondary" style="justify-content: center; font-size: 0.78rem; padding: 0.5rem 1rem;">
+              <i class="fa-solid fa-copy" id="copy-email-icon" style="font-size: 0.8rem;"></i>
+              <span id="copy-email-label">Copy Email Address</span>
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- Floating Trigger Button -->
-      <button type="button" class="chat-trigger-btn" id="open-chat-btn" aria-label="Chat with Vidd">
-        <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem; color: #25D366;"></i>
-        <span>Chat with ${profileData.name}</span>
+      <!-- Floating Trigger Button with Email Icon & Smooth Hover Color -->
+      <button type="button" class="chat-trigger-btn" id="open-chat-btn" aria-label="Send message to Vidd">
+        <i class="fa-solid fa-envelope chat-trigger-icon"></i>
+        <span>Get in Touch</span>
       </button>
     </div>
   `;
@@ -105,16 +106,15 @@ export function initChatEvents() {
   const openBtn = document.getElementById('open-chat-btn');
   const closeBtn = document.getElementById('close-chat-btn');
   const chatWindow = document.getElementById('chat-window');
-  const textarea = document.getElementById('dynamic-whatsapp-text');
-  const waBtn = document.getElementById('launch-whatsapp-btn');
+  const textarea = document.getElementById('dynamic-email-text');
   const emailBtn = document.getElementById('launch-email-btn');
+  const copyBtn = document.getElementById('copy-email-btn');
+  const copyLabel = document.getElementById('copy-email-label');
+  const copyIcon = document.getElementById('copy-email-icon');
 
-  function updateLinks(text) {
-    if (waBtn) {
-      waBtn.href = `https://wa.me/${profileData.phoneRaw}?text=${encodeURIComponent(text)}`;
-    }
+  function updateEmailLink(text) {
     if (emailBtn) {
-      emailBtn.href = `mailto:${profileData.email}?subject=Project%20Inquiry&body=${encodeURIComponent(text)}`;
+      emailBtn.href = `mailto:${profileData.email}?subject=${encodeURIComponent(customSubject)}&body=${encodeURIComponent(text)}`;
     }
   }
 
@@ -135,7 +135,20 @@ export function initChatEvents() {
   if (textarea) {
     textarea.addEventListener('input', (e) => {
       customMessage = e.target.value;
-      updateLinks(customMessage);
+      updateEmailLink(customMessage);
+    });
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(profileData.email).then(() => {
+        if (copyLabel) copyLabel.textContent = 'Email Copied!';
+        if (copyIcon) copyIcon.className = 'fa-solid fa-check';
+        setTimeout(() => {
+          if (copyLabel) copyLabel.textContent = 'Copy Email Address';
+          if (copyIcon) copyIcon.className = 'fa-solid fa-copy';
+        }, 2000);
+      });
     });
   }
 
@@ -146,9 +159,10 @@ export function initChatEvents() {
       const found = personalChatCategories.find((c) => c.id === catId);
       if (found) {
         selectedCategory = found;
-        customMessage = found.whatsappMessage;
+        customSubject = found.subject;
+        customMessage = found.defaultMessage;
         if (textarea) textarea.value = customMessage;
-        updateLinks(customMessage);
+        updateEmailLink(customMessage);
 
         categoryButtons.forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');

@@ -1,13 +1,14 @@
 // ==========================================================================
 // Modal Cards Component — React Bits Pro (@reactbits-starter/modal-cards-tw)
-// Expandable interactive cards that open into full-screen dialog modals
-// with spring physics, media hero header, architectural breakdowns & ESC trap
+// Sticky Top-Right Close Button, Centered Readable Sizing & ESC Trap
+// (Backdrop click disabled as per user specification)
 // ==========================================================================
 
 import { projectsData } from '../data.js';
 
 let isModalOpen = false;
 let activeSlug = null;
+let savedScrollPosition = 0;
 
 export function initModalCards() {
   // Ensure the modal root exists in the DOM
@@ -28,30 +29,43 @@ export function initModalCards() {
       </div>
     `;
     document.body.appendChild(modalRoot);
+
+    // Prevent touchmove/wheel leakage when touching backdrop or outside dialog
+    modalRoot.addEventListener(
+      'touchmove',
+      (e) => {
+        if (!e.target.closest('#modal-card-dialog')) {
+          e.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+
+    modalRoot.addEventListener(
+      'wheel',
+      (e) => {
+        if (!e.target.closest('#modal-card-dialog')) {
+          e.preventDefault();
+        }
+      },
+      { passive: false }
+    );
   }
 
-  // Click outside to close (on backdrop or container)
-  modalRoot.addEventListener('click', (e) => {
-    if (e.target.id === 'modal-card-backdrop' || e.target.id === 'modal-card-container') {
-      closeProjectModal();
-    }
-  });
+  // NOTE: User cannot close by clicking outside/backdrop (backdrop click disabled)
 
   // Global click delegation for modal card triggers
   document.addEventListener('click', (e) => {
     // If click originated from inside live external link or close button, handle separately
-    if (e.target.closest('.link-live') || e.target.closest('#modal-card-close') || e.target.closest('.modal-close-btn')) {
+    if (e.target.closest('.link-live') || e.target.closest('#modal-card-close') || e.target.closest('.ren-live-link') || e.target.closest('.modal-card-close-btn')) {
       return;
     }
 
-    const trigger = e.target.closest('[data-modal-slug], .project-card, .featured-card');
+    const trigger = e.target.closest('[data-modal-slug], .btn-modal-expand, .ren-btn-details');
     if (trigger) {
+      e.preventDefault();
       const slug = trigger.getAttribute('data-modal-slug') || trigger.getAttribute('data-slug');
       if (slug) {
-        // Prevent default navigation if trigger was an anchor or button
-        if (trigger.tagName === 'A' && trigger.getAttribute('href')?.startsWith('#')) {
-          e.preventDefault();
-        }
         openProjectModal(slug);
       }
     }
@@ -72,6 +86,9 @@ export function openProjectModal(slug) {
   const modalRoot = document.getElementById('modal-card-root');
   const dialog = document.getElementById('modal-card-dialog');
   if (!modalRoot || !dialog) return;
+
+  // Preserve user's current scroll journey position before opening modal
+  savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
 
   activeSlug = slug;
   isModalOpen = true;
@@ -106,22 +123,25 @@ export function openProjectModal(slug) {
     : '';
 
   dialog.innerHTML = `
-    <!-- Header Media Banner -->
-    <div class="modal-card-hero">
-      <img src="${project.image}" alt="${project.title}" class="modal-card-hero-img" />
-      <div class="modal-card-hero-scrim"></div>
-      
-      <!-- Close Button (Top-Right) -->
-      <button type="button" class="modal-card-close-btn" id="modal-card-close" aria-label="Close modal">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Sticky Close Button Bar (Follows user during scroll) -->
+    <div class="modal-card-sticky-bar">
+      <button type="button" class="modal-card-close-btn" id="modal-card-close" aria-label="Close modal (Escape)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
+    </div>
+
+    <!-- Header Media Banner -->
+    <div class="modal-card-hero">
+      <img src="${project.image}" alt="${project.title}" class="modal-card-hero-img" />
+      <div class="modal-card-hero-scrim"></div>
 
       <!-- Category & Status Badge -->
-      <div class="modal-card-hero-badge">
+      <div class="modal-card-hero-badge" style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
         <span class="eyebrow-mono" style="color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.6);">${project.category}</span>
+        ${project.status ? `<span class="ren-status-badge ${project.isComingSoon ? 'coming-soon-badge' : ''}" style="font-size: 0.65rem; padding: 0.12rem 0.5rem;">${project.status}</span>` : ''}
       </div>
     </div>
 
@@ -185,29 +205,31 @@ export function openProjectModal(slug) {
         </div>
       </div>
 
-      <!-- Action Footer -->
-      <div class="modal-card-footer-actions">
-        ${liveActionBtn}
-        <button type="button" class="btn-secondary modal-close-btn" style="font-size: 0.82rem; padding: 0.55rem 1rem;">
-          <span>Close</span>
-        </button>
-      </div>
+      <!-- Action Footer (Clean with Live link if available, no redundant bottom close button) -->
+      ${
+        liveActionBtn
+          ? `
+        <div class="modal-card-footer-actions" style="justify-content: flex-start;">
+          ${liveActionBtn}
+        </div>
+      `
+          : ''
+      }
     </div>
   `;
 
-  // Attach close events
+  // Attach sticky close button event
   const closeBtn = dialog.querySelector('#modal-card-close');
-  const closeBtnSec = dialog.querySelector('.modal-close-btn');
   if (closeBtn) closeBtn.addEventListener('click', closeProjectModal);
-  if (closeBtnSec) closeBtnSec.addEventListener('click', closeProjectModal);
 
-  // Lock background scroll and open modal
+  // Lock background scroll and open modal without changing background scroll position
+  document.documentElement.classList.add('modal-card-open');
   document.body.classList.add('modal-card-open');
   modalRoot.setAttribute('aria-hidden', 'false');
   modalRoot.classList.remove('is-closing');
   modalRoot.classList.add('is-open');
 
-  // Smooth scroll dialog to top
+  // Smooth scroll dialog internal content to top
   dialog.scrollTop = 0;
 }
 
@@ -224,6 +246,13 @@ export function closeProjectModal() {
   setTimeout(() => {
     modalRoot.classList.remove('is-closing');
     modalRoot.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('modal-card-open');
     document.body.classList.remove('modal-card-open');
+
+    // Restore user's exact scroll position in their journey
+    window.scrollTo({
+      top: savedScrollPosition,
+      behavior: 'instant'
+    });
   }, 220);
 }

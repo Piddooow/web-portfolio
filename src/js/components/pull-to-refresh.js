@@ -21,7 +21,7 @@ export function initPullToRefresh(options = {}) {
           'SYNCHRONIZING ARCHITECTURE',
           'UPDATING PORTFOLIO TOKENS',
           'RE-ALIGNING COMPONENTS',
-          'WELCOME TO VIDD'
+          'WELCOME TO VIDD PORTFOLIO'
         ],
         onReady: () => {
           window.scrollTo({ top: 0, behavior: 'instant' });

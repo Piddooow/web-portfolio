@@ -35,17 +35,17 @@ export function renderCertificationsPage() {
     .join('');
 
   return `
-    <main class="site-container main-content" style="padding-top: 2rem;">
-      <div>
-        <a href="#/" class="section-link" style="margin-bottom: 1.5rem; display: inline-flex;">
-          <svg style="width: 0.9rem; height: 0.9rem; transform: rotate(180deg);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+    <main class="site-container main-content">
+      <div class="ren-page-header">
+        <a href="#/" class="ren-back-link">
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
           </svg>
           <span>Back to Home</span>
         </a>
 
-        <h1 class="section-title" style="font-size: 2.25rem; margin-bottom: 0.5rem;">Certifications</h1>
-        <p style="max-width: 32rem; color: var(--text-secondary); margin-bottom: 2rem;">
+        <h1 class="ren-page-title">Certifications</h1>
+        <p class="ren-page-subtitle">
           Verified technical specializations, system architecture credentials, and engineering accreditations.
         </p>
       </div>

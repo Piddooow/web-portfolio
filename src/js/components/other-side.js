@@ -28,13 +28,13 @@ export function renderOtherSide() {
         letterSpacing: 1.0,
         separator: '*',
         bandPadding: 12,
-        interactive: false,
+        interactive: true,
         className: 'bending-marquee-top'
       })}
 
       <!-- React Bits <TextScatter /> Interactive Typography (@reactbits-starter/text-scatter-tw) -->
-      <div class="text-scatter-wrapper" style="text-align: center; padding: 1.5rem 0.5rem; position: relative; z-index: 25; overflow: visible !important;">
-        <span class="text-scatter-container text-scatter-hero-heading text-scatter-gradient-text" data-text-scatter="Who's Vidd?" style="font-size: clamp(2.2rem, 5.2vw, 3.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.15; display: inline-block; cursor: pointer; user-select: none; overflow: visible !important;">
+      <div class="text-scatter-wrapper" style="text-align: center; padding: 0.75rem 0.5rem; position: relative; z-index: 25; overflow: visible !important; pointer-events: none;">
+        <span class="text-scatter-container text-scatter-hero-heading text-scatter-gradient-text" data-text-scatter="Who's Vidd?" style="font-size: clamp(2.2rem, 5.2vw, 3.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.15; display: inline-block; cursor: pointer; user-select: none; overflow: visible !important; pointer-events: auto;">
           Who's Vidd?
         </span>
       </div>
@@ -53,11 +53,11 @@ export function renderOtherSide() {
         letterSpacing: 1.0,
         separator: '*',
         bandPadding: 12,
-        interactive: false,
+        interactive: true,
         className: 'bending-marquee-bottom'
       })}
 
-      <div class="section-header" style="margin-top: 1.5rem;">
+      <div class="section-header" style="margin-top: 1.25rem;">
         <div>
           <h2 class="section-title">The other side of Vidd</h2>
           <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
@@ -379,10 +379,18 @@ export function initOtherSideCarousel() {
     });
   });
 
-  // Autoplay with Pause on Hover
+  // Autoplay with Pause on Hover & Route Disconnect Cleanup
+  let autoplayTimer = null;
+  let isPaused = false;
+
   function startAutoplay() {
     if (autoplayTimer) clearInterval(autoplayTimer);
     autoplayTimer = setInterval(() => {
+      if (!wrapper.isConnected) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+        return;
+      }
       if (!isPaused && document.visibilityState === 'visible') {
         sendToBack(140, -40);
       }

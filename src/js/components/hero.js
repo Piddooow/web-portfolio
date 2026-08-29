@@ -53,8 +53,18 @@ export function renderHero() {
             </div>
           </div>
 
-          <div style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-secondary); margin-top: -0.25rem;">
-            <span class="shiny-text">${educationData.institution} — ${educationData.degree} (GPA ${educationData.gpa})</span>
+          <div class="hero-education-line">
+            <div class="shiny-text hero-education-primary">
+              <span style="white-space: nowrap;">${educationData.institution}</span>
+              <span class="edu-sep" style="color: var(--text-muted); opacity: 0.7;">—</span>
+              <span style="display: inline-flex; flex-wrap: wrap; gap: 0.25rem;">
+                <span style="white-space: nowrap;">BBA (Management),</span>
+                <span style="white-space: nowrap;">BSc (Information Systems)</span>
+              </span>
+            </div>
+            <div class="shiny-text hero-education-gpa">
+              <span style="white-space: nowrap;">(GPA ${educationData.gpa})</span>
+            </div>
           </div>
 
           <div class="hero-social-links">

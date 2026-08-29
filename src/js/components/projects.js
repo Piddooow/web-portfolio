@@ -6,7 +6,8 @@
 import { projectsData } from '../data.js';
 
 export function renderProjects(limit = 6) {
-  const displayProjects = projectsData.slice(0, limit);
+  const sortedProjects = [...projectsData].sort((a, b) => (a.order || 0) - (b.order || 0));
+  const displayProjects = sortedProjects.slice(0, limit);
 
   const cardsHtml = displayProjects
     .map((p) => {

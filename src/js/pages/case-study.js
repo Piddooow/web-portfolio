@@ -26,38 +26,36 @@ export function renderCaseStudyPage(slug = 'keepr') {
     .join('');
 
   return `
-    <main class="site-container main-content" style="padding-top: 2rem;">
-      <div>
-        <a href="#/projects" class="section-link" style="margin-bottom: 1.5rem; display: inline-flex;">
-          <svg style="width: 0.9rem; height: 0.9rem; transform: rotate(180deg);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+    <main class="site-container main-content">
+      <div class="ren-page-header">
+        <a href="#/projects" class="ren-back-link">
+          <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
           </svg>
           <span>Back to Projects</span>
         </a>
 
-        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem;">
-          <span class="eyebrow-mono">Case Study</span>
-          <h1 class="section-title" style="font-size: 2.25rem;">${data.title}</h1>
-          <p style="font-size: 1.05rem; color: var(--text-secondary); max-width: 38rem;">
-            ${data.subtitle}
-          </p>
+        <div style="display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.85rem;">
+          <span class="eyebrow-mono" style="font-size: 0.65rem; letter-spacing: 0.2em;">Case Study</span>
+          <h1 class="ren-page-title" style="margin-top: 0;">${data.title}</h1>
         </div>
+        <p class="ren-page-subtitle">${data.subtitle}</p>
+      </div>
 
-        <!-- Meta Overview Bar -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.25rem; padding: 1.25rem; border-radius: 0.75rem; border: 1px dashed var(--border-dashed); background-color: var(--bg-surface-card); margin-bottom: 2.5rem;">
-          <div>
-            <span class="eyebrow-mono" style="font-size: 0.65rem;">Role</span>
-            <p style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); margin-top: 0.2rem;">${data.role}</p>
-          </div>
-          <div>
-            <span class="eyebrow-mono" style="font-size: 0.65rem;">Timeline</span>
-            <p style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); margin-top: 0.2rem;">${data.timeline}</p>
-          </div>
-          <div style="grid-column: span 2;">
-            <span class="eyebrow-mono" style="font-size: 0.65rem;">Core Stack</span>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.25rem;">
-              ${stackHtml}
-            </div>
+      <!-- Meta Overview Bar -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.25rem; padding: 1.25rem; border-radius: 0.75rem; border: 1px dashed var(--border-dashed); background-color: var(--bg-surface-card);">
+        <div>
+          <span class="eyebrow-mono" style="font-size: 0.65rem;">Role</span>
+          <p style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); margin-top: 0.2rem;">${data.role}</p>
+        </div>
+        <div>
+          <span class="eyebrow-mono" style="font-size: 0.65rem;">Timeline</span>
+          <p style="font-size: 0.875rem; font-weight: 500; color: var(--text-primary); margin-top: 0.2rem;">${data.timeline}</p>
+        </div>
+        <div style="grid-column: span 2;">
+          <span class="eyebrow-mono" style="font-size: 0.65rem;">Core Stack</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.25rem;">
+            ${stackHtml}
           </div>
         </div>
       </div>

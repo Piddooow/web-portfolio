@@ -33,12 +33,20 @@ export function renderHomePage() {
   `;
 }
 
+function safeRun(fn, name) {
+  try {
+    if (typeof fn === 'function') fn();
+  } catch (err) {
+    console.warn(`[HomePage Init Warning] Failed to initialize ${name}:`, err);
+  }
+}
+
 export function initHomePageEvents() {
-  initHeroAvatarPhysics();
-  initSpotlightPhysics();
-  initOtherSideCarousel();
-  initGitHubActivityEvents();
-  initScrollRevealObserver();
-  initTextScatter();
-  initBendingMarquee();
+  safeRun(initHeroAvatarPhysics, 'HeroAvatarPhysics');
+  safeRun(initSpotlightPhysics, 'SpotlightPhysics');
+  safeRun(initOtherSideCarousel, 'OtherSideCarousel');
+  safeRun(initGitHubActivityEvents, 'GitHubActivityEvents');
+  safeRun(initScrollRevealObserver, 'ScrollRevealObserver');
+  safeRun(initTextScatter, 'TextScatter');
+  safeRun(initBendingMarquee, 'BendingMarquee');
 }
